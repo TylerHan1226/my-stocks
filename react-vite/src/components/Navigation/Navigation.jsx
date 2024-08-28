@@ -7,7 +7,7 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import SearchModal from "../Search/SearchModal";
-import { GiGuitarBassHead } from "react-icons/gi";
+import { GiReceiveMoney } from "react-icons/gi";
 import { FaSearch } from "react-icons/fa";
 
 
@@ -20,7 +20,7 @@ export default function Navigation() {
 
       <section className='nav-home'>
         <NavLink to="/">
-          <GiGuitarBassHead id='nav-site-icon' />
+          <GiReceiveMoney id='nav-site-icon' />
         </NavLink>
       </section>
 

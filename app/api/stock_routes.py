@@ -5,6 +5,7 @@ import pandas as pd
 import yfinance as yf
 import datetime as dt
 from sqlalchemy import and_
+import numpy as np
 
 stock_routes = Blueprint('stocks', __name__)
 
@@ -23,6 +24,7 @@ def getOneStock(symbol):
         # Fetch stock history
         history = stock.history(period="10y").reset_index()
         history["Date"] = history["Date"].dt.strftime("%Y-%m-%d")
+        history = history.replace({np.nan: None})
         # Create a dictionary to return
         stock_data = {
             "ticker": symbol,
