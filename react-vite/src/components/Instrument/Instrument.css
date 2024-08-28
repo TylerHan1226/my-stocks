@@ -1,0 +1,222 @@
+
+#instrument-dtl-page-root {
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: row;
+    max-width: 1200px;
+    margin-top: 36px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.instrument-dtl-page-container {
+    border: 0.5px solid rgb(0, 0, 0, 0.2);
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+.instrument-dtl-info-container {
+    /* border: 1px solid green; */
+    width: 50%;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#instrument-dtl-image {
+    object-fit: contain;
+    height: 100%;
+}
+
+.back-button {
+    width: 80px;
+    height: 24px;
+    background-color: white;
+    border: none;
+    box-shadow: 0 0 10px 2px rgb(225, 0, 0, 0.5);
+}
+
+.back-button-text {
+    text-decoration: none;
+    color: black;
+}
+
+.black-text-bold {
+    font-weight: 500;
+}
+
+.add-to-cart-button-dtl, 
+.submit-form-button {
+    width: 50%;
+    margin-top: auto;
+    background-color: rgb(190, 0, 0);
+    border: none;
+    height: 48px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+.add-to-cart-button-dtl.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+.add-to-cart-button-dtl.disabled:hover {
+    background-color: black;
+}
+
+.add-to-cart-button-dtl:hover, 
+.delete-button:hover, 
+.submit-form-button:hover,
+.my-inst-action-btn:hover,
+.news-btns:hover,
+.news-readMore:hover {
+    box-shadow: 0 0 10px 2px rgb(225, 0, 0, 0.75);
+    background-color: rgb(235, 0, 0);
+    cursor: pointer;
+}
+
+.add-to-cart-text-dtl {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+
+#form-fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* .form-label-container {
+    border: 1px solid green;
+} */
+
+.validation-error-text {
+    color: red;
+}
+
+.delete-button {
+    list-style: none;
+    color: white;
+    height: 5%;
+}
+
+.delete-instrument-modal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 0, 0);
+    border: 12px rgb(190, 0, 0) solid;
+}
+
+.delete-form-container{
+    width: 50%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.remove-inst-title{
+    text-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-btn{
+    height: 45px;
+    width: 300px;
+    margin: 15px;
+    color: white;
+    background-color: grey;
+    border: 1px solid black;
+    height: 48px;
+    border-radius: 4px;
+}
+.modal-btn:hover{
+    background-color: rgb(190, 190, 190);
+    border: 1px solid rgb(190, 190, 190);
+    cursor: pointer;
+}
+
+.confirm-btn{
+    background-color: rgb(190, 0, 0);
+    border: 1px solid rgb(190, 0, 0);
+    color: white;
+}
+.confirm-btn:hover{
+    background-color: rgb(235, 0, 0);
+    border: 1px solid rgb(235, 0, 0);
+}
+
+.dtl-fav-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    cursor: pointer;
+}
+.dtl-fav-btn.favorite {
+    background-color: rgb(190, 0, 0);
+}
+
+.dtl-fav-icon {
+    font-size: 24px;
+    color: white;
+}
+.dtl-fav-icon.favorite:hover {
+    color: black;
+}
+.dtl-fav-icon:hover {
+    color: rgb(190, 0, 0);
+    cursor: pointer;
+}
+
+.discount-price-container {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+}
+.detail-price-text {
+    font-size: 20px;
+}
+.discount-price {
+    color: rgb(190, 0, 0);
+    text-decoration: line-through;
+}
+.money-saved {
+    background-color: red;
+    color: white;
+    padding: 8px;
+}
+.instrument-card-dtl-text {
+    height: 20px;
+    font-weight: 500;
+}
+
+@media (max-width: 1200px) {
+    .instrument-dtl-page-container {
+        flex-direction: column;
+        align-items: center;
+        width: 60%;
+    }
+    .instrument-dtl-info-container {
+        width: 80%;
+    }
+}

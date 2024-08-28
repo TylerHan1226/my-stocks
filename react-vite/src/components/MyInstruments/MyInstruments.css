@@ -1,0 +1,27 @@
+.my-instrument-item-container {
+    width: 65%;
+    margin: 0 auto;
+}
+
+.my-inst-item-btn-container {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.my-inst-action-btn {
+    margin: 12px;
+    background-color: rgb(190, 0, 0);
+    border: none;
+    height: 36px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+}
+
+.myInstr-discount-price-container {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    height: 36px;
+}

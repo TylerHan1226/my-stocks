@@ -1,0 +1,129 @@
+
+.nav-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 160px;
+  background-color: rgb(235, 0, 0)
+}
+
+.nav-home {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  width: 600px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0;
+}
+
+#nav-site-name {
+  color: white;
+  font-size: 36px;
+}
+
+.search-bar {
+  margin: 0 auto 0 auto;
+}
+
+.nav-text-icon {
+  color: white;
+  font-size: 42px;
+}
+
+#nav-site-icon {
+  font-size: 105px;
+  color: white;
+  transition: transform 0.3s ease;
+  transform: rotate(40deg);
+}
+#nav-site-icon:hover {
+  color: rgb(20, 0, 0);
+  transform: rotate(60deg)
+}
+.nav-user-action-icon {
+  font-size: 60px;
+  color: white;
+  transition: transform 0.3s ease;
+}
+.nav-user-action-icon:hover {
+  color: rgb(20, 0, 0);
+  transform: rotate(30deg)
+}
+
+.nav-icons-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-action-button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  width: 60%;
+  margin: 0 36px 0 36px;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar-container {
+  width: 20%;
+}
+
+.nav-loginSignup-container {
+  display: flex;
+  flex-direction: row;
+  padding: 12px;
+  gap: 24px;
+}
+
+.nav-action-button {
+    background-color: white;
+    width: 180px;
+    height: 36px;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: rgb(235, 0, 0);
+    list-style: none;
+    font-size: 20px;
+}
+
+.nav-search-btn {
+  list-style: none;
+}
+.nav-search-btn:hover {
+  cursor: pointer;
+}
+
+.nav-action-button:hover {
+    box-shadow: 0 0 10px 2px rgb(225, 0, 0, 0.5);
+    background-color: black;
+    cursor: pointer;
+}
+
+.nav-action-button-text {
+  color: rgb(235, 0, 0);
+  text-decoration: none;
+  font-size: 20px;
+  height: 20px;
+}
+
+
+@media (max-width: 1200px) {
+  .nav-container {
+    flex-direction: column;
+    padding: 20px;
+    height: 100%;
+    gap: 12px;
+  }
+  .nav-action-button-container {
+    flex-direction: column;
+  }
+}

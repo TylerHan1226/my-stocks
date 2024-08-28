@@ -1,0 +1,80 @@
+input, label, select {
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.form-container {
+    /* border: 1px black solid; */
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.form-fields-container {
+    /* border: 1px green solid; */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 50%;
+    padding: 12px;
+}
+
+.form-label-container {
+    /* border: 1px red solid; */
+    width: 80%;
+}
+
+.form-input-field {
+    width: 100%;
+}
+
+.form-discount-field-container {
+    display: flex;
+    flex-direction: row;
+    height: 24px;
+    align-items: center;
+}
+.form-input-discount-field {
+    width: 40%;
+}
+.form-discount-text {
+    margin-left: 12px;
+}
+
+.form-textarea-field {
+    max-width: 100%;
+    resize: vertical;
+}
+
+.form-preview-img-container {
+    border: 0.5px grey solid;
+    border-radius: 12px;
+    margin: 32px;
+}
+
+.form-preview-img {
+    width: 90%;
+    margin: auto;
+}
+
+/* .submit-form-button {
+    margin-top: 32px;
+} */
+
+.submit-form-btn-text {
+    margin: auto;
+}
+
+@media (max-width: 1200px) {
+    .form-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .form-fields-container {
+        width: 100%;
+    }
+}

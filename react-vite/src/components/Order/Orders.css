@@ -1,0 +1,112 @@
+
+.cart-page-container {
+    padding: 68px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.my-cart-item-container {
+    margin: 0 auto 0 auto
+}
+
+
+.cart-checkout-container {
+    margin-left: 12px;
+    margin-right: 120px;
+    display: flex;
+    flex-direction: column;
+}
+
+.my-cart-item-btn-container {
+    margin-left: auto;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin-top: 12px;
+}
+
+.quantity-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.quantity-btn {
+    background-color: rgb(190, 0, 0);
+    list-style: none;
+    width: 36px;
+    border-radius: 4px;
+    border: none;
+    margin: 0 24px 0 24px;
+    color: white;
+}
+.quantity-btn:hover,
+.order-action-button:hover {
+    background-color: rgb(235, 0, 0);
+    box-shadow: 0 0 10px 2px rgb(225, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.order-action-button {
+    border: none;
+    list-style: none;
+    background-color: rgb(190, 0, 0);
+    width: 196px;
+    padding: 12px;
+    border-radius: 4px;
+    color: white;
+    margin: 12px 0;
+}
+.order-action-button-text {
+    color: white;
+    text-decoration: none;
+}
+
+.order-remove-button {
+    border: none;
+    list-style: none;
+    background-color: rgb(190, 0, 0);
+    width: 196px;
+    padding: 12px;
+    border-radius: 4px;
+    color: white;
+}
+.order-remove-button:hover {
+    background-color: rgb(235, 0, 0);
+    box-shadow: 0 0 10px 2px rgb(225, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.confirm-text {
+    width: 360px;
+}
+
+.cart-instrument-container {
+    border: 0.5px solid rgb(0, 0, 0, 0.2);
+    background-color: white;
+    border-radius: 12px;
+    margin: 12px 0;
+    display: flex;
+    flex-direction: row;
+    min-height: 320px;
+}
+
+@media (max-width: 900px) {
+    .cart-page-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .cart-instrument-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .my-cart-item-btn-container {
+        margin: auto;
+    }
+    .cart-checkout-container {
+        margin: auto;
+    }
+}
