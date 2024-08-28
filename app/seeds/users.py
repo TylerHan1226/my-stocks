@@ -6,12 +6,10 @@ from sqlalchemy.sql import text
 def seed_users():
     demo = User(
         username='Demo', email='demo@gmail.com', password='password')
-    riffCaptain = User(
-        username='Riff Captain', email='riffHarbor@gmail.com', password='myCaptainR')
     tyler = User(
         username='Tyler Han', email='tyler@gmail.com', password='tyler123')
 
-    db.session.add_all([demo, riffCaptain, tyler])
+    db.session.add_all([demo, tyler])
     db.session.commit()
 
 

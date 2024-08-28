@@ -15,11 +15,6 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
 
-    instruments = relationship('Instrument', back_populates='users')
-    order_items = relationship('OrderItem', back_populates='users')
-    order_histories = relationship('OrderHistory', back_populates='users')
-    favorites = relationship('Favorite', back_populates='users')
-
     @property
     def password(self):
         return self.hashed_password

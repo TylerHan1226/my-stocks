@@ -4,13 +4,10 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
-from .models import db, User, Instrument, OrderItem, OrderHistory
+from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
-from .api.instrument_routes import instrument_routes
-from .api.order_routes import order_routes
-from .api.history_routes import history_routes
-from .api.favorite_routes import favorite_routes
+
 from .api.news_routes import news_routes
 from .seeds import seed_commands
 from .config import Config
@@ -33,10 +30,7 @@ app.cli.add_command(seed_commands)
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
-app.register_blueprint(instrument_routes, url_prefix='/api/instruments')
-app.register_blueprint(order_routes, url_prefix='/api/orders')
-app.register_blueprint(history_routes, url_prefix='/api/history')
-app.register_blueprint(favorite_routes, url_prefix='/api/favorites')
+
 app.register_blueprint(news_routes, url_prefix='/api/news')
 db.init_app(app)
 Migrate(app, db)
