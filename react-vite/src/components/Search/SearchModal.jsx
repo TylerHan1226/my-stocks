@@ -27,7 +27,7 @@ export default function Search() {
                     <input
                         className="search-form-field-input"
                         type="text"
-                        placeholder="Find Your Stock"
+                        placeholder="Find Your Stock by Symbol"
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
                     />

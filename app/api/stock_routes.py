@@ -28,7 +28,7 @@ def getOneStock(symbol):
             "ticker": symbol,
             "name": stock_info.get("shortName", "N/A"),
             "info": stock_info,
-            "history": history.to_dict(orient="records")
+            "history": history.to_dict(orient="records"),
         }
         return jsonify(stock_data)
     except Exception as e:

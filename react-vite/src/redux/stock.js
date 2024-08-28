@@ -22,7 +22,7 @@ const initialState = {}
 function stockReducer(state = initialState, action) {
     switch (action.type) {
         case LOAD_STOCK:
-            return { ...state, [action.payload.ticker]: action.payload }
+            return { ...state, ...action.payload }
         default:
             return state
     }
