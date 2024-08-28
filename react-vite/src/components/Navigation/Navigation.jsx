@@ -6,8 +6,9 @@ import ProfileButton from "./ProfileButton";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-
+import SearchModal from "../Search/SearchModal";
 import { GiGuitarBassHead } from "react-icons/gi";
+import { FaSearch } from "react-icons/fa";
 
 
 export default function Navigation() {
@@ -26,6 +27,15 @@ export default function Navigation() {
       <div className="nav-icons-container">
         {user &&
           <>
+            <section className="nav-icons-container">
+              <div className="nav-search-btn">
+                <OpenModalMenuItem
+                  itemText={<FaSearch className='nav-user-action-icon' />}
+                  className='nav-action-button-text'
+                  modalComponent={<SearchModal />}
+                />
+              </div>
+            </section>
             <ProfileButton />
           </>
         }
