@@ -15,7 +15,9 @@ export default function LandingPage() {
   const dispatch = useDispatch()
   const user = useSelector(state => state.session.user)
   const stock = useSelector(state => state.stocks)
+  const lists = useSelector(state => state.lists?.My_Lists)
 
+  console.log('lists ==>', lists)
   // useEffect(() => {
   //   if (!user) {
   //     nav('/')
@@ -28,7 +30,13 @@ export default function LandingPage() {
 
   return (
     <section className="page-container">
-      <h1>Landing</h1>
+      <h1 className="page-title">Landing</h1>
+      {lists?.map((eachList) => (
+                <div key={eachList?.id}>
+                    {/* <p>{eachList?.list_name}</p> */}
+                    <p>{eachList?.stock_symbol}</p>
+                </div>
+            ))}
     </section>
   );
 }
