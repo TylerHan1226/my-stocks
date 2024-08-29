@@ -1,22 +1,44 @@
 from flask import Blueprint, jsonify, request, redirect
 from flask_login import login_required, current_user
-from app.models import MyList
-# import pandas as pd
-# import yfinance as yf
-# import datetime as dt
-# from sqlalchemy import and_
-# import numpy as np
+from app.forms import ListForm
+from app.models import db, MyList
+
 
 list_routes = Blueprint('lists', __name__)
 
-# get one specific stock
+# get all user lists
 # /api/lists
 @list_routes.route('/')
 @login_required
 def get_all_my_lists():
-    # """
-    # Get All the lists under the user
-    # """
     my_lists = MyList.query.filter_by(user_id=current_user.id).all()
     my_lists_list = [my_list.to_dict() for my_list in my_lists]
     return {'My_Lists': my_lists_list}, 200
+
+# add new list
+# /api/lists/new
+@list_routes.route('/new', methods=['POST'])
+@login_required
+def add_new_list():
+    form = ListForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        new_list = MyList (
+            user_id = current_user.id,
+            list_name = form.list_name.data,
+            stock_symbol = form.stock_symbol.data,
+        )
+    
+        db.session.add(new_list)
+        db.session.commit()
+        return new_list.to_dict(), 201
+    return form.errors, 400
+
+# remove a list
+# /api/lists/remove
+@list_routes.route('/<int:id>/remove', methods=['DELETE'])
+@login_required
+def remove_list(id):
+    list = MyList.query.get(id)
+    

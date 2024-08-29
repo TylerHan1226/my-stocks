@@ -14,9 +14,6 @@ stock_routes = Blueprint('stocks', __name__)
 @stock_routes.route('/<symbol>')
 @login_required
 def getOneStock(symbol):
-    # """
-    # Get Details for a Specific Stock
-    # """
     stock = yf.Ticker(symbol)
     stock_info = stock.info
     if not stock_info:
