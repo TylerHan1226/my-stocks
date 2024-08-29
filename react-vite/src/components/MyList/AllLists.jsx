@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { getAllMyListsThunk } from "../../redux/list"
+import { getAllMyListsThunk, removeListThunk } from "../../redux/list"
 
 export default function AllLists() {
     const dispatch = useDispatch();
