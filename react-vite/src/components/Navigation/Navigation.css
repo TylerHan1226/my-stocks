@@ -27,6 +27,9 @@
   color: white;
   transition: transform 0.3s ease;
 }
+.nav-list-icon {
+  font-size: 68px;
+}
 .nav-user-action-icon:hover {
   color: rgb(20, 0, 0);
   transform: rotate(30deg)
@@ -64,6 +67,7 @@
   background-color: black;
   cursor: pointer;
 }
+
 
 .nav-search-btn {
   list-style: none;

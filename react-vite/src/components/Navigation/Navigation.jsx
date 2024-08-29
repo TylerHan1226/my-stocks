@@ -8,6 +8,7 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import SearchModal from "../Search/SearchModal";
 import { GiReceiveMoney } from "react-icons/gi";
+import { TbCheckupList } from "react-icons/tb";
 import { FaSearch } from "react-icons/fa";
 
 
@@ -35,6 +36,9 @@ export default function Navigation() {
                   modalComponent={<SearchModal />}
                 />
               </div>
+              <NavLink to="/my_lists">
+                <TbCheckupList className="nav-user-action-icon nav-list-icon" />
+              </NavLink>
             </section>
             <ProfileButton />
           </>

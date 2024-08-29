@@ -6,12 +6,14 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
-import stockReducer from "./stock"; 
+import stockReducer from "./stock";
+import listReducer from "./list";
 import { newsReducer } from "./news";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   stocks: stockReducer,
+  lists: listReducer,
   news: newsReducer
 });
 

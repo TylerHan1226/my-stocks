@@ -5,6 +5,7 @@ import LandingPage from '../components/LandingPage'
 import Layout from './Layout';
 import News from '../components/News/News';
 import SearchPage from '../components/Search/SearchPage';
+import AllLists from '../components/MyList/AllLists';
 
 
 export const router = createBrowserRouter([
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "/search/:searchInput",
         element: <SearchPage />
+      },
+      {
+        path: "/my_lists",
+        element: <AllLists />
       },
       {
         path:'*',

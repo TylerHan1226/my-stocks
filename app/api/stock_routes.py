@@ -10,12 +10,13 @@ import numpy as np
 stock_routes = Blueprint('stocks', __name__)
 
 # get one specific stock
+# /api/stocks/<symbol>
 @stock_routes.route('/<symbol>')
 @login_required
 def getOneStock(symbol):
-    """
-    Get Details for a Specific Stock
-    """
+    # """
+    # Get Details for a Specific Stock
+    # """
     stock = yf.Ticker(symbol)
     stock_info = stock.info
     if not stock_info:
@@ -35,14 +36,3 @@ def getOneStock(symbol):
         return jsonify(stock_data)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-# get all stocks
-@stock_routes.route("/all")
-@login_required
-def getAllStock():
-    """
-    Get All Stocks
-    """
-    stocks = Stock.query.all()
-    return jsonify([stock.to_dict() for stock in stocks])

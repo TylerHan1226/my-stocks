@@ -16,7 +16,7 @@
 }
 
 .toggle-dropdown{
-    padding: 10px;
+    padding: 6px;
     color: white;
     background-color: white;
     border: none;
@@ -31,7 +31,7 @@
 
 .profile-icon {
     color: rgb(235, 0, 0);
-    font-size: 24px;
+    font-size: 36px;
 }
 
 .dropdown-text {

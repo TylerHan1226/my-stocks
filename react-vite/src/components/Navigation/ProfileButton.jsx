@@ -5,7 +5,7 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { useNavigate } from "react-router-dom";
-import { BsPersonLinesFill } from "react-icons/bs";
+import { IoPersonCircle } from "react-icons/io5";
 import './ProfileButton.css'
 
 function ProfileButton() {
@@ -46,7 +46,7 @@ function ProfileButton() {
   return (
     <div className="dropdown-container">
       <button onClick={toggleMenu} className="toggle-dropdown">
-        <BsPersonLinesFill className="profile-icon" />
+        <IoPersonCircle className="profile-icon" />
       </button>
       {showMenu && (
         <div className="profile-dropdown" ref={ulRef}>

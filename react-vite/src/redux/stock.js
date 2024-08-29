@@ -1,5 +1,4 @@
 const LOAD_STOCK = 'stocks/load'
-const LOAD_STOCK_DATA = 'stocks/loadData'
 
 const loadStock = (stock) => ({
     type: LOAD_STOCK,
@@ -8,13 +7,15 @@ const loadStock = (stock) => ({
 
 export const getOneStockThunk = (symbol) => async (dispatch) => {
     const response = await fetch(`/api/stocks/${symbol}`)
-    if (response.ok) {
-        const data = await response.json()
-        if (data.errors) {
-            return "Cannot find stock"
-        }
-        dispatch(loadStock(data));
+    if (!response.ok) {
+        return new Error ('Failed to fetch stock')
     }
+    const data = await response.json()
+    if (data.errors) {
+        return "Cannot find stock"
+    }
+    dispatch(loadStock(data));
+    return data
 }
 
 const initialState = {}
