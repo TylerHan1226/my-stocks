@@ -35,10 +35,35 @@ def add_new_list():
         return new_list.to_dict(), 201
     return form.errors, 400
 
+# update a list
+@list_routes.route('/<int:id>/update', methods=['PUT'])
+@login_required
+def update_list(id):
+    form = ListForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        list = MyList.query.get(id)
+        if not list:
+            return {'message': 'List not found'}, 404
+        if list.user_id != current_user.id:
+            return redirect('api/auth/unauthorized')
+        list.list_name = form.list_name.data
+        list.stock_symbol = form.stock_symbol.data
+        db.session.commit()
+        return list.to_dict(), 200
+    return form.errors, 400
+
 # remove a list
 # /api/lists/remove
 @list_routes.route('/<int:id>/remove', methods=['DELETE'])
 @login_required
 def remove_list(id):
     list = MyList.query.get(id)
-    
+    if not list:
+        return {'message': 'List not found'}, 404
+    if list.user_id != current_user.id:
+        return redirect('api/auth/unauthorized')
+    db.session.delete(list)
+    db.session.commit()
+    return {'message': 'Successfully Deleted'}, 200
