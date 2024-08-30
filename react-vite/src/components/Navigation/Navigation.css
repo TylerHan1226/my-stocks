@@ -4,16 +4,31 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 160px;
-  background-color: rgb(50, 200, 50)
+  height: 120px;
+  background-color: rgb(50, 200, 50);
+  position: fixed;
+  width: 100%;
 }
 
 .nav-home {
   margin: 0 0 0 36px;
 }
 
+.nav-logo-container {
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+}
+
+#nav-logo-text {
+  font-size: 36px;
+}
+#nav-logo-text:hover {
+  color: black;
+}
+
 #nav-site-icon {
-  font-size: 105px;
+  font-size: 100px;
   color: white;
   transition: transform 0.3s ease;
   transform: rotate(40deg);

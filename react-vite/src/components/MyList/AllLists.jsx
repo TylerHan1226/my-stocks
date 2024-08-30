@@ -21,14 +21,18 @@ export default function AllLists() {
 
     return (
         <section className="page-container">
-            <h1 className="page-title">My Lists</h1>
-            <section className="list-tabs-container">
-                {Array.from(listNames).map((eachName) => (
-                <div className="list-tab">
-                    <h2>{eachName}</h2>
-                </div>
-                ))}
+            <section className="page-content-container">
+                <h1 className="page-title">My Lists</h1>
+                <section className="list-tabs-container">
+                    {Array.from(listNames).map((eachName) => (
+                        <div className="list-tab">
+                            <h2>{eachName}</h2>
+                        </div>
+                    ))}
+                </section>
+
             </section>
+
 
             {/* {lists?.map((eachList) => (
                 <div key={eachList?.id}>

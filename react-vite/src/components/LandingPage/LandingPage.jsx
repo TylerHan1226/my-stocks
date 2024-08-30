@@ -30,13 +30,16 @@ export default function LandingPage() {
 
   return (
     <section className="page-container">
-      <h1 className="page-title">Landing</h1>
-      {lists?.map((eachList) => (
-                <div key={eachList?.id}>
-                    {/* <p>{eachList?.list_name}</p> */}
-                    <p>{eachList?.stock_symbol}</p>
-                </div>
-            ))}
+      <section className="page-content-container">
+        <h1 className="page-title">Landing</h1>
+        {lists?.map((eachList) => (
+          <div key={eachList?.id}>
+            {/* <p>{eachList?.list_name}</p> */}
+            <p>{eachList?.stock_symbol}</p>
+          </div>
+        ))}
+      </section>
+
     </section>
   );
 }
