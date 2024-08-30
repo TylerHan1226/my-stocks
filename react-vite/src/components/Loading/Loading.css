@@ -24,8 +24,8 @@
     bottom: 0;
     left: -20px;
     border-radius: inherit;
-    background: rgb(190,0,0);
-    box-shadow: -10px 0 12px 3px rgb(190,0,0);
+    background: rgb(50, 200, 50);
+    box-shadow: -10px 0 12px 3px rgb(50, 200, 50);
     animation: fillBar 1s linear forwards;
 }
 

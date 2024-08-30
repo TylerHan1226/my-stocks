@@ -6,6 +6,7 @@ import Layout from './Layout';
 import News from '../components/News/News';
 import SearchPage from '../components/Search/SearchPage';
 import AllLists from '../components/MyList/AllLists';
+import List from '../components/MyList/List';
 
 
 export const router = createBrowserRouter([
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "/my_lists",
         element: <AllLists />
+      },
+      {
+        path: "/my_lists/:listName",
+        element: <List />
       },
       {
         path:'*',
