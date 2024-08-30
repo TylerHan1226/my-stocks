@@ -12,7 +12,7 @@
     justify-content: center;
     align-items: center;
     background-color: rgb(0, 0, 0);
-    border: 12px rgb(190, 0, 0) solid;
+    border: 12px rgb(50, 200, 50) solid;
 }
 
 .toggle-dropdown{
@@ -30,7 +30,7 @@
 }
 
 .profile-icon {
-    color: rgb(235, 0, 0);
+    color: rgb(50, 200, 50);
     font-size: 36px;
 }
 

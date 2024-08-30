@@ -49,7 +49,7 @@ export default function SearchPage() {
                                     : (stock?.info?.marketCap / 1000000)?.toFixed(2) + 'M'}
                         </p>
                         <p className="search-info-text">Price-Earning ratio: {stock?.info?.trailingPE?.toFixed(2)}</p>
-                        {/* <p className="search-info-text">Forward Price-Earning ratio: {stock?.info?.forwardPE?.toFixed(2)}</p> */}
+                        <p className="search-info-text">Forward Price-Earning ratio: {stock?.info?.forwardPE?.toFixed(2)}</p>
                         <p className="search-info-text">
                             Volume: {stock?.info?.volume > 1000000000000
                                 ? (stock?.info?.volume / 1000000000000)?.toFixed(2) + 'T'
