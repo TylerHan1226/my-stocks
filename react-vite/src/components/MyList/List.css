@@ -17,7 +17,11 @@
     justify-content: center;
 }
 
+.list-stock-tab {
+    /* background-color: rgb(50, 200, 50); */
+    border: 1px solid red;
+}
+
 .list-tab-title {
     color: black;
-    /* margin: auto auto auto 12px; */
 }

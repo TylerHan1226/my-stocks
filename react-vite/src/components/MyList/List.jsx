@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllMyListsThunk, getAllStocksInListThunk, removeListThunk } from "../../redux/list"
 import "./List.css"
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import Loading from "../Loading/Loading";
 
 export default function List() {
@@ -10,7 +10,7 @@ export default function List() {
     const list = useParams()
     const lists = useSelector(state => state.lists?.My_Lists)
     const listStockData = useSelector(state => state.lists?.stocks_data)
-    const stockSymbols = lists?.map(ele => ele.stock_symbol)
+    const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
 
     console.log('stockSymbols =>', stockSymbols)
     console.log('lists =>', lists)
@@ -30,13 +30,13 @@ export default function List() {
         <section className="page-container">
             <section className="page-content-container">
                 <h1 className="page-title">{list.listName}</h1>
-                <div className="list-stock-tab-container">
+                <section className="list-tabs-container">
                     {stockSymbols?.map((eachSymbol, index) => (
-                            <div key={index} className="list-stock-tab">
-                                <p>{listStockData[eachSymbol]?.ticker}</p>
-                            </div>
+                        <NavLink to={`/`} className="list-tab" key={index}>
+                            <h2 className="list-tab-title">{listStockData[eachSymbol]?.ticker}</h2>
+                        </NavLink>
                     ))}
-                </div>
+                </section>
             </section>
         </section>
     );

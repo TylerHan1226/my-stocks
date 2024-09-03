@@ -33,15 +33,7 @@ export default function AllLists() {
                         </NavLink>
                     ))}
                 </section>
-
             </section>
-
-
-            {/* {lists?.map((eachList) => (
-                <div key={eachList?.id}>
-                    <p>{eachList?.stock_symbol}</p>
-                </div>
-            ))} */}
         </section>
     );
 }
