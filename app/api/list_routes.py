@@ -41,17 +41,21 @@ def get_all_stocks_for_user(list_name):
         if not stock_info:
             stocks_data[eachSymbol] = {"error": "Stock not found"}
             continue
+        
+        # Get the current price
+        try:
+            current_price = stock.fast_info['lastPrice']
+        except AttributeError:
+            # If fast_info is not available, use the last closing price from info
+            current_price = stock_info.get('regularMarketPrice', None)
 
-        # # Fetch stock history
-        # history = stock.history(period="1mo").reset_index()
-        # history["Date"] = history["Date"].dt.strftime("%Y-%m-%d")
-        # history = history.replace({np.nan: None})
 
         stock_data = {
             "ticker": eachSymbol,
             "name": stock_info.get("shortName", "N/A"),
             "info": stock_info,
-            # "history": history.to_dict(orient="records"),
+            "current_price": current_price
+
         }
         stocks_data[eachSymbol] = stock_data
 

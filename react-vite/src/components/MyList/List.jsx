@@ -4,6 +4,7 @@ import { getAllMyListsThunk, getAllStocksInListThunk, removeListThunk } from "..
 import "./List.css"
 import { NavLink, useParams } from "react-router-dom";
 import Loading from "../Loading/Loading";
+import { HiArrowCircleUp, HiArrowCircleDown  } from "react-icons/hi";
 
 export default function List() {
     const dispatch = useDispatch();
@@ -22,22 +23,34 @@ export default function List() {
         dispatch(getAllStocksInListThunk(list?.listName))
     }, [dispatch]);
 
-    if (!listStockData || !lists) {
+    if (!listStockData || !lists || !list) {
         return <Loading />
     }
 
     return (
-        <section className="page-container">
-            <section className="page-content-container">
-                <h1 className="page-title">{list.listName}</h1>
-                <section className="list-tabs-container">
-                    {stockSymbols?.map((eachSymbol, index) => (
-                        <NavLink to={`/search/${eachSymbol}`} className="list-tab" key={index}>
-                            <h2 className="list-tab-title">{listStockData[eachSymbol]?.ticker}</h2>
-                        </NavLink>
-                    ))}
-                </section>
-            </section>
+<section className="page-container">
+    <section className="page-content-container">
+        <h1 className="page-title">{list.listName}</h1>
+        <section className="list-tabs-container">
+            {stockSymbols?.map((eachSymbol, index) => (
+                <NavLink to={`/search/${eachSymbol}`} className={`stock-tab ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.open ? 'green-border' : 'red-border'}`} key={index}>
+                    <h2 className={`stock-tab-title ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.open ? 'is-green' : 'is-red'}`}>
+                        {listStockData[eachSymbol]?.ticker}
+                    </h2>
+                    <h2 className={`stock-tab-title ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.open ? 'is-green' : 'is-red'}`}>
+                        {listStockData[eachSymbol]?.current_price?.toFixed(2)}
+                    </h2>
+                    {listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.open ? 
+                        (<div className="stock-tab-title stock-tab-up-arrow">
+                            <HiArrowCircleUp />
+                        </div>) : (<div className="stock-tab-title stock-tab-down-arrow">
+                            <HiArrowCircleDown />
+                        </div>)
+                    }
+                </NavLink>
+            ))}
         </section>
+    </section>
+</section>
     );
 }

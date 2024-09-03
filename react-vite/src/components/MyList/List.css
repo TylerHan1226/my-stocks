@@ -10,16 +10,54 @@
 .list-tab {
     height: 60px;
     border-radius: 12px;
-    /* background-color: rgb(50, 200, 50); */
     display: flex;
     border: 1px solid rgb(50, 200, 50);
     text-decoration: none;
     justify-content: center;
 }
+.stock-tab {
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    text-decoration: none;
+    /* background-color: rgb(50, 200, 50); */
+    justify-content: center;
+    align-items: center;
+}
+.green-border {
+    border: 1px solid rgb(50, 200, 50);
+}
+.red-border {
+    border: 1px solid rgb(165, 20, 20);
+}
+.green-border:hover,
 .list-tab:hover {
-    box-shadow: 0 0 20px 0px rgb(50, 200, 50);
+    box-shadow: 0 0 20px 0px rgb(35, 150, 35);
+}
+.red-border:hover {
+    box-shadow: 0 0 20px 0px rgb(220, 25, 25);
+}
+
+.is-green,
+.stock-tab-up-arrow {
+    color: rgb(50, 200, 50);
+}
+.is-red,
+.stock-tab-down-arrow {
+    color: rgb(220, 25, 25);
+}
+
+.stock-tab-up-arrow,
+.stock-tab-down-arrow {
+    font-size: 36px;
 }
 
 .list-tab-title {
     color: white;
+}
+.stock-tab-title {
+    /* margin: auto; */
+    display: flex;
+    justify-content: center;
+    width: 30%;
 }
