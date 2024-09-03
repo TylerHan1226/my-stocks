@@ -1,27 +1,25 @@
 .list-tabs-container {
-    width: 80%;
+    width: 60%;
     /* border: 1px blue solid; */
     margin: 0 auto 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 36px;
 }
 
 .list-tab {
     height: 60px;
     border-radius: 12px;
-    background-color: rgb(50, 200, 50);
+    /* background-color: rgb(50, 200, 50); */
     display: flex;
-    border: none;
+    border: 1px solid rgb(50, 200, 50);
     text-decoration: none;
     justify-content: center;
 }
-
-.list-stock-tab {
-    /* background-color: rgb(50, 200, 50); */
-    border: 1px solid red;
+.list-tab:hover {
+    box-shadow: 0 0 20px 0px rgb(50, 200, 50);
 }
 
 .list-tab-title {
-    color: black;
+    color: white;
 }
