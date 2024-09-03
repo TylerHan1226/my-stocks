@@ -27,22 +27,15 @@ export const removeList = (list) => ({
 
 
 
-// Helper function to get CSRF token from cookies
-function getCookie(name) {
-    const value = `; ${document.cookie}`
-    const parts = value.split(`; ${name}=`)
-    if (parts.length === 2) return parts.pop().split(';').shift()
-}
+// // Helper function to get CSRF token from cookies
+// function getCookie(name) {
+//     const value = `; ${document.cookie}`
+//     const parts = value.split(`; ${name}=`)
+//     if (parts.length === 2) return parts.pop().split(';').shift()
+// }
 
 export const getAllMyListsThunk = () => async (dispatch) => {
-        const res = await fetch('/api/lists/', {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrf_token')
-            },
-        })
+        const res = await fetch('/api/lists/')
         if (!res.ok) {
             throw new Error('Failed to fetch lists')
         }
@@ -51,14 +44,7 @@ export const getAllMyListsThunk = () => async (dispatch) => {
         return data
 }
 export const getAllStocksInListThunk = (list_id) => async (dispatch) => {
-    const res = await fetch (`/api/lists/${list_id}/stocks`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrf_token')
-        },
-    })
+    const res = await fetch (`/api/lists/${list_id}/stocks`)
     if (!res.ok) {
         throw new Error('Failed to fetch stocks in the list')
     }
@@ -69,11 +55,6 @@ export const getAllStocksInListThunk = (list_id) => async (dispatch) => {
 export const addListThunk = (newListData) => async (dispatch) => {
     const res = await fetch('/api/lists/new', {
         method: 'POST', 
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrf_token')
-        },
         body: newListData
     })
     if (!res.ok) {
@@ -86,11 +67,6 @@ export const addListThunk = (newListData) => async (dispatch) => {
 export const updateListThunk = (updatedListData, listId) => async (dispatch) => {
     const res = await fetch(`/api/lists/${listId}/update`, {
         method: 'PUT', 
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrf_token')
-        },
         body: updatedListData
     })
     if (!res.ok) {
@@ -103,11 +79,6 @@ export const updateListThunk = (updatedListData, listId) => async (dispatch) => 
 export const removeListThunk = (listId) => async (dispatch) => {
     const res = await fetch(`api/lists/${listId}/remove`, {
         method: 'DELETE',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrf_token')
-        },
     })
     if (!res.ok) {
         throw new Error('Failed to remove list')
