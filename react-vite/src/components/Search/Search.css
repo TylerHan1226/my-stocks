@@ -22,3 +22,15 @@
     width: 33%;
 }
 
+.stock-page-action-btns {
+    color: white;
+    list-style: none;
+    border: 1px white solid;
+}
+.stock-page-action-btns:hover {
+    cursor: pointer;
+}
+.stock-page-add-btn {
+    list-style: none;
+}
+

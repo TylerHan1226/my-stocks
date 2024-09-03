@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import "./Search.css";
 import { useModal } from "../../context/Modal";
 import { FaSearch } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import "./Modal.css"
 
-export default function Search() {
+export default function AddListModal() {
     const [searchInput, setSearchInput] = useState("")
     const nav = useNavigate()
     const { closeModal } = useModal()
@@ -21,7 +21,7 @@ export default function Search() {
     };
 
     return (
-        <section className="search-modal-container">
+        <section id="search-modal-container">
             <form className="search-form" onSubmit={handleSearch}>
                 <div className="search-form-fields">
                     <input

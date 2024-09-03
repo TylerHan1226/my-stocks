@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
 import "./SignupForm.css";
-import { MdSailing } from "react-icons/md";
+import { GrMoney } from "react-icons/gr";
 
 
 function SignupFormModal() {
@@ -43,8 +43,8 @@ function SignupFormModal() {
   return (
     <div className="profile-log-modal-container">
       <div className="profile-log-modal-header">
-        <h1>Start Your Journey</h1>
-        <MdSailing className="login-model-icon" />
+        <h1>Start Your Investing!</h1>
+        <GrMoney className="login-model-icon" />
         
       </div>
       {errors.server && <p>{errors.server}</p>}

@@ -1,0 +1,38 @@
+
+.search-modal-container {
+    width: 600px;
+    height: 80px;
+    background-color: white;
+}
+
+.search-form-fields {
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+}
+.search-form-field-input{
+    width: 80%;
+    font-size: 36px;
+}
+
+.search-modal-btn {
+    width: 20%;
+    border: 0 black solid;
+    background-color: var(--dark-green);
+    padding: 0;
+    margin: 0 0 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search-modal-btn-text {
+    font-size: 32px;
+    color: white;
+    margin: 8px 0 0 0;
+}
+
+.search-modal-btn:hover {
+    background-color: var(--theme-green);
+    cursor: pointer;
+    color: white;
+}

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 
 import Loading from "../Loading/Loading";
 import { getOneStockThunk } from "../../redux/stock";
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import AddListModal from "../MyList/AddListModal";
 
 
 export default function SearchPage() {
@@ -30,7 +32,13 @@ export default function SearchPage() {
             <section className="page-content-container">
                 <h1 className="page-title">{stock?.name}</h1>
                 <div className="stock-page-action-btn-container">
-                    <button className="stock-page-action-btn">ADD TO LIST</button>
+                    <div className="stock-page-action-btns">
+                        <OpenModalMenuItem
+                        className="stock-page-add-btn"
+                        itemText="ADD TO LIST"
+                        modalComponent={<AddListModal />}
+                        />
+                    </div>
                 </div>
                 <section className="search-info-container">
                     <h2>About</h2>
