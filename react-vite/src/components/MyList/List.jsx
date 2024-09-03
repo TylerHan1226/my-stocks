@@ -2,12 +2,15 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllMyListsThunk, getAllStocksInListThunk, removeListThunk } from "../../redux/list"
 import "./List.css"
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import Loading from "../Loading/Loading";
-import { HiArrowCircleUp, HiArrowCircleDown } from "react-icons/hi";
+import { IoMdArrowRoundUp, IoMdArrowRoundDown } from "react-icons/io";
+
 
 export default function List() {
     const dispatch = useDispatch();
+    const nav = useNavigate()
+    const user = useSelector(state => state.session.user)
     const list = useParams()
     const lists = useSelector(state => state.lists?.My_Lists)
     const listStockData = useSelector(state => state.lists?.stocks_data)
@@ -23,6 +26,9 @@ export default function List() {
         dispatch(getAllStocksInListThunk(list?.listName))
     }, [dispatch]);
 
+    if (!user) {
+        return nav('/')
+    }
     if (!listStockData || !lists || !list) {
         return <Loading />
     }
@@ -37,16 +43,19 @@ export default function List() {
                             <h2 className={`stock-tab-title ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
                                 {listStockData[eachSymbol]?.ticker}
                             </h2>
-                            <h2 className={`stock-tab-title ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
-                                {listStockData[eachSymbol]?.current_price?.toFixed(2)}
-                            </h2>
-                            {listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ?
-                                (<div className="stock-tab-title stock-tab-up-arrow">
-                                    <HiArrowCircleUp />
-                                </div>) : (<div className="stock-tab-title stock-tab-down-arrow">
-                                    <HiArrowCircleDown />
-                                </div>)
-                            }
+                            <div className="stock-tab-title">
+                                <h2 className={`stock-tab-price ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>{listStockData[eachSymbol]?.current_price?.toFixed(2)}</h2>
+                                {listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ?
+                                    (<div className="stock-tab-title stock-tab-up-arrow">
+                                        <IoMdArrowRoundUp />
+                                    </div>) : (<div className="stock-tab-title stock-tab-down-arrow">
+                                        <IoMdArrowRoundDown />
+                                    </div>)}
+                                <p className={`stock-tab-percentage ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
+                                    {(((listStockData[eachSymbol]?.current_price - listStockData[eachSymbol]?.info?.previousClose)/listStockData[eachSymbol]?.info?.previousClose)*100).toFixed(2)}%
+                                </p>
+                            </div>
+
                         </NavLink>
                     ))}
                 </section>

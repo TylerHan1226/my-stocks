@@ -7,6 +7,7 @@ import { NavLink, useNavigate } from "react-router-dom"
 export default function AllLists() {
     const dispatch = useDispatch()
     const nav = useNavigate()
+    const user = useSelector(state => state.session.user)
     const lists = useSelector(state => state.lists?.My_Lists)
     // get list name array
     const listNames = new Set()
@@ -22,6 +23,10 @@ export default function AllLists() {
         dispatch(getAllMyListsThunk())
     }, [dispatch]);
 
+    if (!user) {
+        return nav('/')
+    }
+    
     return (
         <section className="page-container">
             <section className="page-content-container">

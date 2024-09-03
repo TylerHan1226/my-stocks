@@ -49,15 +49,25 @@
 
 .stock-tab-up-arrow,
 .stock-tab-down-arrow {
-    font-size: 36px;
+    font-size: 28px;
+    margin: 0 0 0 auto;
 }
 
 .list-tab-title {
     color: white;
 }
 .stock-tab-title {
-    /* margin: auto; */
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 30%;
+}
+
+.stock-tab-price {
+    margin: 0 0 0 50%;
+}
+
+.stock-tab-percentage {
+    font-size: 18px;
+    margin: auto auto auto 24px;
 }
