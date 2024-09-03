@@ -22,7 +22,7 @@ export default function Navigation() {
       <section className='nav-home'>
         <NavLink className='nav-logo-container' to="/">
           <GiReceiveMoney id='nav-site-icon' />
-          <h1 id="nav-logo-text">My Stock</h1>
+          <h1 id="nav-logo-text">MyStock</h1>
         </NavLink>
       </section>
 

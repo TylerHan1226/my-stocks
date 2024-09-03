@@ -2,9 +2,9 @@ import { useState } from "react";
 import { thunkLogin } from "../../redux/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import "./LoginForm.css";
-import { MdSailing } from "react-icons/md";
 import { NavLink } from "react-router-dom";
+import "./LoginForm.css";
+import { GrMoney } from "react-icons/gr";
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -39,8 +39,8 @@ function LoginFormModal() {
   return (
     <div className="profile-log-modal-container">
       <div className="profile-log-modal-header">
-        <h2>Log In to Riff Harbor</h2>
-        <MdSailing className="login-model-icon" />
+        <h2>Log In to MyStock</h2>
+        <GrMoney className="login-model-icon" />
       </div>
       
       <form className="profile-log-modal-form" onSubmit={handleSubmit}>

@@ -11,7 +11,7 @@
     height: 60px;
     border-radius: 12px;
     display: flex;
-    border: 1px solid rgb(50, 200, 50);
+    border: 1px solid var(--theme-green);
     text-decoration: none;
     justify-content: center;
 }
@@ -25,26 +25,26 @@
     align-items: center;
 }
 .green-border {
-    border: 1px solid rgb(50, 200, 50);
+    border: 1px solid var(--theme-green);
 }
 .red-border {
-    border: 1px solid rgb(165, 20, 20);
+    border: 1px solid var(--theme-red);
 }
 .green-border:hover,
 .list-tab:hover {
-    box-shadow: 0 0 20px 0px rgb(35, 150, 35);
+    box-shadow: 0 0 20px 0px var(--dark-green);
 }
 .red-border:hover {
-    box-shadow: 0 0 20px 0px rgb(220, 25, 25);
+    box-shadow: 0 0 20px 0px var(--dark-red);
 }
 
 .is-green,
 .stock-tab-up-arrow {
-    color: rgb(50, 200, 50);
+    color: var(--theme-green);
 }
 .is-red,
 .stock-tab-down-arrow {
-    color: rgb(220, 25, 25);
+    color: var(--theme-red);
 }
 
 .stock-tab-up-arrow,

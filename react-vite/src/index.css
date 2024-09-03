@@ -1,4 +1,11 @@
 
+:root {
+    --theme-green: rgb(50, 200, 50);
+    --theme-red: rgb(225, 25, 25);
+    --dark-green: rgb(20, 80, 20);
+    --dark-red: rgb(150, 25, 25);
+}
+
 h1, h2, h3, h4 {
     color: white;
 }
