@@ -32,7 +32,7 @@ export default function List() {
                 <h1 className="page-title">{list.listName}</h1>
                 <section className="list-tabs-container">
                     {stockSymbols?.map((eachSymbol, index) => (
-                        <NavLink to={`/`} className="list-tab" key={index}>
+                        <NavLink to={`/search/${eachSymbol}`} className="list-tab" key={index}>
                             <h2 className="list-tab-title">{listStockData[eachSymbol]?.ticker}</h2>
                         </NavLink>
                     ))}

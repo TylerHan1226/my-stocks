@@ -31,9 +31,15 @@ export default function SearchPage() {
                     <div className="search-info-boxes">
                         <p className="">{stock?.info?.longBusinessSummary}</p>
                         <div className="search-info-texts-container">
-                            <p className="search-info-text">CEO: {stock?.info?.companyOfficers?.filter(ele => ele.title.includes("CEO"))[0]?.name}</p>
-                            <p className="search-info-text">Full-time Employees: {stock?.info?.fullTimeEmployees}</p>
-                            <p className="search-info-text">Headquaters: {stock?.info?.city}, {stock?.info?.state}</p>
+                            {stock?.info?.companyOfficers &&
+                                <p className="search-info-text">CEO: {stock?.info?.companyOfficers?.filter(ele => ele.title.includes("CEO"))[0]?.name}</p>
+                            }
+                            {stock?.info?.fullTimeEmployees &&
+                                <p className="search-info-text">Full-time Employees: {stock?.info?.fullTimeEmployees}</p>
+                            }
+                            {stock?.info?.city && stock?.info?.state &&
+                                <p className="search-info-text">Headquaters: {stock?.info?.city}, {stock?.info?.state}</p>
+                            }
                         </div>
                     </div>
                     <h2>Key Statistics</h2>
