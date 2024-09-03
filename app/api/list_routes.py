@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request, redirect
 from flask_login import login_required, current_user
 from app.forms import ListForm
 from app.models import db, MyList
+import yfinance as yf
+import numpy as np
 
 
 list_routes = Blueprint('lists', __name__)
@@ -12,8 +14,51 @@ list_routes = Blueprint('lists', __name__)
 @login_required
 def get_all_my_lists():
     my_lists = MyList.query.filter_by(user_id=current_user.id).all()
+    if not my_lists:
+        return jsonify({"error": "Cannot fetch list"})
     my_lists_list = [my_list.to_dict() for my_list in my_lists]
     return {'My_Lists': my_lists_list}, 200
+
+# Get all stocks in a specific list
+# /api/lists/<int:list_id>/stocks
+@list_routes.route('/<int:list_id>/stocks', methods=['GET'])
+# @list_routes.route('/stocks', methods=['GET'])
+@login_required
+def get_all_stocks_for_user(list_id):
+    # Fetch all lists for the current user
+    my_lists = MyList.query.filter_by(user_id=current_user.id).all()
+    
+    if not my_lists:
+        return jsonify({"error": "No lists found for the current user"}), 404
+
+    stocks_data = {}
+    symbols = [my_list.stock_symbol for my_list in my_lists]
+
+    for eachSymbol in symbols:
+        stock = yf.Ticker(eachSymbol)
+        stock_info = stock.info
+            
+        if not stock_info:
+            stocks_data[eachSymbol] = {"error": "Stock not found"}
+            continue
+
+        # # Fetch stock history
+        # history = stock.history(period="1mo").reset_index()
+        # history["Date"] = history["Date"].dt.strftime("%Y-%m-%d")
+        # history = history.replace({np.nan: None})
+
+        stock_data = {
+            "ticker": eachSymbol,
+            "name": stock_info.get("shortName", "N/A"),
+            "info": stock_info,
+            # "history": history.to_dict(orient="records"),
+        }
+        stocks_data[eachSymbol] = stock_data
+
+    return jsonify({
+        "user_id": current_user.id,
+        "stocks_data": stocks_data
+    })
 
 # add new list
 # /api/lists/new
