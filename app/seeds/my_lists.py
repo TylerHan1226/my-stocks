@@ -53,6 +53,16 @@ def seed_my_lists():
         list_name = "Industrial",
         stock_symbol = "WM"
     )
+    my_lists_11 = MyList(
+        user_id = "1",
+        list_name = "Tech",
+        stock_symbol = "U"
+    )
+    my_lists_12 = MyList(
+        user_id = "1",
+        list_name = "Industrial",
+        stock_symbol = "LMT"
+    )
 
     db.session.add_all([my_lists_1,
                         my_lists_2,
@@ -64,6 +74,8 @@ def seed_my_lists():
                         my_lists_8,
                         my_lists_9,
                         my_lists_10,
+                        my_lists_11,
+                        my_lists_12,
                         ])
     db.session.commit()
 

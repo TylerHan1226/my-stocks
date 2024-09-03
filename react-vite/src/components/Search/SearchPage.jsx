@@ -28,6 +28,9 @@ export default function SearchPage() {
         <section className="page-container">
             <section className="page-content-container">
                 <h1 className="page-title">{stock?.name}</h1>
+                <div className="stock-page-action-btn-container">
+                    <button className="stock-page-action-btn">ADD TO LIST</button>
+                </div>
                 <section className="search-info-container">
                     <h2>About</h2>
                     <div className="search-info-boxes">
