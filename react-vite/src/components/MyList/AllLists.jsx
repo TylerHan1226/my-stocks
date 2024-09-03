@@ -13,7 +13,10 @@ export default function AllLists() {
     lists?.forEach(ele => {
         listNames.add(ele.list_name)
     })
-
+    console.log('lists =>', lists)
+    lists?.map((eachList) => {
+        console.log('eachList.list_name ==>',eachList.list_name)
+    })
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())

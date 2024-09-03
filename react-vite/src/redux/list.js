@@ -1,4 +1,5 @@
 export const LOAD_ALL_MY_LISTS = 'list/LOAD_ALL_MY_LISTS'
+export const LOAD_ALL_STOCK_INFO_UNDER_LIST = 'list/LOAD_ALL_STOCK_INFO_UNDER_LIST'
 export const ADD_LIST = 'list/ADD_LIST'
 export const UPDATE_LIST = 'list/UPDATE_LIST'
 export const REMOVE_LIST = 'list/REMOVE_LIST'
@@ -6,6 +7,10 @@ export const REMOVE_LIST = 'list/REMOVE_LIST'
 export const loadAllMyLists = (lists) => ({
     type: LOAD_ALL_MY_LISTS,
     payload: lists
+})
+export const loadAllStockInList = (listStocks) => ({
+    type: LOAD_ALL_STOCK_INFO_UNDER_LIST,
+    payload: listStocks
 })
 export const addList = (list) => ({
     type: ADD_LIST,
@@ -37,13 +42,29 @@ export const getAllMyListsThunk = () => async (dispatch) => {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrf_token')
             },
-        });
+        })
         if (!res.ok) {
             throw new Error('Failed to fetch lists')
         }
         const data = await res.json()
         dispatch(loadAllMyLists(data))
         return data
+}
+export const getAllStocksInListThunk = (list_id) => async (dispatch) => {
+    const res = await fetch (`/api/lists/${list_id}/stocks`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrf_token')
+        },
+    })
+    if (!res.ok) {
+        throw new Error('Failed to fetch stocks in the list')
+    }
+    const data = await res.json()
+    dispatch(loadAllStockInList(data))
+    return data
 }
 export const addListThunk = (newListData) => async (dispatch) => {
     const res = await fetch('/api/lists/new', {
@@ -100,6 +121,9 @@ const initialState = {}
 function listReducer(state = initialState, action) {
     switch (action.type) {
         case LOAD_ALL_MY_LISTS: {
+            return { ...state, ...action.payload }
+        }
+        case LOAD_ALL_STOCK_INFO_UNDER_LIST: {
             return { ...state, ...action.payload }
         }
         default:

@@ -21,12 +21,12 @@ def get_all_my_lists():
 
 # Get all stocks in a specific list
 # /api/lists/<int:list_id>/stocks
-@list_routes.route('/<int:list_id>/stocks', methods=['GET'])
+@list_routes.route('/<string:list_name>/stocks', methods=['GET'])
 # @list_routes.route('/stocks', methods=['GET'])
 @login_required
-def get_all_stocks_for_user(list_id):
+def get_all_stocks_for_user(list_name):
     # Fetch all lists for the current user
-    my_lists = MyList.query.filter_by(user_id=current_user.id).all()
+    my_lists = MyList.query.filter_by(user_id=current_user.id, list_name=list_name).all()
     
     if not my_lists:
         return jsonify({"error": "No lists found for the current user"}), 404
