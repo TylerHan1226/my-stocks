@@ -22,6 +22,7 @@ export default function SearchPage() {
 
     useEffect(() => {
         dispatch(getOneStockThunk(searchInput))
+        window.scrollTo(0, 0)
     }, [nav, dispatch, searchInput])
 
     return (

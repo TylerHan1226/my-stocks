@@ -40,23 +40,31 @@ export default function List() {
                 <section className="list-tabs-container">
                     {stockSymbols?.map((eachSymbol, index) => (
                         <NavLink to={`/search/${eachSymbol}`} className={`stock-tab ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'green-border' : 'red-border'}`} key={index}>
-                            <h2 className={`stock-tab-title ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
-                                {listStockData[eachSymbol]?.ticker}
+                        <h2 className={`stock-tab-title ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
+                            {listStockData[eachSymbol]?.ticker}
+                        </h2>
+                        <div className="stock-tab-title">
+                            <h2 className={`stock-tab-price ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
+                                {listStockData[eachSymbol]?.current_price?.toFixed(2)}
                             </h2>
-                            <div className="stock-tab-title">
-                                <h2 className={`stock-tab-price ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>{listStockData[eachSymbol]?.current_price?.toFixed(2)}</h2>
-                                {listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ?
+                            {listStockData[eachSymbol]?.current_price && listStockData[eachSymbol]?.info?.previousClose ? 
+                                (listStockData[eachSymbol].current_price > listStockData[eachSymbol].info.previousClose ?
                                     (<div className="stock-tab-title stock-tab-up-arrow">
                                         <IoMdArrowRoundUp />
-                                    </div>) : (<div className="stock-tab-title stock-tab-down-arrow">
+                                    </div>) : 
+                                    (<div className="stock-tab-title stock-tab-down-arrow">
                                         <IoMdArrowRoundDown />
-                                    </div>)}
-                                <p className={`stock-tab-percentage ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
-                                    {(((listStockData[eachSymbol]?.current_price - listStockData[eachSymbol]?.info?.previousClose)/listStockData[eachSymbol]?.info?.previousClose)*100).toFixed(2)}%
-                                </p>
-                            </div>
-
-                        </NavLink>
+                                    </div>)
+                                ) : null
+                            }
+                            <p className={`stock-tab-percentage ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
+                                {listStockData[eachSymbol]?.current_price && listStockData[eachSymbol]?.info?.previousClose ? 
+                                    `${(((listStockData[eachSymbol].current_price - listStockData[eachSymbol].info.previousClose) / listStockData[eachSymbol].info.previousClose) * 100).toFixed(2)}%`
+                                    : null
+                                }
+                            </p>
+                        </div>
+                    </NavLink>
                     ))}
                 </section>
             </section>) : (
