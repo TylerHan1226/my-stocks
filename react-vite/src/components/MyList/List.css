@@ -1,7 +1,9 @@
 .list-tabs-container {
     display: flex;
     flex-direction: column;
+    width: 60%;
     gap: 36px;
+    margin: 0 auto 0 auto;
 }
 
 .list-stock-tab-container {
@@ -9,9 +11,12 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 80%;
+    width: 100%;
+}
+
+.all-lists-tab {
+    width: 60%;
     margin: 0 auto 0 auto;
-    /* border: 1px blue solid; */
 }
 
 .list-tab {
@@ -24,7 +29,7 @@
 }
 .stock-tab {
     height: 60px;
-    width: 80%;
+    width: 100%;
     border-radius: 12px;
     display: flex;
     text-decoration: none;

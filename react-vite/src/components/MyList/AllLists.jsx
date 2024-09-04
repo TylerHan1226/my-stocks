@@ -33,7 +33,7 @@ export default function AllLists() {
                 <h1 className="page-title">My Lists</h1>
                 <section className="list-tabs-container">
                     {Array.from(listNames).map((listName) => (
-                        <NavLink to={`/my_lists/${listName}`} className="list-tab" key={listName}>
+                        <NavLink to={`/my_lists/${listName}`} className="list-tab all-lists-tab" key={listName}>
                             <h2 className="list-tab-title">{listName}</h2>
                         </NavLink>
                     ))}

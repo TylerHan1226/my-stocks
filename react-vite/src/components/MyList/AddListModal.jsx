@@ -5,6 +5,7 @@ import { FaHandPointLeft, FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import "./Modal.css"
 import { addListThunk, getAllMyListsThunk } from "../../redux/list";
+import CreateListModal from "./CreateListModal";
 
 export default function AddListModal({stockSymbol}) {
     const { closeModal } = useModal()
@@ -17,6 +18,11 @@ export default function AddListModal({stockSymbol}) {
     listItems?.forEach(ele => {
         listNames.add(ele.list_name)
     })
+
+    const { setModalContent } = useModal()
+    const handleOpenModal = () => {
+        setModalContent(<CreateListModal stockSymbol={stockSymbol} />)
+    }
 
     const handleAddList = (listData) => {
         console.log("listData ==>", listData)
@@ -61,6 +67,7 @@ export default function AddListModal({stockSymbol}) {
                 }))}
                 <button
                     className="add-to-list-btn not-added"
+                    onClick={handleOpenModal}
                 >
                     Create your list
                 </button>
