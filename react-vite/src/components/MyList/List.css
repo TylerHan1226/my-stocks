@@ -79,30 +79,6 @@
     margin: auto auto auto 24px;
 }
 
-.add-to-list-btn {
-    align-self: center;
-    /* width: 90%; */
-    height: 36px;
-    margin: 10px;
-    font-size: 16px;
-    background-color: black;
-    border: 1px var(--theme-green) solid;
-    color: white;
-}
-.not-added {
-    background-color: black;
-}
-.not-added:hover,
-.stock-page-action-btn:hover {
-    cursor: pointer;
-    background-color: var(--dark-green);
-    box-shadow: 0 0 10px 2px var(--dark-green);
-}
-.is-added {
-    background-color: var(--dark-green);
-    color: var(--theme-green);
-}
-
 .three-dot-btn {
     color: white;
     list-style: none;

@@ -6,7 +6,7 @@ import "./Modal.css"
 import { getAllMyListsThunk, removeListThunk } from "../../redux/list";
 import AddListModal from "./AddListModal";
 
-export default function ListOptionModal({stockSymbol}) {
+export default function ListOptionModal({stockSymbol, listUpdated, setListUpdated}) {
     const { closeModal } = useModal()
     const listName = useParams()
     const dispatch = useDispatch()
@@ -28,6 +28,7 @@ export default function ListOptionModal({stockSymbol}) {
         if (currentListItems.length <= 1) {
             nav('/my_lists')
         }
+        setListUpdated(!listUpdated)
         closeModal()
     }
 

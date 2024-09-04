@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllMyListsThunk, getAllStocksInListThunk, removeListThunk } from "../../redux/list"
 import "./List.css"
@@ -18,11 +18,12 @@ export default function List() {
     const lists = useSelector(state => state.lists?.My_Lists)
     const listStockData = useSelector(state => state.lists?.stocks_data)
     const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
+    const [listUpdated, setListUpdated] = useState(false)
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())
         dispatch(getAllStocksInListThunk(list?.listName))
-    }, [dispatch]);
+    }, [dispatch, listUpdated]);
 
     if (!user) {
         return nav('/')
@@ -68,7 +69,11 @@ export default function List() {
                                 <OpenModalMenuItem
                                     itemText={<BsThreeDotsVertical />}
                                     className="three-dots"
-                                    modalComponent={<ListOptionModal stockSymbol={eachSymbol} />}
+                                    modalComponent={<ListOptionModal
+                                    stockSymbol={eachSymbol}
+                                    listUpdated={listUpdated}
+                                    setListUpdated={setListUpdated}
+                                    />}
                                 />
                             </div>
                         </section>
