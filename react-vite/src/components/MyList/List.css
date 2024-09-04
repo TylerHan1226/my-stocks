@@ -32,10 +32,10 @@
 }
 .green-border:hover,
 .list-tab:hover {
-    box-shadow: 0 0 20px 0px var(--dark-green);
+    box-shadow: 0 0 25px 10px var(--dark-green);
 }
 .red-border:hover {
-    box-shadow: 0 0 20px 0px var(--dark-red);
+    box-shadow: 0 0 25px 10px var(--dark-red);
 }
 
 .is-green,

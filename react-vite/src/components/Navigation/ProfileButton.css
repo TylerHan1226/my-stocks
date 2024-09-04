@@ -79,6 +79,12 @@
     flex-direction: column;
     align-items: center;
 }
+.profile-log-modal-textfield {
+    background-color: var(--text-field-grey);
+}
+.profile-log-modal-textfield:hover {
+    box-shadow: 0 0 2px 2px white;
+}
 
 .profile-log-modal-btn {
     align-self: center;

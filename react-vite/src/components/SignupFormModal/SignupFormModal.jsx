@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
-import "./SignupForm.css";
 import { GrMoney } from "react-icons/gr";
 
 
@@ -43,7 +42,7 @@ function SignupFormModal() {
   return (
     <div className="profile-log-modal-container">
       <div className="profile-log-modal-header">
-        <h1>Start Your Investing!</h1>
+        <h1>Start Investing!</h1>
         <GrMoney className="login-model-icon" />
         
       </div>
@@ -53,6 +52,7 @@ function SignupFormModal() {
           Email
           <input
             type="text"
+            className="profile-log-modal-textfield"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -63,6 +63,7 @@ function SignupFormModal() {
           Username
           <input
             type="text"
+            className="profile-log-modal-textfield"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -73,6 +74,7 @@ function SignupFormModal() {
           Password
           <input
             type="password"
+            className="profile-log-modal-textfield"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -83,6 +85,7 @@ function SignupFormModal() {
           Confirm Password
           <input
             type="password"
+            className="profile-log-modal-textfield"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required

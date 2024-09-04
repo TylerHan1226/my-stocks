@@ -98,10 +98,14 @@ export default function SearchPage() {
                                 <p className="search-info-text">
                                     Dividend Yield: {(stock?.info?.dividendYield * 100)?.toFixed(2)}%
                                 </p>
+                            ) : stock?.info?.yield ? (
+                                <p className="search-info-text">
+                                    Dividend Yield: {(stock?.info?.yield * 100)?.toFixed(2)}%
+                                </p>    
                             ) : (
                                 <p className="search-info-text">
                                     Dividend Yield: N/A
-                                </p>
+                                </p>    
                             )}
 
                             <p className="search-info-text">
