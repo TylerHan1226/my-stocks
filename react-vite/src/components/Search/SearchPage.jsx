@@ -16,9 +16,9 @@ export default function SearchPage() {
     const user = useSelector(state => state.session.user)
     const stock = useSelector(state => state.stocks)
 
-    const { setModalContent, setOnModalClose } = useModal()
+    const { setModalContent } = useModal()
     const handleOpenModal = () => {
-        setModalContent(<AddListModal />)
+        setModalContent(<AddListModal stockSymbol={stock.ticker}/>)
     }
 
     if (!user) {

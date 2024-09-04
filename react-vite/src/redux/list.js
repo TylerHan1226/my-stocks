@@ -83,14 +83,14 @@ export const updateListThunk = (updatedListData, listId) => async (dispatch) => 
     return updatedList
 }
 export const removeListThunk = (listId) => async (dispatch) => {
-    const res = await fetch(`api/lists/${listId}/remove`, {
+    const res = await fetch(`/api/lists/${listId}/remove`, {
         method: 'DELETE',
     })
     if (!res.ok) {
         throw new Error('Failed to remove list')
     }
-    const removedRes = await res.json()
-    dispatch(removeList(removedRes))
+    const removedList = await res.json()
+    dispatch(removeList(removedList))
 }
 
 const initialState = {}

@@ -6,14 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import "./Modal.css"
 import { addListThunk, getAllMyListsThunk } from "../../redux/list";
 
-export default function AddListModal() {
+export default function AddListModal({stockSymbol}) {
     const { closeModal } = useModal()
     const dispatch = useDispatch()
     const nav = useNavigate()
     const user = useSelector(state => state.session.user)
     const listItems = useSelector(state => state.lists?.My_Lists)
-    const stock = useSelector(state => state.stocks)
-    const stockSymbol = stock?.ticker
 
     const listNames = new Set()
     listItems?.forEach(ele => {
@@ -49,7 +47,6 @@ export default function AddListModal() {
                             listName,
                         "stock_symbol": 
                             stockSymbol
-                        
                     }
                     return (
                         <button
