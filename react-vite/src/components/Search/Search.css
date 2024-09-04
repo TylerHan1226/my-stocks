@@ -22,15 +22,18 @@
     width: 33%;
 }
 
-.stock-page-action-btns {
+.stock-page-action-btn {
+    width: 160px;
+    height: 36px;
+    font-size: 16px;
+    margin: 0 0 12px 0;
+    background-color: black;
+    border: 1px var(--theme-green) solid;
     color: white;
-    list-style: none;
-    border: 1px white solid;
 }
-.stock-page-action-btns:hover {
+.stock-page-action-btn:hover {
     cursor: pointer;
 }
 .stock-page-add-btn {
     list-style: none;
 }
-

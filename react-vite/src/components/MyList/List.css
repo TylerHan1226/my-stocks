@@ -72,38 +72,28 @@
     margin: auto auto auto 24px;
 }
 
-.search-modal-container {
-    width: 600px;
-    height: 360px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(0, 0, 0);
-    border: 12px var(--theme-green) solid;
-}
 .add-to-list-btn {
     align-self: center;
     width: 90%;
-    height: 35px;
+    height: 36px;
     margin: 10px;
-    /* background-color: black; */
+    font-size: 16px;
+    background-color: black;
     border: 1px var(--theme-green) solid;
     color: white;
 }
-.add-to-list-btn:hover {
-    background-color: var(--dark-green);
-    box-shadow: 0 0 10px 2px var(--dark-green);
-}
-
 .not-added {
     background-color: black;
 }
-.not-added:hover {
+.not-added:hover,
+.stock-page-action-btn:hover {
     cursor: pointer;
+    background-color: var(--dark-green);
+    box-shadow: 0 0 10px 2px var(--dark-green);
 }
 .is-added {
     background-color: var(--dark-green);
+    color: var(--theme-green);
 }
 /* .add-list-modal-title {
     color: black;

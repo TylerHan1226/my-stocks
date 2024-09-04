@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
+import { useModal } from "../../context/Modal";
 
 import Loading from "../Loading/Loading";
 import { getOneStockThunk } from "../../redux/stock";
@@ -16,11 +16,16 @@ export default function SearchPage() {
     const user = useSelector(state => state.session.user)
     const stock = useSelector(state => state.stocks)
 
-    console.log("stock ==>", stock)
+    const { setModalContent, setOnModalClose } = useModal()
+    const handleOpenModal = () => {
+        setModalContent(<AddListModal />)
+    }
 
     if (!user) {
         return nav('/')
     }
+
+    console.log("stock ==>", stock)
 
     useEffect(() => {
         dispatch(getOneStockThunk(searchInput))
@@ -32,13 +37,18 @@ export default function SearchPage() {
             <section className="page-content-container">
                 <h1 className="page-title">{stock?.name}</h1>
                 <div className="stock-page-action-btn-container">
-                    <div className="stock-page-action-btns">
+                    {/* <div className="stock-page-action-btn add-to-list-btn">
                         <OpenModalMenuItem
                         className="stock-page-add-btn"
                         itemText="ADD TO LIST"
                         modalComponent={<AddListModal />}
                         />
-                    </div>
+                    </div> */}
+                    <button
+                        className="stock-page-action-btn"
+                        onClick={handleOpenModal}>
+                        ADD TO LIST
+                    </button>
                 </div>
                 <section className="search-info-container">
                     <h2>About</h2>

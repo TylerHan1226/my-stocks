@@ -12,17 +12,17 @@ export const loadAllStockInList = (listStocks) => ({
     type: LOAD_ALL_STOCK_INFO_UNDER_LIST,
     payload: listStocks
 })
-export const addList = (list) => ({
+export const addList = (newList) => ({
     type: ADD_LIST,
-    payload: list
+    payload: newList
 })
-export const updateList = (list) => ({
+export const updateList = (updatedList) => ({
     type: UPDATE_LIST,
-    payload: list
+    payload: updatedList
 })
-export const removeList = (list) => ({
+export const removeList = (removedList) => ({
     type: REMOVE_LIST,
-    payload: list
+    payload: removedList
 })
 
 
@@ -53,12 +53,18 @@ export const getAllStocksInListThunk = (list_id) => async (dispatch) => {
     return data
 }
 export const addListThunk = (newListData) => async (dispatch) => {
+    const formData = new FormData();
+    for (const key in newListData) {
+        formData.append(key, newListData[key]);
+    }
+
     const res = await fetch('/api/lists/new', {
-        method: 'POST', 
-        body: newListData
+        method: 'POST',
+        body: formData,
     })
     if (!res.ok) {
-        throw new Error('Failed to add list')
+        const errorData = await res.json();
+        throw new Error(JSON.stringify(errorData));
     }
     const newList = await res.json()
     dispatch(addList(newList))
@@ -96,6 +102,17 @@ function listReducer(state = initialState, action) {
         }
         case LOAD_ALL_STOCK_INFO_UNDER_LIST: {
             return { ...state, ...action.payload }
+        }
+        case ADD_LIST: {
+            return { ...state, ...action.payload}
+        }
+        case UPDATE_LIST: {
+            return {...state, ...action.payload}
+        }
+        case REMOVE_LIST: {
+            const deleteState = {...state}
+            deleteState[action.removedList]
+            return deleteState
         }
         default:
             return state

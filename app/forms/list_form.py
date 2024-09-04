@@ -4,7 +4,6 @@ from wtforms import StringField
 from wtforms.validators import DataRequired, ValidationError
 from ..models import MyList
 
-
 # helper validators
 def check_under_50(field_name):
     def _check(form, field):
@@ -17,8 +16,6 @@ def check_under_10(field_name):
         if len(field.data) >= 10:
             raise ValidationError(f"{field_name} must be under 50 characters")
     return _check
-
-
 
 # form class
 class ListForm(FlaskForm):
