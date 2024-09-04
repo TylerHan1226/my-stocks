@@ -20,7 +20,7 @@ def get_all_my_lists():
     return {'My_Lists': my_lists_list}, 200
 
 # Get all stocks in a specific list
-# /api/lists/<int:list_id>/stocks
+# /api/lists/<int:list_name>/stocks
 @list_routes.route('/<string:list_name>/stocks', methods=['GET'])
 # @list_routes.route('/stocks', methods=['GET'])
 @login_required

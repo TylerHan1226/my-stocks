@@ -23,7 +23,8 @@ export default function AddListModal() {
     const handleAddList = (listData) => {
         console.log("listData ==>", listData)
         dispatch(addListThunk(listData))
-        // closeModal()
+        alert("Added to list successfully!")
+        closeModal()
     };
 
     useEffect(() => {
@@ -45,9 +46,9 @@ export default function AddListModal() {
                         .includes(stockSymbol)
                     const listData = {
                         "list_name": 
-                            "Testing",
+                            listName,
                         "stock_symbol": 
-                            "APPL"
+                            stockSymbol
                         
                     }
                     return (
