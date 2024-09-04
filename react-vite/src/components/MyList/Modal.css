@@ -36,3 +36,7 @@
     cursor: pointer;
     color: white;
 }
+
+.true {
+    background-color: red;
+}
