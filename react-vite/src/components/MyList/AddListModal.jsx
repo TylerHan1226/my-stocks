@@ -42,17 +42,27 @@ export default function AddListModal() {
 
     return (
         <section className="search-modal-container">
-            {Array.from(listNames).map((listName) => (
-                <button
-                className={`add-to-list-btn
-                ${listItems.filter(ele => ele.list_name == listName).map(ele => ele.stock_symbol).includes(stockSymbol)
-                    ? "is-red" : "false"}
-                `}
-                onClick={() => handle()}
-                key={listName}>
-                    {listName}
-                </button>
-            ))}
+            <h2 className="add-list-modal-title">My Lists:</h2>
+            <div className="add-list-btn-container">
+                {listNames && (Array.from(listNames).map((listName) => {
+                    const isStockInList = listItems
+                        .filter(ele => ele.list_name === listName)
+                        .map(ele => ele.stock_symbol)
+                        .includes(stockSymbol);
+    
+                    return (
+                        <button
+                            className={`add-to-list-btn ${isStockInList ? "is-added" : "not-added"}`}
+                            onClick={() => handle()}
+                            disabled={isStockInList}
+                            key={listName}
+                        >
+                            {listName}
+                        </button>
+                    );
+                }))}
+                <button className="add-to-list-btn not-added">Create your list</button>
+            </div>
         </section>
-    );
+    )
 }

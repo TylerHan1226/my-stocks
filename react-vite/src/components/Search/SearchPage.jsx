@@ -114,7 +114,7 @@ export default function SearchPage() {
                             <p className="search-info-text">
                                 Low today: {stock?.info?.dayLow?.toFixed(2)}
                             </p>
-                            {stock?.info?.lastDividendValue ? (
+                            {/* {stock?.info?.lastDividendValue ? (
                                 <p className="search-info-text">
                                     Last Divided Value: ${stock?.info?.lastDividendValue}
                                 </p>
@@ -122,8 +122,7 @@ export default function SearchPage() {
                                 <p className="search-info-text">
                                     Last Divided Value: N/A
                                 </p>
-                            )}
-
+                            )} */}
                             <p className="search-info-text">
                                 52 Week high: {stock?.info?.fiftyTwoWeekHigh?.toFixed(2)}
                             </p>
