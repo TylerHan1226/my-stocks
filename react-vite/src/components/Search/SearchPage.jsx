@@ -8,13 +8,14 @@ import { getOneStockThunk } from "../../redux/stock";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import AddListModal from "../MyList/AddListModal";
 
-
 export default function SearchPage() {
     const nav = useNavigate()
     const dispatch = useDispatch()
     const { searchInput } = useParams()
     const user = useSelector(state => state.session.user)
     const stock = useSelector(state => state.stocks)
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState(null)
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
@@ -25,16 +26,30 @@ export default function SearchPage() {
         return nav('/')
     }
 
-    console.log("stock ==>", stock)
-
     useEffect(() => {
+        setIsLoading(true)
+        setError(null)
         dispatch(getOneStockThunk(searchInput))
+            .then(() => setIsLoading(false))
+            .catch((err) => {
+                setIsLoading(false)
+                setError(err)
+            })
         window.scrollTo(0, 0)
     }, [nav, dispatch, searchInput])
 
+    if (isLoading) {
+        return <Loading />
+    }
+
+    if (error || !stock || !Object.keys(stock).length) {
+        alert("Stock not found")
+        nav('/')
+    }
+
     return (
         <section className="page-container">
-            {stock ? (<section className="page-content-container">
+            <section className="page-content-container">
                 <h1 className="page-title">{stock?.name}</h1>
                 <section className="search-info-container">
                     <div className="stock-page-action-btn-container">
@@ -110,22 +125,12 @@ export default function SearchPage() {
                                     Dividend Yield: N/A
                                 </p>
                             )}
-
                             <p className="search-info-text">
                                 High today: {stock?.info?.dayHigh?.toFixed(2)}
                             </p>
                             <p className="search-info-text">
                                 Low today: {stock?.info?.dayLow?.toFixed(2)}
                             </p>
-                            {/* {stock?.info?.lastDividendValue ? (
-                                <p className="search-info-text">
-                                    Last Divided Value: ${stock?.info?.lastDividendValue}
-                                </p>
-                            ) : (
-                                <p className="search-info-text">
-                                    Last Divided Value: N/A
-                                </p>
-                            )} */}
                             <p className="search-info-text">
                                 52 Week high: {stock?.info?.fiftyTwoWeekHigh?.toFixed(2)}
                             </p>
@@ -135,8 +140,8 @@ export default function SearchPage() {
                         </div>
                     </div>
                 </section>
-            </section>) : (<h1 className="stock-not-found-text">Stock Not Found</h1>)}
+            </section>
+            
         </section>
-
     );
 }

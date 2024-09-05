@@ -1,3 +1,4 @@
+
 .loading {
     display: flex;
     flex-direction: column;
@@ -13,6 +14,7 @@
     position: relative;
     overflow: hidden;
     align-self: center;
+    margin: 180px auto 0 auto;
 }
 
 .loader::before {
@@ -24,9 +26,9 @@
     bottom: 0;
     left: -20px;
     border-radius: inherit;
-    background: rgb(50, 200, 50);
-    box-shadow: -10px 0 12px 3px rgb(50, 200, 50);
-    animation: fillBar 1s linear forwards;
+    background: var(--theme-green);
+    box-shadow: -10px 0 12px 3px white;
+    animation: fillBar 1.5s linear forwards;
 }
 
 @keyframes fillBar {
