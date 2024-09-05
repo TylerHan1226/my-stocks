@@ -18,7 +18,7 @@ export default function SearchPage() {
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
-        setModalContent(<AddListModal stockSymbol={stock.ticker}/>)
+        setModalContent(<AddListModal stockSymbol={stock.ticker} />)
     }
 
     if (!user) {
@@ -36,21 +36,14 @@ export default function SearchPage() {
         <section className="page-container">
             {stock ? (<section className="page-content-container">
                 <h1 className="page-title">{stock?.name}</h1>
-                <div className="stock-page-action-btn-container">
-                    {/* <div className="stock-page-action-btn add-to-list-btn">
-                        <OpenModalMenuItem
-                        className="stock-page-add-btn"
-                        itemText="ADD TO LIST"
-                        modalComponent={<AddListModal />}
-                        />
-                    </div> */}
-                    <button
-                        className="stock-page-action-btn"
-                        onClick={handleOpenModal}>
-                        ADD TO LIST
-                    </button>
-                </div>
                 <section className="search-info-container">
+                    <div className="stock-page-action-btn-container">
+                        <button
+                            className="stock-page-action-btn"
+                            onClick={handleOpenModal}>
+                            ADD TO LIST
+                        </button>
+                    </div>
                     <h2>About</h2>
                     <div className="search-info-boxes">
                         <p className="">{stock?.info?.longBusinessSummary}</p>
@@ -111,11 +104,11 @@ export default function SearchPage() {
                             ) : stock?.info?.yield ? (
                                 <p className="search-info-text">
                                     Dividend Yield: {(stock?.info?.yield * 100)?.toFixed(2)}%
-                                </p>    
+                                </p>
                             ) : (
                                 <p className="search-info-text">
                                     Dividend Yield: N/A
-                                </p>    
+                                </p>
                             )}
 
                             <p className="search-info-text">

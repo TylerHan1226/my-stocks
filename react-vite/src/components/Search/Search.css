@@ -21,15 +21,19 @@
 .search-info-text {
     width: 33%;
 }
-
+.stock-page-action-btn-container {
+    display: flex;
+    flex-direction: row;
+    height: 42px;
+}
 .stock-page-action-btn {
-    width: 160px;
-    height: 36px;
+    width: 180px;
+    height: 100%;
     font-size: 16px;
-    margin: 0 0 12px 0;
     background-color: black;
     border: 1px var(--theme-green) solid;
     color: white;
+    margin: 0 0 12px auto;
 }
 .stock-page-action-btn:hover {
     cursor: pointer;
