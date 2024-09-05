@@ -1,9 +1,12 @@
+import "./List.css"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllMyListsThunk } from "../../redux/list"
 import Loading from "../Loading/Loading";
-import "./List.css"
 import { NavLink, useNavigate } from "react-router-dom"
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import ListOptionModal from "./ListOptionModal";
 
 export default function AllLists() {
     const dispatch = useDispatch()
@@ -11,21 +14,22 @@ export default function AllLists() {
     const user = useSelector(state => state.session.user)
     const lists = useSelector(state => state.lists?.My_Lists)
     const [isLoading, setIsLoading] = useState(true)
-    
+    const [allListsUpdated, setAllListUpdated] = useState(false)
+    const [listsFetched, setListsFetched] = useState(false)
+
     const listNames = new Set()
     lists?.forEach(ele => {
         listNames.add(ele.list_name)
     })
-    console.log('lists =>', lists)
-    lists?.map((eachList) => {
-        console.log('eachList.list_name ==>',eachList.list_name)
-    })
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())
-            .then(() => setIsLoading(false))
+            .then(() => {
+                setIsLoading(false)
+                setListsFetched(true)
+            })
         window.scrollTo(0, 0)
-    }, [dispatch]);
+    }, [dispatch, allListsUpdated]);
 
     if (!user) {
         return nav('/')
@@ -33,20 +37,36 @@ export default function AllLists() {
     if (isLoading) {
         return <Loading />
     }
-    
+
     return (
         <section className="page-container">
-            <section className="page-content-container">
-                <h1 className="page-title">My Lists</h1>
-                <section className="list-three-dots-container"></section>
-                <section className="list-tabs-container">
-                    {Array.from(listNames).map((listName) => (
-                        <NavLink to={`/my_lists/${listName}`} className="list-tab all-lists-tab" key={listName}>
-                            <h2 className="list-tab-title">{listName}</h2>
-                        </NavLink>
-                    ))}
+            {listsFetched && lists?.length > 0 ? (
+                <section className="page-content-container">
+                    <h1 className="page-title">My Lists</h1>
+                    <section className="all-list-tabs-container">
+                        {Array.from(listNames).map((listName) => (
+                            <section className="list-three-dots-container" key={listName}>
+                                <NavLink to={`/my_lists/${listName}`} className="list-tab all-lists-tab">
+                                    <h2 className="list-tab-title">{listName}</h2>
+                                </NavLink>
+                                <div className="three-dot-btn">
+                                    <OpenModalMenuItem
+                                        itemText={<BsThreeDotsVertical />}
+                                        className="three-dots"
+                                        modalComponent={<ListOptionModal
+                                            listToRemove={listName}
+                                            allListsUpdated={allListsUpdated}
+                                            setAllListUpdated={setAllListUpdated}
+                                            />}
+                                    />
+                                </div>
+                            </section>
+                        ))}
+                    </section>
                 </section>
-            </section>
+            ) : (
+                <h2 className="page-title">You have not created any list yet</h2>
+            )}
         </section>
     );
 }

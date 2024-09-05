@@ -51,6 +51,11 @@
     border: 1px var(--theme-green) solid;
 }
 
+.option-modal-btn-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .add-list-btn-container {
     display: flex;
     flex-direction: column;
