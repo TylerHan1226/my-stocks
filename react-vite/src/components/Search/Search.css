@@ -37,3 +37,9 @@
 .stock-page-add-btn {
     list-style: none;
 }
+
+.stock-not-found-text {
+    color: white;
+    margin-top: 120px;
+    font-size: 36px;
+}

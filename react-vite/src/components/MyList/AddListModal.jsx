@@ -25,7 +25,7 @@ export default function AddListModal({stockSymbol}) {
     }
 
     const handleAddList = (listData) => {
-        console.log("listData ==>", listData)
+        // console.log("listData ==>", listData)
         dispatch(addListThunk(listData))
         alert("Added to list successfully!")
         closeModal()

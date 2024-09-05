@@ -38,7 +38,7 @@ export default function List() {
                 <h1 className="page-title">{list.listName}</h1>
                 <section className="list-tabs-container">
                     {stockSymbols?.map((eachSymbol, index) => (
-                        <section className="list-stock-tab-container"  key={index}>
+                        <section className="list-stock-tab-container" key={index}>
                             <NavLink to={`/search/${eachSymbol}`} className={`stock-tab ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'green-border' : 'red-border'}`}>
                                 <h2 className={`stock-tab-title ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
                                     {listStockData[eachSymbol]?.ticker}

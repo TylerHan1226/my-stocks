@@ -80,3 +80,18 @@
     background-color: var(--dark-green);
     color: var(--theme-green);
 }
+
+.add-list-form {
+    display: flex;
+    /* border: 1px solid blue; */
+    flex-direction: column;
+}
+.add-list-label {
+    margin: 12px auto 12px auto;
+}
+
+.add-list-input-field {
+    height: 36px;
+    width: 320px;
+    font-size: 28px;
+}

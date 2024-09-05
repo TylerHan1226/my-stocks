@@ -53,6 +53,7 @@ export const getAllStocksInListThunk = (list_id) => async (dispatch) => {
     return data
 }
 export const addListThunk = (newListData) => async (dispatch) => {
+    // can receive object {"list_name": listName, "stock_symbol": stockSymbol}
     const formData = new FormData();
     for (const key in newListData) {
         formData.append(key, newListData[key]);

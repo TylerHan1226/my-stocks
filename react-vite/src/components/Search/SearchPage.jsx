@@ -34,7 +34,7 @@ export default function SearchPage() {
 
     return (
         <section className="page-container">
-            <section className="page-content-container">
+            {stock ? (<section className="page-content-container">
                 <h1 className="page-title">{stock?.name}</h1>
                 <div className="stock-page-action-btn-container">
                     {/* <div className="stock-page-action-btn add-to-list-btn">
@@ -142,7 +142,7 @@ export default function SearchPage() {
                         </div>
                     </div>
                 </section>
-            </section>
+            </section>) : (<h1 className="stock-not-found-text">Stock Not Found</h1>)}
         </section>
 
     );
