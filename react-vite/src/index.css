@@ -1,6 +1,7 @@
 
 :root {
     --theme-green: rgb(50, 200, 50);
+    --them-green-dim: rgb(20, 80, 20, 0.8);
     --theme-red: rgb(225, 25, 25);
     --dark-green: rgb(20, 80, 20);
     --dark-red: rgb(150, 25, 25);
@@ -27,4 +28,10 @@ body {
 .validation-error-text {
     color: var(--light-red);
     font-size: 18px;
+}
+
+.not-found-message {
+    color: white;
+    font-size: 32px;
+    margin-top: 120px;
 }

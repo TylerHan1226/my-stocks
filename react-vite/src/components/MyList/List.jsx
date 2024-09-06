@@ -37,7 +37,7 @@ export default function List() {
 
     return (
         <section className="page-container">
-            {stockSymbols && listStockData ? (<section className="page-content-container">
+            <section className="page-content-container">
                 <h1 className="page-title">{list.listName}</h1>
                 <section className="list-tabs-container">
                     {stockSymbols?.map((eachSymbol, index) => (
@@ -82,11 +82,7 @@ export default function List() {
                         </section>
                     ))}
                 </section>
-            </section>) : (
-                <section className="page-content-container">
-                    <h1 className="page-title">Create your Lists!</h1>
-                </section>
-            )}
+            </section>
         </section>
     );
 }

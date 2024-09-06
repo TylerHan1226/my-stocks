@@ -11,8 +11,6 @@ export default function ListOptionModal({
     listUpdated,
     setListUpdated,
     listToRemove,
-    setAllListUpdated,
-    allListsUpdated,
 }) {
 
     const { closeModal } = useModal()
@@ -41,11 +39,10 @@ export default function ListOptionModal({
     const listItemsToRemove = allListItems?.filter(ele => ele?.list_name == listToRemove)
 
     const handleRemoveList = async () => {
-        await Promise.all(listItemsToRemove.map(ele => dispatch(removeListThunk(ele.id))));
+        await Promise.all(listItemsToRemove.map(ele => dispatch(removeListThunk(ele.id))))
         alert(`Successfully removed ${listToRemove} from your lists`)
-        setAllListUpdated(prev => !prev)
-        console.log('allListsUpdated after removal:', allListsUpdated);
-        await dispatch(getAllMyListsThunk()); // Force re-fetch data
+        // setAllListUpdated(prev => !prev)`
+        await dispatch(getAllMyListsThunk()) // Force re-fetch data
         nav('/my_lists')
         closeModal()
     }

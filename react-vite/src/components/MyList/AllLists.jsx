@@ -14,7 +14,6 @@ export default function AllLists() {
     const user = useSelector(state => state.session.user)
     const lists = useSelector(state => state.lists?.My_Lists)
     const [isLoading, setIsLoading] = useState(true)
-    const [allListsUpdated, setAllListUpdated] = useState(false)
     const fetchErr = useSelector(state => state.lists?.error)
 
     const listNames = new Set()
@@ -26,11 +25,7 @@ export default function AllLists() {
         dispatch(getAllMyListsThunk())
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
-    }, [dispatch, allListsUpdated]);
-
-    useEffect(() => {
-        console.log('allListsUpdated:', allListsUpdated);
-    }, [allListsUpdated]);
+    }, [dispatch])
 
     if (!user) {
         return nav('/')
@@ -40,7 +35,7 @@ export default function AllLists() {
     }
 
     return (
-        <section className="page-container" key={allListsUpdated}>
+        <section className="page-container">
             {lists?.length > 0 && !fetchErr ? (
                 <section className="page-content-container">
                     <h1 className="page-title">My Lists</h1>
@@ -56,8 +51,6 @@ export default function AllLists() {
                                         className="three-dots"
                                         modalComponent={<ListOptionModal
                                             listToRemove={listName}
-                                            allListsUpdated={allListsUpdated}
-                                            setAllListUpdated={setAllListUpdated}
                                         />}
                                     />
                                 </div>
@@ -66,7 +59,11 @@ export default function AllLists() {
                     </section>
                 </section>
             ) : (
-                <h2 className="page-title">You have not created any list yet</h2>
+                <section>
+                <h2 className="not-found-message">Start Creating your List!</h2>
+                </section>
+
+
             )}
         </section>
     );
