@@ -2,7 +2,7 @@
 :root {
     --theme-green: rgb(50, 200, 50);
     --them-green-dim: rgb(20, 80, 20, 0.8);
-    --theme-red: rgb(225, 25, 25);
+    --theme-red: rgb(220, 20, 20);
     --dark-green: rgb(20, 80, 20);
     --dark-red: rgb(150, 25, 25);
     --light-red: rgb(250, 35, 35);
@@ -34,4 +34,8 @@ body {
     color: white;
     font-size: 32px;
     margin-top: 120px;
+}
+
+.delete-red-text {
+    color: var(--light-red);
 }

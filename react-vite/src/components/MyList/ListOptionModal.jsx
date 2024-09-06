@@ -61,10 +61,10 @@ export default function ListOptionModal({
             {currentListItems.length > 0 ? (
                 <div className="option-modal-btn-container">
                     <button
-                        className="add-to-list-btn not-added list-option-btn"
+                        className="add-to-list-btn red-border list-option-btn delete-red-text"
                         onClick={handleRemoveFromList}
                     >
-                        Remove from this list
+                        Remove {stockSymbol} from this list
                     </button>
                     <button
                         className="add-to-list-btn not-added list-option-btn"

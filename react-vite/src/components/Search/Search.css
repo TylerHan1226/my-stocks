@@ -37,8 +37,12 @@
 }
 .stock-page-action-btn:hover {
     cursor: pointer;
+    
 }
 .stock-page-add-btn {
+    list-style: none;
+}
+.stock-page-add-btn:hover {
     list-style: none;
 }
 

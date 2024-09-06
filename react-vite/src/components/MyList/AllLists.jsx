@@ -5,8 +5,10 @@ import { getAllMyListsThunk } from "../../redux/list"
 import Loading from "../Loading/Loading";
 import { NavLink, useNavigate } from "react-router-dom"
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import ListOptionModal from "./ListOptionModal";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaCirclePlus } from "react-icons/fa6";
+
 
 export default function AllLists() {
     const dispatch = useDispatch()
@@ -60,10 +62,11 @@ export default function AllLists() {
                 </section>
             ) : (
                 <section>
-                <h2 className="not-found-message">Start Creating your List!</h2>
+                    <h2 className="not-found-message">Start Creating your List!</h2>
+                    <button className="list-plus-btn">
+                        <FaCirclePlus />
+                    </button>
                 </section>
-
-
             )}
         </section>
     );
