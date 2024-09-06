@@ -15,7 +15,7 @@ export default function AllLists() {
     const lists = useSelector(state => state.lists?.My_Lists)
     const [isLoading, setIsLoading] = useState(true)
     const [allListsUpdated, setAllListUpdated] = useState(false)
-    const [listsFetched, setListsFetched] = useState(false)
+    const fetchErr = useSelector(state => state.lists?.error)
 
     const listNames = new Set()
     lists?.forEach(ele => {
@@ -24,12 +24,13 @@ export default function AllLists() {
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())
-            .then(() => {
-                setIsLoading(false)
-                setListsFetched(true)
-            })
+            .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
     }, [dispatch, allListsUpdated]);
+
+    useEffect(() => {
+        console.log('allListsUpdated:', allListsUpdated);
+    }, [allListsUpdated]);
 
     if (!user) {
         return nav('/')
@@ -39,8 +40,8 @@ export default function AllLists() {
     }
 
     return (
-        <section className="page-container">
-            {listsFetched && lists?.length > 0 ? (
+        <section className="page-container" key={allListsUpdated}>
+            {lists?.length > 0 && !fetchErr ? (
                 <section className="page-content-container">
                     <h1 className="page-title">My Lists</h1>
                     <section className="all-list-tabs-container">
@@ -57,7 +58,7 @@ export default function AllLists() {
                                             listToRemove={listName}
                                             allListsUpdated={allListsUpdated}
                                             setAllListUpdated={setAllListUpdated}
-                                            />}
+                                        />}
                                     />
                                 </div>
                             </section>

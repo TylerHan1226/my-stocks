@@ -6,7 +6,15 @@ import "./Modal.css"
 import { getAllMyListsThunk, removeListThunk } from "../../redux/list";
 import AddListModal from "./AddListModal";
 
-export default function ListOptionModal({ stockSymbol, listUpdated, setListUpdated, listToRemove, setAllListUpdated, allListsUpdated }) {
+export default function ListOptionModal({
+    stockSymbol,
+    listUpdated,
+    setListUpdated,
+    listToRemove,
+    setAllListUpdated,
+    allListsUpdated,
+}) {
+
     const { closeModal } = useModal()
     const listName = useParams()
     const dispatch = useDispatch()
@@ -15,7 +23,6 @@ export default function ListOptionModal({ stockSymbol, listUpdated, setListUpdat
     const allListItems = useSelector(state => state.lists?.My_Lists)
     const listId = allListItems.filter(ele => ele.list_name == listName?.listName && ele.stock_symbol == stockSymbol)?.[0]?.id
     const currentListItems = allListItems.filter(ele => ele.list_name == listName?.listName)
-    let isLastList = false
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
@@ -30,18 +37,16 @@ export default function ListOptionModal({ stockSymbol, listUpdated, setListUpdat
         setListUpdated(!listUpdated)
         closeModal()
     }
+
     const listItemsToRemove = allListItems?.filter(ele => ele?.list_name == listToRemove)
-    //check if the one to delete is the last list
-    if (listItemsToRemove.length == allListItems.length) {
-        isLastList = true
-    }
+
     const handleRemoveList = async () => {
         await Promise.all(listItemsToRemove.map(ele => dispatch(removeListThunk(ele.id))));
-        alert(`Successfully removed ${listToRemove}`)
+        alert(`Successfully removed ${listToRemove} from your lists`)
         setAllListUpdated(prev => !prev)
-        if (isLastList) {
-            nav('/')
-        }
+        console.log('allListsUpdated after removal:', allListsUpdated);
+        await dispatch(getAllMyListsThunk()); // Force re-fetch data
+        nav('/my_lists')
         closeModal()
     }
 
@@ -79,7 +84,6 @@ export default function ListOptionModal({ stockSymbol, listUpdated, setListUpdat
                     Remove this list
                 </button>
             )}
-
         </section>
     )
 }
