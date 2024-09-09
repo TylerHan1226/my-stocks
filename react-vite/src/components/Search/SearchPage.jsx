@@ -17,9 +17,36 @@ export default function SearchPage() {
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(null)
 
+    const stockName = stock?.name
+    const stockSymbol = stock?.ticker
+    const stockBusSum = stock?.info?.longBusinessSummary
+    const stockComOfficers = stock?.info?.companyOfficers
+    const stockEmployeeNum = stock?.info?.fullTimeEmployees
+    const stockHeadquarter = `${stock?.info?.city}, ${stock?.info?.state}`
+    const stockCurrentPrice = stock?.currentPrice?.toFixed(2)
+    const stockOpenPrice = stock?.info?.previousClose?.toFixed(2)
+    const stockAsk = stock?.info?.ask
+    const stockAskSize = stock?.info?.askSize
+    const stockBidSize = stock?.info?.bidSize
+    const stockBid = stock?.info?.bid
+    const stockPreviousClosePrice = stock?.info?.open?.toFixed(2)
+    const stockMarketCap = stock?.info?.marketCap
+    const stockPERatio = stock?.info?.trailingPE?.toFixed(2)
+    const stockFwPERatio = stock?.info?.forwardPE?.toFixed(2)
+    const stockVolume = stock?.info?.volume
+    const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
+    const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
+    const stockYieldDailyReturn = (stock?.info?.ytdReturn * 100)?.toFixed(2)
+    const stockNetAssets = stock?.info?.totalAssets
+    const stock50DAvg = stock?.info?.fiftyDayAverage.toFixed(2)
+    const stockDayHigh = stock?.info?.dayHigh?.toFixed(2)
+    const stockDayLow = stock?.info?.dayLow.toFixed(2)
+    const stock52WkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
+    const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
+
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
-        setModalContent(<AddListModal stockSymbol={stock.ticker} />)
+        setModalContent(<AddListModal stockSymbol={stockSymbol} />)
     }
 
     if (!user) {
@@ -50,7 +77,7 @@ export default function SearchPage() {
     return (
         <section className="page-container">
             <section className="page-content-container">
-                <h1 className="page-title">{stock?.name}</h1>
+                <h1 className="page-title">{`${stockName} (${stockSymbol})`}</h1>
                 <section className="search-info-container">
                     <div className="stock-page-action-btn-container">
                         <button
@@ -61,21 +88,21 @@ export default function SearchPage() {
                     </div>
                     <h2>About</h2>
                     <div className="search-info-boxes">
-                        <p className="">{stock?.info?.longBusinessSummary}</p>
+                        <p className="font-size-20px">{stockBusSum}</p>
                         <div className="search-info-texts-container">
-                            {stock?.info?.companyOfficers &&
+                            {stockComOfficers?.length > 0 &&
                                 <p className="search-info-text">
-                                    CEO: {stock?.info?.companyOfficers?.filter(ele => ele.title.includes("CEO"))[0]?.name}
+                                    CEO: {stockComOfficers?.filter(ele => ele.title.includes("CEO"))[0]?.name}
                                 </p>
                             }
-                            {stock?.info?.fullTimeEmployees &&
+                            {stockEmployeeNum?.length > 0 &&
                                 <p className="search-info-text">
-                                    Full-time Employees: {stock?.info?.fullTimeEmployees}
+                                    Full-time Employees: {stockEmployeeNum}
                                 </p>
                             }
-                            {stock?.info?.city && stock?.info?.state &&
+                            {stockHeadquarter?.length > 0 &&
                                 <p className="search-info-text">
-                                    Headquaters: {stock?.info?.city}, {stock?.info?.state}
+                                    Headquarters: {stockHeadquarter}
                                 </p>
                             }
                         </div>
@@ -83,65 +110,102 @@ export default function SearchPage() {
                     <h2>Key Statistics</h2>
                     <div className="search-info-boxes">
                         <div className="search-info-texts-container">
-                            <p className="search-info-text">
-                                Current Price: {stock?.currentPrice?.toFixed(2)}
-                            </p>
-                            <p className="search-info-text">
-                                Open price: {stock?.info?.previousClose?.toFixed(2)}
-                            </p>
-                            <p className="search-info-text">
-                                Previous close price: {stock?.info?.open?.toFixed(2)}
-                            </p>
-                            <p className="search-info-text">
-                                Market cap: {stock?.info?.marketCap > 1000000000000
-                                    ? (stock?.info?.marketCap / 1000000000000)?.toFixed(2) + 'T'
-                                    : stock?.info?.marketCap > 1000000000
-                                        ? (stock?.info?.marketCap / 1000000000)?.toFixed(2) + 'B'
-                                        : (stock?.info?.marketCap / 1000000)?.toFixed(2) + 'M'}
-                            </p>
-                            <p className="search-info-text">
-                                Price-Earning ratio: {stock?.info?.trailingPE?.toFixed(2)}
-                            </p>
-                            <p className="search-info-text">
-                                Forward Price-Earning ratio: {stock?.info?.forwardPE?.toFixed(2)}
-                            </p>
-                            <p className="search-info-text">
-                                Volume: {stock?.info?.volume > 1000000000000
-                                    ? (stock?.info?.volume / 1000000000000)?.toFixed(2) + 'T'
-                                    : stock?.info?.volume > 1000000000
-                                        ? (stock?.info?.volume / 1000000000)?.toFixed(2) + 'B'
-                                        : (stock?.info?.volume / 1000000)?.toFixed(2) + 'M'}
-                            </p>
-                            {stock?.info?.dividendYield ? (
+
+                            <div className="stock-info-column">
                                 <p className="search-info-text">
-                                    Dividend Yield: {(stock?.info?.dividendYield * 100)?.toFixed(2)}%
+                                    Current Price: {!isNaN(stockCurrentPrice) ? `${stockCurrentPrice}` : 'N/A'}
                                 </p>
-                            ) : stock?.info?.yield ? (
                                 <p className="search-info-text">
-                                    Dividend Yield: {(stock?.info?.yield * 100)?.toFixed(2)}%
+                                    Previous close price: {!isNaN(stockPreviousClosePrice) ? `${stockPreviousClosePrice}` : 'N/A'}
                                 </p>
-                            ) : (
                                 <p className="search-info-text">
-                                    Dividend Yield: N/A
+                                    Open price: {!isNaN(stockOpenPrice) ? `${stockOpenPrice}` : 'N/A'}
                                 </p>
-                            )}
-                            <p className="search-info-text">
-                                High today: {stock?.info?.dayHigh?.toFixed(2)}
-                            </p>
-                            <p className="search-info-text">
-                                Low today: {stock?.info?.dayLow?.toFixed(2)}
-                            </p>
-                            <p className="search-info-text">
-                                52 Week high: {stock?.info?.fiftyTwoWeekHigh?.toFixed(2)}
-                            </p>
-                            <p className="search-info-text">
-                                52 Week low: {stock?.info?.fiftyTwoWeekLow?.toFixed(2)}
-                            </p>
+                                <p className="search-info-text">
+                                    Bid: {!isNaN(stockBid)
+                                        ? (!isNaN(stockBidSize)
+                                            ? `${stockBid} x ${stockBidSize}`
+                                            : `${stockBid}`)
+                                        : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    Ask: {!isNaN(stockAsk)
+                                        ? (!isNaN(stockAskSize)
+                                            ? `${stockAsk} x ${stockAskSize}`
+                                            : `${stockAsk}`)
+                                        : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    50-day average: {!isNaN(stock50DAvg) ? `${stock50DAvg}` : 'N/A'}
+                                </p>
+
+                            </div>
+
+                            <div className="stock-info-column">
+
+                                <p className="search-info-text">
+                                    Volume: {!isNaN(stockVolume)
+                                        ? (stockVolume > 1000000000000
+                                            ? `${(stockVolume / 1000000000000).toFixed(2)}T`
+                                            : stockVolume > 1000000000
+                                                ? `${(stockVolume / 1000000000).toFixed(2)}B`
+                                                : `${(stockVolume / 1000000).toFixed(2)}M`)
+                                        : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    High today: {!isNaN(stockDayHigh) ? `${stockDayHigh}` : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    Low today: {!isNaN(stockDayLow) ? `${stockDayLow}` : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    52 Week high: {!isNaN(stock52WkHigh) ? `${stock52WkHigh}` : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    52 Week low: {!isNaN(stock52WkLow) ? `${stock52WkLow}` : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    Market cap: {!isNaN(stockMarketCap) ? (stockMarketCap > 1000000000000
+                                        ? (stockMarketCap / 1000000000000)?.toFixed(2) + 'T'
+                                        : stockMarketCap > 1000000000
+                                            ? (stockMarketCap / 1000000000)?.toFixed(2) + 'B'
+                                            : (stockMarketCap / 1000000)?.toFixed(2) + 'M') : 'N/A'}
+                                </p>
+
+                            </div>
+
+                            <div className="stock-info-column">
+
+                                <p className="search-info-text">
+                                    Net Assets: {!isNaN(stockNetAssets) ? (stockNetAssets > 1000000000000
+                                        ? (stockNetAssets / 1000000000000)?.toFixed(2) + 'T'
+                                        : stockNetAssets > 1000000000
+                                            ? (stockNetAssets / 1000000000)?.toFixed(2) + 'B'
+                                            : (stockNetAssets / 1000000)?.toFixed(2) + 'M') : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    Price-Earning ratio: {!isNaN(stockPERatio) ? `${stockPERatio}` : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    Forward Price-Earning ratio: {!isNaN(stockFwPERatio) ? `${stockFwPERatio}` : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    Dividend Yield: {!isNaN(stockDividendYield) ? `${stockDividendYield}%` : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    Yield: {!isNaN(stockYield) ? `${stockYield}%` : 'N/A'}
+                                </p>
+                                <p className="search-info-text">
+                                    Yield Daily Total Return: {!isNaN(stockYieldDailyReturn) ? `${stockYieldDailyReturn}%` : 'N/A'}
+                                </p>
+
+                            </div>
+
                         </div>
                     </div>
                 </section>
             </section>
-            
+
         </section>
     );
 }

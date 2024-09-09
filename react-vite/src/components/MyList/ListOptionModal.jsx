@@ -61,7 +61,7 @@ export default function ListOptionModal({
             {currentListItems.length > 0 ? (
                 <div className="option-modal-btn-container">
                     <button
-                        className="add-to-list-btn red-border list-option-btn delete-red-text"
+                        className="add-to-list-btn red-border delete-red-text list-option-btn"
                         onClick={handleRemoveFromList}
                     >
                         Remove {stockSymbol} from this list
@@ -70,15 +70,15 @@ export default function ListOptionModal({
                         className="add-to-list-btn not-added list-option-btn"
                         onClick={handleOpenModal}
                     >
-                        Add to other lists
+                        Add {stockSymbol} to other lists
                     </button>
                 </div>
             ) : (
                 <button
-                    className="add-to-list-btn not-added list-option-btn"
+                    className="add-to-list-btn list-option-btn red-border delete-red-text"
                     onClick={handleRemoveList}
                 >
-                    Remove this list
+                    Remove list: {listToRemove}
                 </button>
             )}
         </section>

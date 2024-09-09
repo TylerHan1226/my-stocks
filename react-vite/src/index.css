@@ -39,3 +39,7 @@ body {
 .delete-red-text {
     color: var(--light-red);
 }
+
+.font-size-20px {
+    font-size: 20px;
+}

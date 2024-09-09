@@ -19,7 +19,7 @@
 }
 
 .search-info-text {
-    width: 33%;
+    font-size: 20px;
 }
 .stock-page-action-btn-container {
     display: flex;
@@ -46,3 +46,8 @@
     list-style: none;
 }
 
+.stock-info-column {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+}

@@ -56,7 +56,7 @@ export default function AddListModal({stockSymbol}) {
                     }
                     return (
                         <button
-                            className={`add-to-list-btn ${isStockInList ? "is-added" : "not-added"}`}
+                            className={`add-to-list-btn${isStockInList ? "is-added" : "not-added"}`}
                             onClick={() => handleAddList(listData)}
                             disabled={isStockInList}
                             key={listName}
