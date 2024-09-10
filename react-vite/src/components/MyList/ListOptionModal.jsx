@@ -6,12 +6,7 @@ import "./Modal.css"
 import { getAllMyListsThunk, removeListThunk } from "../../redux/list";
 
 
-export default function ListOptionModal({
-    reRenderOnDelete,
-    listNameToRemove,
-    setHasDeleted,
-
-}) {
+export default function ListOptionModal({ listNameToRemove }) {
 
     const { closeModal } = useModal()
     const dispatch = useDispatch()
@@ -23,8 +18,7 @@ export default function ListOptionModal({
         console.log('listNameToRemove ==>', listNameToRemove)
         const response = await dispatch(removeListThunk(listNameToRemove))
         setTimeout(() => {
-            setHasDeleted(prev => !prev)
-            // reRenderOnDelete()
+            if (response) window.location.reload()
             closeModal()
             nav('/my_lists')
         }, 0.5)

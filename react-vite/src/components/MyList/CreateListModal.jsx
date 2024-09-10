@@ -4,10 +4,7 @@ import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { addListThunk, getAllMyListsThunk } from "../../redux/list";
 
-export default function CreateListModal({
-    stockSymbol,
-    setIsUpdatedAllLists
-}) {
+export default function CreateListModal({ stockSymbol }) {
     const { closeModal } = useModal()
     const dispatch = useDispatch()
     const nav = useNavigate()
@@ -46,7 +43,7 @@ export default function CreateListModal({
     const handleSubmit = async (e) => {
         e.preventDefault()
         setIsSubmitted(true)
-        window.location.reload()
+        
 
         const currentValidations = validateForm()
         setValidations(currentValidations)
@@ -62,7 +59,7 @@ export default function CreateListModal({
         try {
             const response = await dispatch(addListThunk(newListData))
             setTimeout(() => {
-                setIsUpdatedAllLists(true)
+                window.location.reload()
                 closeModal()
                 nav(`/my_lists`)
                 // if (newListStockSyb && newListName) {

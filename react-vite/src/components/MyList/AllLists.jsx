@@ -16,14 +16,6 @@ export default function AllLists() {
     const user = useSelector(state => state.session.user)
     const lists = useSelector(state => state.lists?.My_Lists)
     const [isLoading, setIsLoading] = useState(true)
-    const [isUpdatedAllLists, setIsUpdatedAllLists] = useState(false)
-    const [hasDeleted, setHasDeleted] = useState(false)
-
-    const isError = useSelector(state => state.lists?.error)
-
-    const reRenderOnDelete = () => {
-        setHasDeleted(!hasDeleted)
-    }
 
     const listNames = new Set()
     lists?.forEach(ele => {
@@ -33,10 +25,7 @@ export default function AllLists() {
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
         setModalContent(
-            <CreateListModal
-                isUpdatedAllLists={isUpdatedAllLists}
-                setIsUpdatedAllLists={setIsUpdatedAllLists}
-            />)
+            <CreateListModal/>)
     }
 
     useEffect(() => {
@@ -46,9 +35,7 @@ export default function AllLists() {
         dispatch(getAllMyListsThunk())
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
-        
-        console.log('triggered hasDeleted !', hasDeleted)
-    }, [dispatch, isUpdatedAllLists, hasDeleted])
+    }, [dispatch])
 
     // useEffect(() => {
     //     window.location.reload();
@@ -63,7 +50,7 @@ export default function AllLists() {
     return (
         <section className="page-container">
             {lists?.length > 0
-            && !isError
+            // && !isError
             // && isListsExists
              ? (
                 <section className="page-content-container">
@@ -88,8 +75,6 @@ export default function AllLists() {
                                         modalComponent={
                                             <ListOptionModal
                                                 listNameToRemove={listName}
-                                                reRenderOnDelete={reRenderOnDelete}
-                                                setHasDeleted={setHasDeleted}
                                             />}
                                     />
                                 </div>

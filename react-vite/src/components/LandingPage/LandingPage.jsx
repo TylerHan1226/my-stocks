@@ -18,12 +18,7 @@ export default function LandingPage() {
   const lists = useSelector(state => state.lists?.My_Lists)
 
   console.log('lists ==>', lists)
-  // useEffect(() => {
-  //   if (!user) {
-  //     nav('/')
-  //   }
-  //   dispatch(getOneStockThunk("AAPL"))
-  // }, [dispatch])
+  
   useEffect(() => {
     dispatch(getAllMyListsThunk())
   }, [dispatch])
@@ -35,7 +30,7 @@ export default function LandingPage() {
         {lists?.map((eachList) => (
           <div key={eachList?.id}>
             {/* <p>{eachList?.list_name}</p> */}
-            <p>{eachList?.stock_symbol}</p>
+            <p>{eachList?.list_name}: {eachList?.stock_symbol}</p>
           </div>
         ))}
       </section>

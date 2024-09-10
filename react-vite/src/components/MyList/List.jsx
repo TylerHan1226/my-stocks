@@ -17,7 +17,6 @@ export default function List() {
     const lists = useSelector(state => state.lists?.My_Lists)
     const listStockData = useSelector(state => state.lists?.stocks_data)
     const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
-    const [listUpdated, setListUpdated] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
@@ -25,7 +24,7 @@ export default function List() {
         dispatch(getAllStocksInListThunk(list?.listName))
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
-    }, [dispatch, listUpdated]);
+    }, [dispatch]);
 
     if (!user) {
         return nav('/')
@@ -75,8 +74,6 @@ export default function List() {
                                     modalComponent={
                                     <StockOptionModal
                                         stockSymbol={eachSymbol}
-                                        listUpdated={listUpdated}
-                                        setListUpdated={setListUpdated}
                                     />}
                                 />
                             </div>
