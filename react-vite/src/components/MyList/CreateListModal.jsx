@@ -46,8 +46,9 @@ export default function CreateListModal({
     const handleSubmit = async (e) => {
         e.preventDefault()
         setIsSubmitted(true)
+        window.location.reload()
 
-        const currentValidations = validateForm();
+        const currentValidations = validateForm()
         setValidations(currentValidations)
         if (Object.keys(currentValidations).length > 0) {
             return
@@ -61,8 +62,7 @@ export default function CreateListModal({
         try {
             const response = await dispatch(addListThunk(newListData))
             setTimeout(() => {
-                
-                setIsUpdatedAllLists(true);
+                setIsUpdatedAllLists(true)
                 closeModal()
                 nav(`/my_lists`)
                 // if (newListStockSyb && newListName) {
@@ -70,7 +70,7 @@ export default function CreateListModal({
                 // } else {
                 //     nav(`/my_lists`)
                 // }
-            }, 0)
+            }, 1)
         } catch (error) {
             setValidations(prevValidations => ({
                 ...prevValidations,

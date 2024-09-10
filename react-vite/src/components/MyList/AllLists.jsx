@@ -10,7 +10,6 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useModal } from "../../context/Modal";
 import CreateListModal from "./CreateListModal";
 
-
 export default function AllLists() {
     const dispatch = useDispatch()
     const nav = useNavigate()
@@ -18,11 +17,11 @@ export default function AllLists() {
     const lists = useSelector(state => state.lists?.My_Lists)
     const [isLoading, setIsLoading] = useState(true)
     const [isUpdatedAllLists, setIsUpdatedAllLists] = useState(false)
-    
-    const fetchErr = useSelector(state => state.lists?.error)
-
     const [hasDeleted, setHasDeleted] = useState(false)
-    const reRenderOnUpdate = () => {
+
+    const isError = useSelector(state => state.lists?.error)
+
+    const reRenderOnDelete = () => {
         setHasDeleted(!hasDeleted)
     }
 
@@ -34,29 +33,39 @@ export default function AllLists() {
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
         setModalContent(
-        <CreateListModal
-            isUpdatedAllLists={isUpdatedAllLists}
-            setIsUpdatedAllLists={setIsUpdatedAllLists}
-            />)}
+            <CreateListModal
+                isUpdatedAllLists={isUpdatedAllLists}
+                setIsUpdatedAllLists={setIsUpdatedAllLists}
+            />)
+    }
 
     useEffect(() => {
+        if (!user) {
+            return nav('/')
+        }
         dispatch(getAllMyListsThunk())
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
+        
+        console.log('triggered hasDeleted !', hasDeleted)
     }, [dispatch, isUpdatedAllLists, hasDeleted])
 
-    if (!user) {
-        return nav('/')
-    }
+    // useEffect(() => {
+    //     window.location.reload();
+    // })
+
     if (isLoading) {
         return <Loading />
     }
 
+
+// "Cannot fetch list"
     return (
         <section className="page-container">
-            {lists?.length > 0 
-            // && !fetchErr 
-            ? (
+            {lists?.length > 0
+            && !isError
+            // && isListsExists
+             ? (
                 <section className="page-content-container">
                     <h1 className="page-title">My Lists</h1>
                     <section className="all-list-tabs-container">
@@ -77,10 +86,11 @@ export default function AllLists() {
                                         itemText={<BsThreeDotsVertical />}
                                         className="three-dots"
                                         modalComponent={
-                                        <ListOptionModal
-                                            listToRemove={listName}
-                                            reRenderOnUpdate={reRenderOnUpdate}
-                                        />}
+                                            <ListOptionModal
+                                                listNameToRemove={listName}
+                                                reRenderOnDelete={reRenderOnDelete}
+                                                setHasDeleted={setHasDeleted}
+                                            />}
                                     />
                                 </div>
                             </section>
@@ -88,7 +98,7 @@ export default function AllLists() {
                     </section>
                 </section>
             ) : (
-                <section>
+                <section className="page-content-container">
                     <h2 className="not-found-message">Start Creating your List!</h2>
                     <button className="stock-page-action-btn"
                         onClick={handleOpenModal}

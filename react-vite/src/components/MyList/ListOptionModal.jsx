@@ -7,26 +7,29 @@ import { getAllMyListsThunk, removeListThunk } from "../../redux/list";
 
 
 export default function ListOptionModal({
-    reRenderOnUpdate,
-    listToRemove,
+    reRenderOnDelete,
+    listNameToRemove,
+    setHasDeleted,
+
 }) {
 
     const { closeModal } = useModal()
- 
     const dispatch = useDispatch()
     const nav = useNavigate()
     const user = useSelector(state => state.session.user)
 
-
     const handleRemoveList = async () => {
         console.log("handleRemoveList clicked!")
-        console.log('listToRemove ==>', listToRemove)
-        dispatch(removeListThunk(listToRemove))
-        alert(`Successfully removed list: ${listToRemove}`)
-        reRenderOnUpdate()
-        closeModal()
+        console.log('listNameToRemove ==>', listNameToRemove)
+        const response = await dispatch(removeListThunk(listNameToRemove))
+        setTimeout(() => {
+            setHasDeleted(prev => !prev)
+            // reRenderOnDelete()
+            closeModal()
+            nav('/my_lists')
+        }, 0.5)
+        
     }
-
 
 
     useEffect(() => {
@@ -45,7 +48,7 @@ export default function ListOptionModal({
                     className="add-to-list-btn list-option-btn red-border delete-red-text"
                     onClick={handleRemoveList}
                 >
-                    Remove list: {listToRemove}
+                    Remove list: {listNameToRemove}
                 </button>
             </div>
         </section>
