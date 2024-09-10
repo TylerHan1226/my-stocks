@@ -8,6 +8,7 @@ import { getOneStockThunk } from "../../redux/stock";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import AddListModal from "../MyList/AddListModal";
 
+
 export default function SearchPage() {
     const nav = useNavigate()
     const dispatch = useDispatch()

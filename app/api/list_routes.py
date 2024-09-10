@@ -73,10 +73,22 @@ def add_new_list():
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-        new_list = MyList (
-            user_id = current_user.id,
-            list_name = form.list_name.data,
-            stock_symbol = form.stock_symbol.data,
+        # Check if the stock symbol is valid
+        stock_symbol = form.stock_symbol.data
+        stock = yf.Ticker(stock_symbol)
+        
+        try:
+            # Try to get some basic info about the stock
+            stock_info = stock.info
+            if not stock_info or 'symbol' not in stock_info:
+                return jsonify({"error": f"Invalid stock symbol: {stock_symbol}"}), 400
+        except Exception as e:
+            return jsonify({"error": f"Error validating stock symbol: {str(e)}"}), 400
+
+        new_list = MyList(
+            user_id=current_user.id,
+            list_name=form.list_name.data,
+            stock_symbol=stock_symbol,
         )
     
         db.session.add(new_list)

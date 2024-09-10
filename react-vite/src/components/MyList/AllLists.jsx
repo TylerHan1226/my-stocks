@@ -7,7 +7,8 @@ import { NavLink, useNavigate } from "react-router-dom"
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import ListOptionModal from "./ListOptionModal";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FaCirclePlus } from "react-icons/fa6";
+import { useModal } from "../../context/Modal";
+import CreateListModal from "./CreateListModal";
 
 
 export default function AllLists() {
@@ -16,6 +17,7 @@ export default function AllLists() {
     const user = useSelector(state => state.session.user)
     const lists = useSelector(state => state.lists?.My_Lists)
     const [isLoading, setIsLoading] = useState(true)
+    const [isUpdatedAllLists, setIsUpdatedAllLists] = useState(false)
     const fetchErr = useSelector(state => state.lists?.error)
 
     const listNames = new Set()
@@ -23,11 +25,18 @@ export default function AllLists() {
         listNames.add(ele.list_name)
     })
 
+    const { setModalContent } = useModal()
+    const handleOpenModal = () => {
+        setModalContent(<CreateListModal 
+            isUpdatedAllLists={isUpdatedAllLists}
+            setIsUpdatedAllLists={setIsUpdatedAllLists} />)
+    }
+
     useEffect(() => {
         dispatch(getAllMyListsThunk())
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
-    }, [dispatch])
+    }, [dispatch, isUpdatedAllLists])
 
     if (!user) {
         return nav('/')
@@ -42,6 +51,13 @@ export default function AllLists() {
                 <section className="page-content-container">
                     <h1 className="page-title">My Lists</h1>
                     <section className="all-list-tabs-container">
+                        <div className="stock-page-action-btn-container">
+                            <button className="stock-page-action-btn"
+                            onClick={handleOpenModal}
+                            >
+                                Create New List
+                            </button>
+                        </div>
                         {Array.from(listNames).map((listName) => (
                             <section className="list-three-dots-container" key={listName}>
                                 <NavLink to={`/my_lists/${listName}`} className="list-tab all-lists-tab">
@@ -63,9 +79,9 @@ export default function AllLists() {
             ) : (
                 <section>
                     <h2 className="not-found-message">Start Creating your List!</h2>
-                    <button className="list-plus-btn">
+                    {/* <button className="">
                         <FaCirclePlus />
-                    </button>
+                    </button> */}
                 </section>
             )}
         </section>

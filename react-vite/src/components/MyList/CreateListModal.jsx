@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
-import { FaHandPointLeft, FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { addListThunk, getAllMyListsThunk } from "../../redux/list";
 
-export default function CreateListModal({ stockSymbol }) {
+export default function CreateListModal({ stockSymbol, isUpdatedAllLists, setIsUpdatedAllLists }) {
     const { closeModal } = useModal()
     const dispatch = useDispatch()
     const nav = useNavigate()
@@ -13,6 +12,7 @@ export default function CreateListModal({ stockSymbol }) {
     const listItems = useSelector(state => state.lists?.My_Lists)
 
     const [newListName, setNewListName] = useState('')
+    const [newListStockSyb, setNewListStockSyb] = useState('')
     const [validations, setValidations] = useState({})
     const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -36,26 +36,39 @@ export default function CreateListModal({ stockSymbol }) {
             return nav('/')
         }
         if (isSubmitted) {
-            setValidations(validateForm(newListName, listNames))
+            setValidations(validateForm())
         }
     }, [newListName, user, isSubmitted])
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setIsSubmitted(true)
-        const currentValidations = validateForm()
-        setValidations(currentValidations)
-        
+        e.preventDefault();
+        setIsSubmitted(true);
+        const currentValidations = validateForm();
+        setValidations(currentValidations);
         if (Object.keys(currentValidations).length > 0) {
-            console.log(currentValidations)
-            return
+            return;
+        }
+        let newListData = {};
+        if (stockSymbol?.length > 0) {
+            newListData = { "list_name": newListName, "stock_symbol": stockSymbol };
         } else {
-            const newListData = { "list_name": newListName, "stock_symbol": stockSymbol }
-            dispatch(addListThunk(newListData))
-            nav(`/my_lists`)
-            closeModal()
+            newListData = { "list_name": newListName, "stock_symbol": newListStockSyb };
+        }
+        try {
+            const response = await dispatch(addListThunk(newListData))
+            setIsUpdatedAllLists(prev => !prev);
+            setTimeout(() => {
+                closeModal();
+                nav('/my_lists');
+            }, 0)
+        } catch (error) {
+            setValidations(prevValidations => ({
+                ...prevValidations,
+                newListStockSyb: "Invalid Stock Symbol"
+            }))
         }
     }
+    
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())
@@ -75,8 +88,21 @@ export default function CreateListModal({ stockSymbol }) {
                         onChange={e => setNewListName(e.target.value)}
                     />
                 </label>
-                {isSubmitted && validations.newListName && 
-                <p className="validation-error-text">* {validations.newListName}</p>}
+                {validations.newListName &&
+                    <p className="validation-error-text">* {validations.newListName}</p>}
+                {!stockSymbol &&
+                    <label className="add-list-label">
+                        <input
+                            className="add-list-input-field"
+                            type="text"
+                            name="newListStockSyb"
+                            value={newListStockSyb}
+                            placeholder="Stock Symbol"
+                            onChange={e => setNewListStockSyb(e.target.value)}
+                        />
+                    </label>}
+                {validations.newListStockSyb &&
+                    <p className="validation-error-text">* {validations.newListStockSyb}</p>}
                 <button className="add-to-list-btn not-added">
                     Create My List
                 </button>

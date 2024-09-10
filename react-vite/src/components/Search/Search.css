@@ -35,7 +35,9 @@
     color: white;
     margin: 0 0 12px auto;
 }
-.stock-page-action-btn:hover {
+
+.stock-page-action-btn:hover,
+.list-page-action-btn {
     cursor: pointer;
     
 }
