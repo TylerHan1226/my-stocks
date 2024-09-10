@@ -2,6 +2,7 @@ export const LOAD_ALL_MY_LISTS = 'list/LOAD_ALL_MY_LISTS'
 export const LOAD_ALL_STOCK_INFO_UNDER_LIST = 'list/LOAD_ALL_STOCK_INFO_UNDER_LIST'
 export const ADD_LIST = 'list/ADD_LIST'
 export const UPDATE_LIST = 'list/UPDATE_LIST'
+export const REMOVE_STOCK = 'list/REMOVE_STOCK'
 export const REMOVE_LIST = 'list/REMOVE_LIST'
 
 export const loadAllMyLists = (lists) => ({
@@ -19,6 +20,10 @@ export const addList = (newList) => ({
 export const updateList = (updatedList) => ({
     type: UPDATE_LIST,
     payload: updatedList
+})
+export const removeStock = (removedStock) => ({
+    type: REMOVE_STOCK,
+    payload: removedStock
 })
 export const removeList = (removedList) => ({
     type: REMOVE_LIST,
@@ -83,15 +88,26 @@ export const updateListThunk = (updatedListData, listId) => async (dispatch) => 
     dispatch(updateList(updatedList))
     return updatedList
 }
-export const removeListThunk = (listId) => async (dispatch) => {
+export const removeStockThunk = (listId) => async (dispatch) => {
     const res = await fetch(`/api/lists/${listId}/remove`, {
         method: 'DELETE',
     })
     if (!res.ok) {
         throw new Error('Failed to remove list')
     }
+    const removedStock = await res.json()
+    dispatch(removeStock(removedStock))
+}
+export const removeListThunk = (listName) => async (dispatch) => {
+    const res = await fetch(`/api/lists/remove-list/${listName}`, {
+        method: 'DELETE'
+    })
+    if (!res.ok) {
+        throw new Error('Failed to remove lists by name')
+    }
     const removedList = await res.json()
     dispatch(removeList(removedList))
+    return removedList
 }
 
 const initialState = {}
@@ -110,9 +126,14 @@ function listReducer(state = initialState, action) {
         case UPDATE_LIST: {
             return {...state, ...action.payload}
         }
+        case REMOVE_STOCK: {
+            const deleteState = {...state}
+            delete deleteState[action.removedStock]
+            return deleteState
+        }
         case REMOVE_LIST: {
             const deleteState = {...state}
-            deleteState[action.removedList]
+            delete deleteState[action.removedList]
             return deleteState
         }
         default:

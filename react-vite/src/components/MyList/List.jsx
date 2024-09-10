@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { getAllMyListsThunk, getAllStocksInListThunk, removeListThunk } from "../../redux/list"
+import { getAllMyListsThunk, getAllStocksInListThunk } from "../../redux/list"
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import { IoMdArrowRoundUp, IoMdArrowRoundDown } from "react-icons/io";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
-import ListOptionModal from "./ListOptionModal";
+import StockOptionModal from "./StockOptionModal";
 
 
 export default function List() {
@@ -72,10 +72,11 @@ export default function List() {
                                 <OpenModalMenuItem
                                     itemText={<BsThreeDotsVertical />}
                                     className="three-dots"
-                                    modalComponent={<ListOptionModal
-                                    stockSymbol={eachSymbol}
-                                    listUpdated={listUpdated}
-                                    setListUpdated={setListUpdated}
+                                    modalComponent={
+                                    <StockOptionModal
+                                        stockSymbol={eachSymbol}
+                                        listUpdated={listUpdated}
+                                        setListUpdated={setListUpdated}
                                     />}
                                 />
                             </div>

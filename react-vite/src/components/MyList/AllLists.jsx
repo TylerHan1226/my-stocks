@@ -18,7 +18,13 @@ export default function AllLists() {
     const lists = useSelector(state => state.lists?.My_Lists)
     const [isLoading, setIsLoading] = useState(true)
     const [isUpdatedAllLists, setIsUpdatedAllLists] = useState(false)
+    
     const fetchErr = useSelector(state => state.lists?.error)
+
+    const [hasDeleted, setHasDeleted] = useState(false)
+    const reRenderOnUpdate = () => {
+        setHasDeleted(!hasDeleted)
+    }
 
     const listNames = new Set()
     lists?.forEach(ele => {
@@ -27,16 +33,17 @@ export default function AllLists() {
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
-        setModalContent(<CreateListModal 
+        setModalContent(
+        <CreateListModal
             isUpdatedAllLists={isUpdatedAllLists}
-            setIsUpdatedAllLists={setIsUpdatedAllLists} />)
-    }
+            setIsUpdatedAllLists={setIsUpdatedAllLists}
+            />)}
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
-    }, [dispatch, isUpdatedAllLists])
+    }, [dispatch, isUpdatedAllLists, hasDeleted])
 
     if (!user) {
         return nav('/')
@@ -47,13 +54,15 @@ export default function AllLists() {
 
     return (
         <section className="page-container">
-            {lists?.length > 0 && !fetchErr ? (
+            {lists?.length > 0 
+            // && !fetchErr 
+            ? (
                 <section className="page-content-container">
                     <h1 className="page-title">My Lists</h1>
                     <section className="all-list-tabs-container">
                         <div className="stock-page-action-btn-container">
                             <button className="stock-page-action-btn"
-                            onClick={handleOpenModal}
+                                onClick={handleOpenModal}
                             >
                                 Create New List
                             </button>
@@ -67,8 +76,10 @@ export default function AllLists() {
                                     <OpenModalMenuItem
                                         itemText={<BsThreeDotsVertical />}
                                         className="three-dots"
-                                        modalComponent={<ListOptionModal
+                                        modalComponent={
+                                        <ListOptionModal
                                             listToRemove={listName}
+                                            reRenderOnUpdate={reRenderOnUpdate}
                                         />}
                                     />
                                 </div>
@@ -79,9 +90,11 @@ export default function AllLists() {
             ) : (
                 <section>
                     <h2 className="not-found-message">Start Creating your List!</h2>
-                    {/* <button className="">
-                        <FaCirclePlus />
-                    </button> */}
+                    <button className="stock-page-action-btn"
+                        onClick={handleOpenModal}
+                    >
+                        Create New List
+                    </button>
                 </section>
             )}
         </section>

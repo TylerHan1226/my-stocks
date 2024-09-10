@@ -119,7 +119,7 @@ def update_list(id):
 # /api/lists/remove
 @list_routes.route('/<int:id>/remove', methods=['DELETE'])
 @login_required
-def remove_list(id):
+def remove_stock(id):
     list = MyList.query.get(id)
     if not list:
         return {'message': 'List not found'}, 404
@@ -128,3 +128,16 @@ def remove_list(id):
     db.session.delete(list)
     db.session.commit()
     return {'message': 'Successfully Deleted'}, 200
+
+@list_routes.route('remove-list/<string:list_name>', methods=['DELETE'])
+@login_required
+def remove_list(list_name):
+    lists_to_remove = MyList.query.filter_by(list_name=list_name).all()
+    if not lists_to_remove:
+        return jsonify({"error": "No lists found under this list name"}), 404
+    for list in lists_to_remove:
+        if list.user_id != current_user.id:
+            return redirect('api/auth/unauthorized')
+        db.session.delete(list)
+    db.session.commit()
+    return {'message': 'Successfully Deleted List'}, 200

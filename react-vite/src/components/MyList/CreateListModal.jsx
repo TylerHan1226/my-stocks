@@ -4,7 +4,10 @@ import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { addListThunk, getAllMyListsThunk } from "../../redux/list";
 
-export default function CreateListModal({ stockSymbol, isUpdatedAllLists, setIsUpdatedAllLists }) {
+export default function CreateListModal({
+    stockSymbol,
+    setIsUpdatedAllLists
+}) {
     const { closeModal } = useModal()
     const dispatch = useDispatch()
     const nav = useNavigate()
@@ -41,25 +44,32 @@ export default function CreateListModal({ stockSymbol, isUpdatedAllLists, setIsU
     }, [newListName, user, isSubmitted])
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitted(true);
+        e.preventDefault()
+        setIsSubmitted(true)
+
         const currentValidations = validateForm();
-        setValidations(currentValidations);
+        setValidations(currentValidations)
         if (Object.keys(currentValidations).length > 0) {
-            return;
+            return
         }
-        let newListData = {};
+        let newListData = {}
         if (stockSymbol?.length > 0) {
-            newListData = { "list_name": newListName, "stock_symbol": stockSymbol };
+            newListData = { "list_name": newListName, "stock_symbol": stockSymbol }
         } else {
-            newListData = { "list_name": newListName, "stock_symbol": newListStockSyb };
+            newListData = { "list_name": newListName, "stock_symbol": newListStockSyb }
         }
         try {
             const response = await dispatch(addListThunk(newListData))
-            setIsUpdatedAllLists(prev => !prev);
             setTimeout(() => {
-                closeModal();
-                nav('/my_lists');
+                
+                setIsUpdatedAllLists(true);
+                closeModal()
+                nav(`/my_lists`)
+                // if (newListStockSyb && newListName) {
+                //     nav(`/my_lists/${newListName}`)
+                // } else {
+                //     nav(`/my_lists`)
+                // }
             }, 0)
         } catch (error) {
             setValidations(prevValidations => ({
@@ -68,7 +78,6 @@ export default function CreateListModal({ stockSymbol, isUpdatedAllLists, setIsU
             }))
         }
     }
-    
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())
@@ -76,7 +85,7 @@ export default function CreateListModal({ stockSymbol, isUpdatedAllLists, setIsU
 
     return (
         <section className="list-modal-container">
-            <h2 className="add-list-modal-title">Create a new list for {stockSymbol}!</h2>
+            <h2 className="add-list-modal-title">{stockSymbol ? `Create a new list for ${stockSymbol}!` : 'Create a new list!'}</h2>
             <form className="add-list-form" onSubmit={handleSubmit}>
                 <label className="add-list-label">
                     <input
