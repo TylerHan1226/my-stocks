@@ -47,6 +47,8 @@ export default function SearchPage() {
     const stock52WkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
 
+    const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
+
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />)
@@ -62,57 +64,62 @@ export default function SearchPage() {
         window.scrollTo(0, 0)
     }, [nav, dispatch, searchInput, user])
 
-    useEffect(() => {
-        if (stock?.historical_data_1d && chartRef.current) {
-            console.log("Stock data:", stock)
-            if (chartInstance.current) {
-                chartInstance.current.destroy()
-            }
-            const ctx = chartRef.current.getContext('2d')
-            chartInstance.current = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: Array(stock.historical_data_1d.length).fill(''),
-                    datasets: [{
-                        data: stock.historical_data_1d,
-                        borderColor: '#037b4b',
-                        fill: false,
-                    }]
+    const makeChart = (period) => {
+        if (chartInstance.current) {
+            chartInstance.current.destroy()
+        }
+        const ctx = chartRef.current.getContext('2d')
+        const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
+        chartInstance.current = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array(stock[period]?.length).fill(''),
+                datasets: [{
+                    data: stock[period],
+                    borderColor: themeGreen,
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: { display: false },
-                        y: { display: false }
-                    },
-                    elements: {
-                        point: { radius: 0 }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { enabled: false },
-                        annotation: {
-                            annotations: {
-                                line1: {
-                                    type: 'line',
-                                    yMin: stockPreviousClosePrice,
-                                    yMax: stockPreviousClosePrice,
-                                    borderColor: 'rgba(75, 192, 192, 0.4)',
-                                    borderWidth: 2,
-                                    borderDash: [6, 6],
-                                    label: {
-                                        content: 'Previous Close',
-                                        enabled: true,
-                                        position: 'end'
-                                    }
+                elements: {
+                    point: { radius: 0 }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: stockPreviousClosePrice,
+                                yMax: stockPreviousClosePrice,
+                                borderColor: 'rgba(75, 192, 192, 0.4)',
+                                borderWidth: 2,
+                                borderDash: [6, 6],
+                                label: {
+                                    content: 'Previous Close',
+                                    enabled: true,
+                                    position: 'end'
                                 }
                             }
                         }
                     }
                 }
-            })
-            setIsLoading(false)
+            }
+        })
+        setIsLoading(false)
+    }
+
+    useEffect(() => {
+        if (stock && chartRef.current) {
+            // console.log("Stock data:", stock)
+            makeChart(chartPeriod)
         }
     }, [stock])
 
@@ -257,5 +264,5 @@ export default function SearchPage() {
             </section>
 
         </section>
-    );
+    )
 }
