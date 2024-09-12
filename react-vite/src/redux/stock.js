@@ -13,14 +13,17 @@ const loadMultipleStocks = (stocks) => ({
 export const getOneStockThunk = (symbol) => async (dispatch) => {
     const res = await fetch(`/api/stocks/${symbol}`)
     if (!res.ok) {
-        return new Error ('Failed to fetch stock')
+        console.error('Failed to fetch stock'); // Add this line
+        return new Error('Failed to fetch stock');
     }
-    const data = await res.json()
+    const data = await res.json();
     if (data.errors) {
-        return "Cannot find stock"
+        console.error('Cannot find stock'); // Add this line
+        return "Cannot find stock";
     }
+    console.log('Fetched stock data:', data); // Add this line
     dispatch(loadStock(data));
-    return data
+    return data;
 }
 export const getMultipleStocksThunk = (symbols) => async (dispatch) => {
     const res = await fetch('/api/stocks/multiple', {

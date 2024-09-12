@@ -17,6 +17,7 @@ def getOneStock(symbol):
     stock = yf.Ticker(symbol)
     stock_info = stock.info
     if not stock_info:
+        print(f"Error: Stock info not found for {symbol}")
         return jsonify({"error": "Stock not found"}), 404
     
     # Fetch stock history
@@ -52,7 +53,8 @@ def getOneStock(symbol):
         # If still no price, use the last closing price from history
         current_price = history_dict[-1].get('Close', None)
     
-    historical_data_1mo = stock.history(period="1mo")['Close'].tolist()
+    # Fetch 1-month historical data and remove NaN values
+    historical_data_1mo = stock.history(period="1mo")['Close'].dropna().tolist()
 
     # Create a dictionary to return
     stock_data = {
@@ -64,7 +66,10 @@ def getOneStock(symbol):
         "years_of_history": round(years_of_history, 2),
         "historical_data_1mo": historical_data_1mo,
     }
+    print(f"Fetched data for {symbol}: {stock_data}")
     return jsonify(stock_data)
+
+
 
 
 # get multiple stocks

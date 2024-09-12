@@ -52,3 +52,8 @@
     display: flex;
     flex-direction: column;
 }
+
+.stock-sparkline-chart {
+    border: 1px solid blue;
+    max-height: 200px;
+}
