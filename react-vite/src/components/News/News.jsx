@@ -36,7 +36,7 @@ export default function News() {
     return (
         <section className="page-container">
             <section className='page-content-container'>
-            <h1>News</h1>
+            <h1 className="page-title">News</h1>
             <div className="news-container">
                 {
                     news?.map(ele => (
