@@ -74,7 +74,7 @@ export default function AllLists() {
                                         className="three-dots"
                                         modalComponent={
                                             <ListOptionModal
-                                                listNameToRemove={listName}
+                                                listNameSelected={listName}
                                             />}
                                     />
                                 </div>

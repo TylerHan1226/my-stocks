@@ -97,6 +97,7 @@ def add_new_list():
     return form.errors, 400
 
 # update a list
+# /api/lists/<int:id>/update
 @list_routes.route('/<int:id>/update', methods=['PUT'])
 @login_required
 def update_list(id):
@@ -113,6 +114,23 @@ def update_list(id):
         list.stock_symbol = form.stock_symbol.data
         db.session.commit()
         return list.to_dict(), 200
+    return form.errors, 400
+
+# update all lists under list name
+# /api/lists/<string:list_name>/edit-name
+@list_routes.route('/<string:list_name>/edit-name', methods=['PUT'])
+@login_required
+def edit_list_name(list_name):
+    form = ListForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        selected_lists = MyList.query.filter_by(user_id=current_user.id, list_name=list_name).all()
+        if not selected_lists:
+            return jsonify({"error": "No lists found for the current user"}), 404
+        for selected_list in selected_lists:
+            selected_list.list_name = form.list_name.data
+            db.session.commit()
+        return [selected_list.to_dict() for selected_list in selected_lists], 200
     return form.errors, 400
 
 # remove a list

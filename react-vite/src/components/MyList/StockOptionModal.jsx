@@ -46,16 +46,16 @@ export default function StockOptionModal({ stockSymbol }) {
             <h2 className="add-list-modal-title">Options</h2>
             <div className="option-modal-btn-container">
                 <button
-                    className="add-to-list-btn red-border delete-red-text list-option-btn"
-                    onClick={handleRemoveFromList}
-                >
-                    Remove {stockSymbol} from this list
-                </button>
-                <button
-                    className="add-to-list-btn not-added list-option-btn"
+                    className="add-to-list-btn not-added"
                     onClick={handleOpenModal}
                 >
                     Add {stockSymbol} to other lists
+                </button>
+                <button
+                    className="add-to-list-btn red-border delete-red-text"
+                    onClick={handleRemoveFromList}
+                >
+                    Remove {stockSymbol} from this list
                 </button>
             </div>
         </section>

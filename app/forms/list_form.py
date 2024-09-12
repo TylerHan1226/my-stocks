@@ -11,14 +11,14 @@ def check_under_50(field_name):
             raise ValidationError(f"{field_name} must be under 50 characters")
     return _check
 
-def check_under_10(field_name):
-    def _check(form, field):
-        if len(field.data) >= 10:
-            raise ValidationError(f"{field_name} must be under 50 characters")
-    return _check
+# def check_under_10(field_name):
+#     def _check(form, field):
+#         if len(field.data) >= 10:
+#             raise ValidationError(f"{field_name} must be under 50 characters")
+#     return _check
 
 # form class
 class ListForm(FlaskForm):
     list_name = StringField('List_name', validators=[DataRequired(), check_under_50('List_name')])
-    stock_symbol = StringField('Stock_symbol', validators=[DataRequired(), check_under_10('Stock_symbol')])
+    stock_symbol = StringField('Stock_symbol')
     

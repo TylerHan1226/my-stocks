@@ -21,7 +21,7 @@ export default function LandingPage() {
   
   useEffect(() => {
     dispatch(getAllMyListsThunk())
-  }, [dispatch])
+  }, [dispatch, user])
 
   return (
     <section className="page-container">

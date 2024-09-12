@@ -109,9 +109,13 @@ export default function CreateListModal({ stockSymbol }) {
                     </label>}
                 {validations.newListStockSyb &&
                     <p className="validation-error-text">* {validations.newListStockSyb}</p>}
-                <button className="add-to-list-btn not-added">
+                <button className="add-to-list-btn not-added" type='submit'>
                     Create My List
                 </button>
+                {/* <button className="add-to-list-btn not-added"
+                    onClick={closeModal}>
+                    Cancel
+                </button> */}
             </form>
         </section>
     )
