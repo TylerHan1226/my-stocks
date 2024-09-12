@@ -2,83 +2,79 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { useModal } from "../../context/Modal";
-
 import Loading from "../Loading/Loading";
 import { getOneStockThunk } from "../../redux/stock";
 import AddListModal from "../MyList/AddListModal";
-
 import Chart from 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+Chart.register(annotationPlugin);
 
 export default function SearchPage() {
-    const nav = useNavigate();
-    const dispatch = useDispatch();
-    const { searchInput } = useParams();
-    const user = useSelector(state => state.session.user);
-    const stock = useSelector(state => state.stocks);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const chartRef = useRef(null);
-    const chartInstance = useRef(null);
+    const nav = useNavigate()
+    const dispatch = useDispatch()
+    const { searchInput } = useParams()
+    const user = useSelector(state => state.session.user)
+    const stock = useSelector(state => state.stocks)
+    const [isLoading, setIsLoading] = useState(true)
+    const chartRef = useRef(null)
+    const chartInstance = useRef(null)
 
-    const stockName = stock?.name;
-    const stockSymbol = stock?.ticker;
-    const stockBusSum = stock?.info?.longBusinessSummary;
-    const stockComOfficers = stock?.info?.companyOfficers;
-    const stockEmployeeNum = stock?.info?.fullTimeEmployees;
-    const stockHeadquarter = `${stock?.info?.city}, ${stock?.info?.state}`;
-    const stockCurrentPrice = stock?.currentPrice?.toFixed(2);
-    const stockOpenPrice = stock?.info?.previousClose?.toFixed(2);
-    const stockAsk = stock?.info?.ask;
-    const stockAskSize = stock?.info?.askSize;
-    const stockBidSize = stock?.info?.bidSize;
-    const stockBid = stock?.info?.bid;
-    const stockPreviousClosePrice = stock?.info?.open?.toFixed(2);
-    const stockMarketCap = stock?.info?.marketCap;
-    const stockPERatio = stock?.info?.trailingPE?.toFixed(2);
-    const stockFwPERatio = stock?.info?.forwardPE?.toFixed(2);
-    const stockVolume = stock?.info?.volume;
-    const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2);
-    const stockYield = (stock?.info?.yield * 100)?.toFixed(2);
-    const stockYieldDailyReturn = (stock?.info?.ytdReturn * 100)?.toFixed(2);
-    const stockNetAssets = stock?.info?.totalAssets;
-    const stock50DAvg = stock?.info?.fiftyDayAverage?.toFixed(2);
-    const stockDayHigh = stock?.info?.dayHigh?.toFixed(2);
-    const stockDayLow = stock?.info?.dayLow?.toFixed(2);
-    const stock52WkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2);
-    const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2);
+    const stockName = stock?.name
+    const stockSymbol = stock?.ticker
+    const stockBusSum = stock?.info?.longBusinessSummary
+    const stockComOfficers = stock?.info?.companyOfficers
+    const stockEmployeeNum = stock?.info?.fullTimeEmployees
+    const stockHeadquarter = `${stock?.info?.city}, ${stock?.info?.state}`
+    const stockCurrentPrice = stock?.currentPrice?.toFixed(2)
+    const stockOpenPrice = stock?.info?.previousClose?.toFixed(2)
+    const stockAsk = stock?.info?.ask
+    const stockAskSize = stock?.info?.askSize
+    const stockBidSize = stock?.info?.bidSize
+    const stockBid = stock?.info?.bid
+    const stockPreviousClosePrice = stock?.info?.open?.toFixed(2)
+    const stockMarketCap = stock?.info?.marketCap
+    const stockPERatio = stock?.info?.trailingPE?.toFixed(2)
+    const stockFwPERatio = stock?.info?.forwardPE?.toFixed(2)
+    const stockVolume = stock?.info?.volume
+    const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
+    const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
+    const stockYieldDailyReturn = (stock?.info?.ytdReturn * 100)?.toFixed(2)
+    const stockNetAssets = stock?.info?.totalAssets
+    const stock50DAvg = stock?.info?.fiftyDayAverage?.toFixed(2)
+    const stockDayHigh = stock?.info?.dayHigh?.toFixed(2)
+    const stockDayLow = stock?.info?.dayLow?.toFixed(2)
+    const stock52WkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
+    const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
 
-    const { setModalContent } = useModal();
+    const { setModalContent } = useModal()
     const handleOpenModal = () => {
-        setModalContent(<AddListModal stockSymbol={stockSymbol} />);
-    };
+        setModalContent(<AddListModal stockSymbol={stockSymbol} />)
+    }
 
     useEffect(() => {
         if (!user) {
-            return nav('/');
+            return nav('/')
         }
-        setIsLoading(true);
-        setError(null);
+        setIsLoading(true)
         dispatch(getOneStockThunk(searchInput))
             .then(() => setIsLoading(false))
-            .catch((err) => {
-                setIsLoading(false);
-                setError(err);
-            });
-        window.scrollTo(0, 0);
-    }, [nav, dispatch, searchInput, user]);
+        window.scrollTo(0, 0)
+    }, [nav, dispatch, searchInput, user])
 
     useEffect(() => {
-        if (stock?.historical_data_1mo && chartRef.current) {
+        if (stock?.historical_data_1d && chartRef.current) {
+            console.log("Stock data:", stock)
             if (chartInstance.current) {
-                chartInstance.current.destroy();
+                chartInstance.current.destroy()
             }
-            const ctx = chartRef.current.getContext('2d');
+            const ctx = chartRef.current.getContext('2d')
             chartInstance.current = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: Array(stock.historical_data_1mo.length).fill(''),
+                    labels: Array(stock.historical_data_1d.length).fill(''),
                     datasets: [{
-                        data: stock.historical_data_1mo,
+                        data: stock.historical_data_1d,
                         borderColor: '#037b4b',
                         fill: false,
                     }]
@@ -95,22 +91,37 @@ export default function SearchPage() {
                     },
                     plugins: {
                         legend: { display: false },
-                        tooltip: { enabled: false }
+                        tooltip: { enabled: false },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    yMin: stockPreviousClosePrice,
+                                    yMax: stockPreviousClosePrice,
+                                    borderColor: 'rgba(75, 192, 192, 0.4)',
+                                    borderWidth: 2,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        content: 'Previous Close',
+                                        enabled: true,
+                                        position: 'end'
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            });
+            })
+            setIsLoading(false)
         }
-    }, [stock]);
+    }, [stock])
 
     if (isLoading) {
-        return <Loading />;
+        return <Loading />
     }
 
     console.log('stock ==>', stock)
-    // if (error || !stock || !Object.keys(stock).length) {
-    //     alert("Stock not found");
-    //     nav('/');
-    // }
+
 
     return (
         <section className="page-container">

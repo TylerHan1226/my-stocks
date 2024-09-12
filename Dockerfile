@@ -24,6 +24,8 @@ RUN pip install requests
 
 COPY . .
 
+RUN npm install chart.js chartjs-plugin-annotation
+
 RUN flask db upgrade
 RUN flask seed all
 CMD gunicorn app:app
