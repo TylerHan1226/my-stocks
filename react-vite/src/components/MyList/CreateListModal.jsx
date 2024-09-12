@@ -43,8 +43,6 @@ export default function CreateListModal({ stockSymbol }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setIsSubmitted(true)
-        
-
         const currentValidations = validateForm()
         setValidations(currentValidations)
         if (Object.keys(currentValidations).length > 0) {
@@ -67,7 +65,7 @@ export default function CreateListModal({ stockSymbol }) {
                 // } else {
                 //     nav(`/my_lists`)
                 // }
-            }, 1)
+            }, 0.5)
         } catch (error) {
             setValidations(prevValidations => ({
                 ...prevValidations,

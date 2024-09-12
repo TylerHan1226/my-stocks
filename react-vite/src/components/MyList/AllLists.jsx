@@ -37,21 +37,13 @@ export default function AllLists() {
         window.scrollTo(0, 0)
     }, [dispatch])
 
-    // useEffect(() => {
-    //     window.location.reload();
-    // })
-
     if (isLoading) {
         return <Loading />
     }
 
-
-// "Cannot fetch list"
     return (
         <section className="page-container">
             {lists?.length > 0
-            // && !isError
-            // && isListsExists
              ? (
                 <section className="page-content-container">
                     <h1 className="page-title">My Lists</h1>

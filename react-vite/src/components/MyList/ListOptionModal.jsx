@@ -2,19 +2,25 @@ import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import "./Modal.css"
-import { getAllMyListsThunk, removeListThunk } from "../../redux/list";
-
+import "./Modal.css";
+import { getAllMyListsThunk, removeListThunk, updateListNamesThunk } from "../../redux/list";
 
 export default function ListOptionModal({ listNameSelected }) {
-
     const { closeModal } = useModal()
     const dispatch = useDispatch()
     const nav = useNavigate()
     const user = useSelector(state => state.session.user)
+    const listItems = useSelector(state => state.lists?.My_Lists)
 
     const [isEditing, setIsEditing] = useState(false)
     const [newListName, setNewListName] = useState(listNameSelected)
+    const [validations, setValidations] = useState({})
+    const [isSubmitted, setIsSubmitted] = useState(false)
+
+    const listNames = new Set()
+    listItems?.forEach(ele => {
+        listNames.add(ele.list_name)
+    })
 
     // Handle Remove List
     const handleRemoveList = async () => {
@@ -22,33 +28,51 @@ export default function ListOptionModal({ listNameSelected }) {
         if (response) window.location.reload()
         closeModal()
         nav('/my_lists')
-    }
+    };
 
     // Edit List Name
     const handleEditName = async () => {
-        console.log("Edit Name Button!")
         setIsEditing(true)
     }
-    const handleNameChange = (e) => {
-        setNewListName(e.target.value)
+    console.log('listItems ==>', listItems)
+    const validateForm = () => {
+        const validationErrors = {}
+        if (listNames?.has(newListName)) {
+            validationErrors.newListName = 'A list with this name already exists'
+        }
+        return validationErrors
     }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(`edit ${listNameSelected}`)
-        // const res = await dispatch()
+        setIsSubmitted(true)
+        const currentValidations = validateForm()
+        setValidations(currentValidations)
+        console.log('currentValidations ==>', currentValidations)
+        if (Object.keys(currentValidations).length > 0) return
+
+        const updatedListNameData = { "list_name": newListName }
+        console.log('newListName ==>', newListName)
+        console.log('listNameSelected ==>', listNameSelected)
+        console.log('updatedListNameData ==>', updatedListNameData)
+
+        const res = await dispatch(updateListNamesThunk(updatedListNameData, listNameSelected))
         if (res) {
             setIsEditing(false)
             window.location.reload()
+            closeModal()
+            nav(`/my_lists`)
         }
     }
 
     useEffect(() => {
+        if (!user) {
+            return nav('/')
+        }
         dispatch(getAllMyListsThunk())
-    }, [dispatch])
-
-    if (!user) {
-        return nav('/')
-    }
+        if (isSubmitted) {
+            setValidations(validateForm())
+        }
+    }, [dispatch, user, newListName, isSubmitted])
 
     return (
         <section className="list-modal-container">
@@ -56,25 +80,28 @@ export default function ListOptionModal({ listNameSelected }) {
             <div className="option-modal-btn-container">
                 {isEditing ? (
                     <form className="edit-listName-form" onSubmit={handleSubmit}>
-                        <input
-                            className="add-list-input-field"
-                            type='text'
-                            value={newListName}
-                            onChange={handleNameChange}
-                            autoFocus
-                        />
-                        <button className="edit-listName-btn" type='submit'>
-                            Submit
-                        </button>
+                        <label className="add-list-label">
+                            <input
+                                className="add-list-input-field"
+                                type='text'
+                                value={newListName}
+                                onChange={e => setNewListName(e.target.value)}
+                                autoFocus
+                            />
+                            <button className="edit-listName-btn" type='submit'>
+                                Submit
+                            </button>
+                        </label>
+                        {validations.newListName &&
+                            <p className="validation-error-text">* {validations.newListName}</p>}
                     </form>
-                    
                 ) : (
                     <button
-                    className="add-to-list-btn not-added"
-                    onClick={handleEditName}
-                >
-                    Edit name
-                </button>
+                        className="add-to-list-btn not-added"
+                        onClick={handleEditName}
+                    >
+                        Edit name
+                    </button>
                 )}
                 <button
                     className="add-to-list-btn red-border delete-red-text"
@@ -82,11 +109,7 @@ export default function ListOptionModal({ listNameSelected }) {
                 >
                     Remove list {listNameSelected}
                 </button>
-                {/* <button className="add-to-list-btn not-added"
-                    onClick={closeModal}>
-                    Cancel
-                </button> */}
             </div>
         </section>
-    )
+    );
 }
