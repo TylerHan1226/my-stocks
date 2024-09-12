@@ -6,18 +6,22 @@ import { FaSearch } from "react-icons/fa";
 
 export default function Search() {
     const [searchInput, setSearchInput] = useState("")
+    const [error, setError] = useState("")
     const nav = useNavigate()
     const { closeModal } = useModal()
 
     const handleSearch = (e) => {
         e.preventDefault()
-        if (searchInput.length == 0) {
-            nav(`/`)
+        if (searchInput.length === 0) {
+            setError("Please enter a stock symbol.")
+        } else if (!/^[A-Z]+$/.test(searchInput)) {
+            setError("Please enter valid stock symbol")
         } else {
+            setError("")
             nav(`/search/${searchInput}`)
+            window.location.reload()
+            closeModal()
         }
-        window.location.reload()
-        closeModal()
     };
 
     return (
@@ -35,6 +39,7 @@ export default function Search() {
                         <p className="search-modal-btn-text"><FaSearch /></p>
                     </button>
                 </div>
+                {error && <p className="validation-error-text">* {error}</p>}
             </form>
         </section>
     );
