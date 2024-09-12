@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Stock
 import pandas as pd
@@ -51,6 +51,8 @@ def getOneStock(symbol):
     if current_price is None and history_dict:
         # If still no price, use the last closing price from history
         current_price = history_dict[-1].get('Close', None)
+    
+    historical_data_1mo = stock.history(period="1mo")['Close'].tolist()
 
     # Create a dictionary to return
     stock_data = {
@@ -59,6 +61,43 @@ def getOneStock(symbol):
         "info": stock_info,
         "history": history_dict,
         "currentPrice": current_price,
-        "years_of_history": round(years_of_history, 2)
+        "years_of_history": round(years_of_history, 2),
+        "historical_data_1mo": historical_data_1mo,
     }
     return jsonify(stock_data)
+
+
+# get multiple stocks
+# /api/stocks/multiple
+@stock_routes.route('/multiple', methods=['POST'])
+@login_required
+def getMultipleStocks():
+    symbols = request.json.get('symbols', [])
+    if not symbols:
+        return jsonify({"error": "No symbols provided"}), 400
+
+    stocks_data = {}
+    for symbol in symbols:
+        stock = yf.Ticker(symbol)
+        stock_info = stock.info
+        if not stock_info:
+            stocks_data[symbol] = {"error": "Stock not found"}
+            continue
+
+        # Get the current price
+        try:
+            current_price = stock.fast_info.get('lastPrice', None)
+        except AttributeError:
+            # If fast_info is not available, use the last closing price from info
+            current_price = stock_info.get('regularMarketPrice', None)
+
+        # Create a dictionary to return
+        stock_data = {
+            "ticker": symbol,
+            "name": stock_info.get("shortName", "N/A"),
+            "info": stock_info,
+            "currentPrice": current_price,
+        }
+        stocks_data[symbol] = stock_data
+
+    return jsonify(stocks_data)

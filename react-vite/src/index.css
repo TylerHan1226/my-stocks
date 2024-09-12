@@ -25,6 +25,20 @@ body {
     margin: 0 0 0 0;
 }
 
+.page-container {
+    padding: 68px;
+    /* margin-top: 12px; */
+}
+
+.page-title {
+    font-size: 36px;
+}
+
+.page-content-container {
+    margin-top: 120px;
+    min-height: 500px;
+}
+
 .validation-error-text {
     color: var(--light-red);
     font-size: 18px;

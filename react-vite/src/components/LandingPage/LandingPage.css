@@ -1,14 +1,12 @@
 
-.page-container {
-    padding: 68px;
-    /* margin-top: 12px; */
+.landing-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* align-items: center; */
 }
 
-.page-title {
-    font-size: 36px;
-}
-
-.page-content-container {
-    margin-top: 120px;
-    min-height: 500px;
+.landing-content {
+    border: blue 1px solid;
+    width: 33%;
 }
