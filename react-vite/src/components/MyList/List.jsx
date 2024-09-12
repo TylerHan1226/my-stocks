@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllMyListsThunk, getAllStocksInListThunk } from "../../redux/list"
 import { NavLink, useNavigate, useParams } from "react-router-dom";

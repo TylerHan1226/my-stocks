@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
-import { FaHandPointLeft, FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import "./Modal.css"
 import { addListThunk, getAllMyListsThunk } from "../../redux/list";

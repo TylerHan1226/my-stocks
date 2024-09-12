@@ -5,7 +5,6 @@ import { useModal } from "../../context/Modal";
 
 import Loading from "../Loading/Loading";
 import { getOneStockThunk } from "../../redux/stock";
-import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import AddListModal from "../MyList/AddListModal";
 
 
@@ -50,11 +49,10 @@ export default function SearchPage() {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />)
     }
 
-    if (!user) {
-        return nav('/')
-    }
-
     useEffect(() => {
+        if (!user) {
+            return nav('/')
+        }
         setIsLoading(true)
         setError(null)
         dispatch(getOneStockThunk(searchInput))
@@ -64,7 +62,7 @@ export default function SearchPage() {
                 setError(err)
             })
         window.scrollTo(0, 0)
-    }, [nav, dispatch, searchInput])
+    }, [nav, dispatch, searchInput, user])
 
     if (isLoading) {
         return <Loading />

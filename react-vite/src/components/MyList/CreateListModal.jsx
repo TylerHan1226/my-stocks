@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { addListThunk, getAllMyListsThunk } from "../../redux/list";
@@ -55,17 +55,12 @@ export default function CreateListModal({ stockSymbol }) {
             newListData = { "list_name": newListName, "stock_symbol": newListStockSyb }
         }
         try {
-            const response = await dispatch(addListThunk(newListData))
-            setTimeout(() => {
+            const res = await dispatch(addListThunk(newListData))
+            if (res) {
                 window.location.reload()
                 closeModal()
                 nav(`/my_lists`)
-                // if (newListStockSyb && newListName) {
-                //     nav(`/my_lists/${newListName}`)
-                // } else {
-                //     nav(`/my_lists`)
-                // }
-            }, 0.5)
+            }
         } catch (error) {
             setValidations(prevValidations => ({
                 ...prevValidations,

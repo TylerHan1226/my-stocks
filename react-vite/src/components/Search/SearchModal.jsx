@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Search.css";
 import { useModal } from "../../context/Modal";
 import { FaSearch } from "react-icons/fa";
-import { useSelector } from "react-redux";
 
 export default function Search() {
     const [searchInput, setSearchInput] = useState("")

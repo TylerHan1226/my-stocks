@@ -1,11 +1,7 @@
-
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import Loading from "../Loading/Loading";
-
 import "./LandingPage.css";
-import { NavLink, useNavigate } from "react-router-dom";
-import { getOneStockThunk } from "../../redux/stock";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllMyListsThunk } from "../../redux/list";
 
 
@@ -14,10 +10,12 @@ export default function LandingPage() {
   const nav = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector(state => state.session.user)
-  const stock = useSelector(state => state.stocks)
+  const stocks = useSelector(state => state.stocks)
   const lists = useSelector(state => state.lists?.My_Lists)
 
   console.log('lists ==>', lists)
+  console.log('stocks ==>', stocks)
+  console.log('nav ==>', nav)
   
   useEffect(() => {
     dispatch(getAllMyListsThunk())

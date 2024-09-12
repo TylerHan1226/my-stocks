@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import "./Modal.css"

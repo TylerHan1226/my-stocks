@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import "./Modal.css";
@@ -72,7 +72,7 @@ export default function ListOptionModal({ listNameSelected }) {
         if (isSubmitted) {
             setValidations(validateForm())
         }
-    }, [dispatch, user, newListName, isSubmitted])
+    }, [dispatch, nav, user, newListName, isSubmitted, setValidations])
 
     return (
         <section className="list-modal-container">
