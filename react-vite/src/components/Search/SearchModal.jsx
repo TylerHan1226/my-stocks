@@ -16,6 +16,7 @@ export default function Search() {
         } else {
             nav(`/search/${searchInput}`)
         }
+        window.location.reload()
         closeModal()
     };
 
@@ -28,7 +29,7 @@ export default function Search() {
                         type="text"
                         placeholder="Find Your Stock by Symbol"
                         value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
+                        onChange={(e) => setSearchInput(e.target.value.toUpperCase())}
                     />
                     <button className="search-modal-btn" type="submit">
                         <p className="search-modal-btn-text"><FaSearch /></p>

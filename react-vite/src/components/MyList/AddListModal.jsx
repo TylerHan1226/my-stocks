@@ -51,7 +51,7 @@ export default function AddListModal({stockSymbol}) {
                         "list_name": 
                             listName,
                         "stock_symbol": 
-                            stockSymbol
+                            stockSymbol.toUpperCase()
                     }
                     return (
                         <button

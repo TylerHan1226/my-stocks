@@ -97,7 +97,7 @@ export default function CreateListModal({ stockSymbol }) {
                             name="newListStockSyb"
                             value={newListStockSyb}
                             placeholder="Stock Symbol"
-                            onChange={e => setNewListStockSyb(e.target.value)}
+                            onChange={e => setNewListStockSyb(e.target.value.toUpperCase())}
                         />
                     </label>}
                 {validations.newListStockSyb &&
