@@ -2,7 +2,6 @@
 .news-container {
     width: 85%;
     margin: 24px auto 24px auto;
-    /* border: 1px solid blue; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,7 +12,6 @@
     width: 80%;
     display: flex;
     flex-direction: row;
-    /* height: 360px; */
 }
 
 .news-image {
@@ -27,7 +25,7 @@
 }
 
 .news-text {
-    color: rgb(190, 0, 0);
+    color: white;
 }
 
 .news-text-container {
@@ -62,8 +60,9 @@
     color: white;
 }
 
-/* .news-btns:hover {
+.news-btns:hover,
+.news-readMore:hover {
     box-shadow: 0 0 10px 2px rgb(225, 0, 0, 0.75);
     background-color: rgb(235, 0, 0);
     cursor: pointer;
-} */
+}
