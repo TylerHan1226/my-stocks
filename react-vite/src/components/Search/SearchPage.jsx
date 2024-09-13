@@ -48,11 +48,15 @@ export default function SearchPage() {
     const stock52WkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
 
-    const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
+    const [chartPeriod, setChartPeriod] = useState('historical_data_1mo')
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />)
+    }
+
+    const handleChartPeriod = () => {
+        console.log('handleChartPeriod clicked!')
     }
 
     useEffect(() => {
@@ -91,7 +95,44 @@ export default function SearchPage() {
                             ADD TO LIST
                         </button>
                     </div>
-                    <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
+                    <div className="stock-chart-container">
+                        <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
+                        <div className="stock-chart-btn-container">
+                            <button className="stock-chart-btns"
+                                onClick={handleChartPeriod}>
+                                1D
+                            </button>
+                            <button className="stock-chart-btns"
+                                onClick={handleChartPeriod}>
+                                1W
+                            </button>
+                            <button className="stock-chart-btns"
+                                onClick={handleChartPeriod}>
+                                1M
+                            </button>
+                            <button className="stock-chart-btns"
+                                onClick={handleChartPeriod}>
+                                3M
+                            </button>
+                            <button className="stock-chart-btns"
+                                onClick={handleChartPeriod}>
+                                1Y
+                            </button>
+                            <button className="stock-chart-btns"
+                                onClick={handleChartPeriod}>
+                                5Y
+                            </button>
+                            <button className="stock-chart-btns"
+                                onClick={handleChartPeriod}>
+                                10Y
+                            </button>
+                            <button className="stock-chart-btns"
+                                onClick={handleChartPeriod}>
+                                YTD
+                            </button>
+                        </div>
+                    </div>
+
                     <h2>About</h2>
                     <div className="search-info-boxes">
                         <p className="font-size-20px">{stockBusSum}</p>
