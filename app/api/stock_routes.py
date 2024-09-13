@@ -109,12 +109,16 @@ def getMultipleStocks():
             # If fast_info is not available, use the last closing price from info
             current_price = stock_info.get('regularMarketPrice', None)
 
+        # Fetch historical data for 1 day
+        historical_data_1d = stock.history(period="1d", interval="1h")['Close'].dropna().tolist()  # Hourly data for 1 day
+
         # Create a dictionary to return
         stock_data = {
             "ticker": symbol,
             "name": stock_info.get("shortName", "N/A"),
             "info": stock_info,
             "currentPrice": current_price,
+            "historical_data_1d": historical_data_1d,
         }
         stocks_data[symbol] = stock_data
 

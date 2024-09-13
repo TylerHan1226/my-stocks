@@ -39,14 +39,28 @@ export default function LandingPage() {
             </div>
           }
 
-          <div className="landing-content">
+          <section className="landing-content">
             <h2>Market</h2>
-            {landingStocksSymbols.map((eachSymbol) => (
-              <div key={eachSymbol}>
-                <p>{landingStocks?.[eachSymbol]?.name}</p>
+            <div className="landing-stocks-container">
+
+              <div className="landing-stocks-3tab-container">
+                {landingStocksSymbols?.slice(0, 3)?.map((eachSymbol) => (
+                  <div className="landing-stock-tab" key={eachSymbol}>
+                    <p>{landingStocks?.[eachSymbol]?.name}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+
+              <div className="landing-stocks-3tab-container">
+                {landingStocksSymbols?.slice(3, 6)?.map((eachSymbol) => (
+                  <div className="landing-stock-tab" key={eachSymbol}>
+                    <p>{landingStocks?.[eachSymbol]?.name}</p>
+                  </div>
+                ))}
+              </div>
+              
+            </div>
+          </section>
 
           <div className="landing-content">
             <h2>News</h2>

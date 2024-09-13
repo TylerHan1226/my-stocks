@@ -48,7 +48,7 @@ export default function SearchPage() {
     const stock52WkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
 
-    const [chartPeriod, setChartPeriod] = useState('historical_data_1mo')
+    const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
