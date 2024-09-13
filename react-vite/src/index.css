@@ -6,7 +6,7 @@
     --dark-green: rgb(20, 80, 20);
     --dark-red: rgb(150, 25, 25);
     --light-red: rgb(250, 35, 35);
-    --text-field-grey: rgb(180, 180, 180);
+    --text-field-grey: rgb(180, 180, 180, 0.8);
 }
 
 h1, h2, h3, h4 {

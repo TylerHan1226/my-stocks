@@ -70,9 +70,10 @@ export default function SearchPage() {
     }, [nav, dispatch, searchInput, user])
 
     // chart
+    const isGreen = stockCurrentPrice > stockPreviousClosePrice ? true : false
     useEffect(() => {
         if (stock?.historical_data_1d && chartRef.current) {
-            makeChart(chartPeriod, stock, chartInstance, chartRef)
+            makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
         }
     }, [stock, chartPeriod])
 
@@ -98,35 +99,35 @@ export default function SearchPage() {
                     <div className="stock-chart-container">
                         <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
                         <div className="stock-chart-btn-container">
-                            <button className="stock-chart-btns"
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
                                 onClick={handleChartPeriod}>
                                 1D
                             </button>
-                            <button className="stock-chart-btns"
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
                                 onClick={handleChartPeriod}>
                                 1W
                             </button>
-                            <button className="stock-chart-btns"
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
                                 onClick={handleChartPeriod}>
                                 1M
                             </button>
-                            <button className="stock-chart-btns"
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
                                 onClick={handleChartPeriod}>
                                 3M
                             </button>
-                            <button className="stock-chart-btns"
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
                                 onClick={handleChartPeriod}>
                                 1Y
                             </button>
-                            <button className="stock-chart-btns"
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
                                 onClick={handleChartPeriod}>
                                 5Y
                             </button>
-                            <button className="stock-chart-btns"
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
                                 onClick={handleChartPeriod}>
                                 10Y
                             </button>
-                            <button className="stock-chart-btns"
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
                                 onClick={handleChartPeriod}>
                                 YTD
                             </button>
@@ -135,8 +136,8 @@ export default function SearchPage() {
 
                     <h2>About</h2>
                     <div className="search-info-boxes">
-                        <p className="font-size-20px">{stockBusSum}</p>
-                        <div className="search-info-texts-container">
+                        <p>{stockBusSum}</p>
+                        <div className="search-info-about-container">
                             {stockComOfficers?.length > 0 &&
                                 <p className="search-info-text">
                                     CEO: {stockComOfficers?.filter(ele => ele.title.includes("CEO"))[0]?.name}

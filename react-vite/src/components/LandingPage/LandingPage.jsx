@@ -19,8 +19,8 @@ export default function LandingPage() {
   const chartRefs = useRef([])
   const chartInstances = useRef([])
 
-  console.log('lists ==>', lists)
-  console.log('landingStocks ==>', landingStocks)
+  // console.log('lists ==>', lists)
+  // console.log('landingStocks ==>', landingStocks)
 
   const landingStocksSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"]
   useEffect(() => {
@@ -35,7 +35,10 @@ export default function LandingPage() {
           if (!chartInstances.current[index]) {
             chartInstances.current[index] = { current: null }
           }
-          makeChartSmall('historical_data_1d', landingStocks[symbol], chartInstances.current[index], chartRefs.current[index])
+          const stockCurrentPrice = landingStocks[symbol]?.currentPrice
+          const stockLastClosePrice = landingStocks[symbol]?.info?.previousClose
+          const isGreen = stockCurrentPrice > stockLastClosePrice ? true : false
+          makeChartSmall('historical_data_1d', landingStocks[symbol], chartInstances.current[index], chartRefs.current[index], isGreen)
         }
       })
     }
@@ -67,6 +70,7 @@ export default function LandingPage() {
                 {landingStocksSymbols?.slice(0, 3)?.map((eachSymbol, index) => (
                   <div className="landing-stock-tab" key={eachSymbol}>
                     <p>{landingStocks?.[eachSymbol]?.name}</p>
+                    <p>{landingStocks?.[eachSymbol]?.currentPrice}</p>
                     <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[index] = el}></canvas>
                   </div>
                 ))}
@@ -76,6 +80,7 @@ export default function LandingPage() {
                 {landingStocksSymbols?.slice(3, 6)?.map((eachSymbol, index) => (
                   <div className="landing-stock-tab" key={eachSymbol}>
                     <p>{landingStocks?.[eachSymbol]?.name}</p>
+                    <p>{landingStocks?.[eachSymbol]?.currentPrice.toFixed(2)}</p>
                     <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[index + 3] = el}></canvas>
                   </div>
                 ))}

@@ -3,12 +3,15 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 
 Chart.register(annotationPlugin);
 
-export const makeChart = (period, stock, chartInstance, chartRef) => {
+export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
     if (chartInstance.current) {
         chartInstance.current.destroy()
     }
     const ctx = chartRef.current.getContext('2d')
     const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
+    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim()
+    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim() 
+    const chartColor = isGreen ? themeGreen: themeRed
     let annotationValue
 
     if (period === 'historical_data_1d') {
@@ -28,7 +31,7 @@ export const makeChart = (period, stock, chartInstance, chartRef) => {
             labels: Array(stock[period]?.length).fill(''),
             datasets: [{
                 data: stock[period],
-                borderColor: themeGreen,
+                borderColor: chartColor,
                 fill: false,
             }]
         },
@@ -51,7 +54,7 @@ export const makeChart = (period, stock, chartInstance, chartRef) => {
                             type: 'line',
                             yMin: annotationValue,
                             yMax: annotationValue,
-                            borderColor: 'rgba(75, 192, 192, 0.4)',
+                            borderColor: lightGrey,
                             borderWidth: 2,
                             borderDash: [6, 6],
                             label: {
@@ -69,7 +72,7 @@ export const makeChart = (period, stock, chartInstance, chartRef) => {
 
 
 
-export const makeChartSmall = (period, stock, chartInstance, chartRef) => {
+export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) => {
     if (chartInstance && chartInstance.current) {
         chartInstance.current.destroy()
     }
@@ -79,6 +82,9 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef) => {
 
     const ctx = chartRef.getContext('2d')
     const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
+    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim()
+    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim() 
+    const chartColor = isGreen ? themeGreen: themeRed
     let annotationValue
 
     if (period === 'historical_data_1d') {
@@ -98,7 +104,7 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef) => {
             labels: Array(stock[period]?.length).fill(''),
             datasets: [{
                 data: stock[period],
-                borderColor: themeGreen,
+                borderColor: chartColor,
                 fill: false,
             }]
         },
@@ -121,7 +127,7 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef) => {
                             type: 'line',
                             yMin: annotationValue,
                             yMax: annotationValue,
-                            borderColor: 'rgba(75, 192, 192, 0.4)',
+                            borderColor: lightGrey,
                             borderWidth: 2,
                             borderDash: [6, 6],
                             label: {
