@@ -9,6 +9,7 @@ import Chart from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
 
 Chart.register(annotationPlugin);
+import { makeChart } from "../Helper/Helper";
 
 export default function SearchPage() {
     const nav = useNavigate()
@@ -64,64 +65,12 @@ export default function SearchPage() {
         window.scrollTo(0, 0)
     }, [nav, dispatch, searchInput, user])
 
-    const makeChart = (period) => {
-        if (chartInstance.current) {
-            chartInstance.current.destroy()
-        }
-        const ctx = chartRef.current.getContext('2d')
-        const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
-        chartInstance.current = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: Array(stock[period]?.length).fill(''),
-                datasets: [{
-                    data: stock[period],
-                    borderColor: themeGreen,
-                    fill: false,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: { display: false },
-                    y: { display: false }
-                },
-                elements: {
-                    point: { radius: 0 }
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: false },
-                    annotation: {
-                        annotations: {
-                            line1: {
-                                type: 'line',
-                                yMin: stockPreviousClosePrice,
-                                yMax: stockPreviousClosePrice,
-                                borderColor: 'rgba(75, 192, 192, 0.4)',
-                                borderWidth: 2,
-                                borderDash: [6, 6],
-                                label: {
-                                    content: 'Previous Close',
-                                    enabled: true,
-                                    position: 'end'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        })
-        setIsLoading(false)
-    }
-
+    // chart
     useEffect(() => {
-        if (stock && chartRef.current) {
-            // console.log("Stock data:", stock)
-            makeChart(chartPeriod)
+        if (stock?.historical_data_1d && chartRef.current) {
+            makeChart(chartPeriod, stock, chartInstance, chartRef)
         }
-    }, [stock])
+    }, [stock, chartPeriod])
 
     if (isLoading) {
         return <Loading />
