@@ -35,7 +35,7 @@ app.register_blueprint(stock_routes, url_prefix='/api/stocks')
 app.register_blueprint(list_routes, url_prefix='/api/lists')
 app.register_blueprint(news_routes, url_prefix='/api/news')
 db.init_app(app)
-Migrate(app, db)
+migrate = Migrate(app, db)  # Ensure Flask-Migrate is properly initialized
 
 # Application Security
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -45,10 +45,9 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 # we won't be using a buildpack when we deploy to Heroku.
 # Therefore, we need to make sure that in production any
 # request made over http is redirected to https.
-# Well.........
 @app.before_request
 def https_redirect():
-    if os.environ.get('FLASK_ENV') == 'production':
+    if os.environ.get('FLASK_DEBUG') == '0':  # Updated to use FLASK_DEBUG
         if request.headers.get('X-Forwarded-Proto') == 'http':
             url = request.url.replace('http://', 'https://', 1)
             code = 301
@@ -60,9 +59,8 @@ def inject_csrf_token(response):
     response.set_cookie(
         'csrf_token',
         generate_csrf(),
-        secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
-        samesite='Strict' if os.environ.get(
-            'FLASK_ENV') == 'production' else None,
+        secure=True if os.environ.get('FLASK_DEBUG') == '0' else False,  # Updated to use FLASK_DEBUG
+        samesite='Strict' if os.environ.get('FLASK_DEBUG') == '0' else None,  # Updated to use FLASK_DEBUG
         httponly=True)
     return response
 
