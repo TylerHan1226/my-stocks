@@ -54,7 +54,7 @@ def getOneStock(symbol):
         current_price = history_dict[-1].get('Close', None)
     
     # Fetch data with appropriate intervals
-    historical_data_1d = stock.history(period="1d", interval="1h")['Close'].dropna().tolist()  # Hourly data for 1 day
+    historical_data_1d = stock.history(period="1d", interval="5m")['Close'].dropna().tolist()  # Hourly data for 1 day
     historical_data_1wk = stock.history(period="1wk", interval="1d")['Close'].dropna().tolist()  # Daily data for 1 week
     historical_data_1mo = stock.history(period="1mo", interval="1d")['Close'].dropna().tolist()  # Daily data for 1 month
     historical_data_3mo = stock.history(period="3mo", interval="1d")['Close'].dropna().tolist()  # Daily data for 3 months
@@ -110,7 +110,7 @@ def getMultipleStocks():
             current_price = stock_info.get('regularMarketPrice', None)
 
         # Fetch historical data for 1 day
-        historical_data_1d = stock.history(period="1d", interval="1h")['Close'].dropna().tolist()  # Hourly data for 1 day
+        historical_data_1d = stock.history(period="1d", interval="5m")['Close'].dropna().tolist()  # Hourly data for 1 day
 
         # Create a dictionary to return
         stock_data = {
