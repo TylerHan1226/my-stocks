@@ -2,6 +2,7 @@ FROM python:3.9.18-alpine3.18
 
 RUN apk add build-base
 RUN apk add postgresql-dev gcc python3-dev musl-dev
+RUN apk add --update nodejs npm
 
 ARG FLASK_APP
 ARG FLASK_ENV
@@ -16,14 +17,15 @@ WORKDIR /var/www
 
 COPY requirements.txt .
 
-RUN python -m venv venv
-RUN . venv/bin/activate && pip install -r requirements.txt
-RUN . venv/bin/activate && pip install psycopg2
-RUN . venv/bin/activate && pip install email-validator
-RUN . venv/bin/activate && pip install requests
+# Install dependencies from requirements.txt
+RUN pip install -r requirements.txt
+RUN pip check
 
 COPY . .
 
-RUN . venv/bin/activate && flask db upgrade
-RUN . venv/bin/activate && flask seed all
-CMD . venv/bin/activate && gunicorn app:app
+# Install chart.js and chartjs-plugin-annotation using npm
+RUN npm install chart.js chartjs-plugin-annotation
+
+RUN flask db upgrade
+RUN flask seed all
+CMD gunicorn app:app
