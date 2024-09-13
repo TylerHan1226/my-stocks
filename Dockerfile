@@ -19,7 +19,7 @@ COPY requirements.txt .
 # Create and activate virtual environment, then install dependencies
 RUN python -m venv venv
 RUN . venv/bin/activate && pip install --upgrade pip
-RUN . venv/bin/activate && pip install -r requirements.txt
+RUN . venv/bin/activate && pip install -r requirements.txt --retries 5 --timeout 30
 RUN . venv/bin/activate && pip check
 
 # Copy the rest of the application code
