@@ -2,7 +2,7 @@ import "./LandingPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllMyListsThunk } from "../../redux/list";
+import { getAllMyListsThunk, getAllMyStocksThunk, getAllStocksInListThunk } from "../../redux/list";
 import { getMultipleStocksThunk } from "../../redux/stock";
 import Chart from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -26,6 +26,7 @@ export default function LandingPage() {
   useEffect(() => {
     dispatch(getAllMyListsThunk())
     dispatch(getMultipleStocksThunk(landingStocksSymbols))
+    dispatch(getAllMyStocksThunk())
   }, [dispatch, user])
 
   useEffect(() => {
@@ -47,19 +48,28 @@ export default function LandingPage() {
   return (
     <section className="page-container">
       <section className="page-content-container">
-        <h1 className="page-title">Landing</h1>
-
         <section className="landing-container">
 
           {user &&
             <div className="landing-content">
-              <h2>My List</h2>
-              {lists?.map((eachList) => (
-                <div key={eachList?.id}>
-                  <p>{eachList?.list_name}: {eachList?.stock_symbol}</p>
-                </div>
-              ))}
+              <div className="landing-gainer-loser-container">
+                <h2>My Top Gainers</h2>
+                {lists?.map((eachList) => (
+                  <div key={eachList?.id}>
+                    <p>{eachList?.list_name}: {eachList?.stock_symbol}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="landing-gainer-loser-container">
+                <h2>My Top Losers</h2>
+                {lists?.map((eachList) => (
+                  <div key={eachList?.id}>
+                    <p>{eachList?.list_name}: {eachList?.stock_symbol}</p>
+                  </div>
+                ))}
+              </div>
             </div>
+
           }
 
           <section className="landing-content">
@@ -85,7 +95,7 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              
+
             </div>
           </section>
 

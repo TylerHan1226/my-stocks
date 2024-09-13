@@ -70,7 +70,7 @@ export default function SearchPage() {
     }, [nav, dispatch, searchInput, user])
 
     // chart
-    const isGreen = stockCurrentPrice > stockPreviousClosePrice ? true : false
+    const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
     useEffect(() => {
         if (stock?.historical_data_1d && chartRef.current) {
             makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
