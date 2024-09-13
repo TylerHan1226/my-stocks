@@ -45,22 +45,28 @@ export const removeList = (removedList) => ({
 // }
 
 export const getAllMyListsThunk = () => async (dispatch) => {
-        const res = await fetch('/api/lists/')
-        if (!res.ok) {
-            throw new Error('Failed to fetch lists')
-        }
-        const data = await res.json()
-        dispatch(loadAllMyLists(data))
-        return data
-}
-export const getAllStocksInListThunk = (list_id) => async (dispatch) => {
-    const res = await fetch (`/api/lists/${list_id}/stocks`)
+    const res = await fetch('/api/lists/')
     if (!res.ok) {
-        throw new Error('Failed to fetch stocks in the list')
+        throw new Error('Failed to fetch lists')
     }
     const data = await res.json()
-    dispatch(loadAllStockInList(data))
+    dispatch(loadAllMyLists(data))
     return data
+}
+export const getAllStocksInListThunk = (list_id) => async (dispatch) => {
+    try {
+        const res = await fetch(`/api/lists/${list_id}/stocks`)
+        if (!res.ok) {
+            throw new Error(`Failed to fetch stocks in the list: ${res.statusText}`)
+        }
+        const data = await res.json()
+        dispatch(loadAllStockInList(data))
+        return data
+    } catch (error) {
+        console.error('Error fetching stocks: ', error)
+        throw error
+    }
+
 }
 export const addListThunk = (newListData) => async (dispatch) => {
     // can receive object {"list_name": listName, "stock_symbol": stockSymbol}
@@ -83,7 +89,7 @@ export const addListThunk = (newListData) => async (dispatch) => {
 }
 export const updateListThunk = (updatedListData, listId) => async (dispatch) => {
     const res = await fetch(`/api/lists/${listId}/update`, {
-        method: 'PUT', 
+        method: 'PUT',
         body: updatedListData
     })
     if (!res.ok) {
@@ -99,7 +105,7 @@ export const updateListNamesThunk = (updatedListNameData, selectedListName) => a
         formData.append(key, updatedListNameData[key]);
     }
     const res = await fetch(`/api/lists/${selectedListName}/edit-name`, {
-        method: 'PUT', 
+        method: 'PUT',
         body: formData
     })
     if (!res.ok) {
@@ -142,21 +148,21 @@ function listReducer(state = initialState, action) {
             return { ...state, ...action.payload }
         }
         case ADD_LIST: {
-            return { ...state, ...action.payload}
+            return { ...state, ...action.payload }
         }
         case UPDATE_LIST: {
-            return {...state, ...action.payload}
+            return { ...state, ...action.payload }
         }
         case UPDATE_LIST_NAMES: {
-            return {...state, ...action.payload}
+            return { ...state, ...action.payload }
         }
         case REMOVE_STOCK: {
-            const deleteState = {...state}
+            const deleteState = { ...state }
             delete deleteState[action.removedStock]
             return deleteState
         }
         case REMOVE_LIST: {
-            const deleteState = {...state}
+            const deleteState = { ...state }
             delete deleteState[action.removedList]
             return deleteState
         }

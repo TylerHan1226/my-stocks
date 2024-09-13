@@ -1,7 +1,6 @@
 FROM python:3.9.18-alpine3.18
 
 RUN apk add build-base
-
 RUN apk add postgresql-dev gcc python3-dev musl-dev
 
 ARG FLASK_APP
@@ -17,13 +16,14 @@ WORKDIR /var/www
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
-RUN pip install psycopg2
-RUN pip install email-validator
-RUN pip install requests
+RUN python -m venv venv
+RUN . venv/bin/activate && pip install -r requirements.txt
+RUN . venv/bin/activate && pip install psycopg2
+RUN . venv/bin/activate && pip install email-validator
+RUN . venv/bin/activate && pip install requests
 
 COPY . .
 
-RUN flask db upgrade
-RUN flask seed all
-CMD gunicorn app:app
+RUN . venv/bin/activate && flask db upgrade
+RUN . venv/bin/activate && flask seed all
+CMD . venv/bin/activate && gunicorn app:app
