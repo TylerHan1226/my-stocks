@@ -21,6 +21,7 @@ RUN pip install -r requirements.txt
 RUN pip install psycopg2
 RUN pip install email-validator
 RUN pip install requests
+RUN pip check
 
 COPY . .
 

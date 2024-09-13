@@ -44,7 +44,7 @@ export const makeChart = (period, stock, chartInstance, chartRef) => {
             },
             plugins: {
                 legend: { display: false },
-                tooltip: { enabled: false },
+                tooltip: { enabled: true },
                 annotation: {
                     annotations: {
                         line1: {
