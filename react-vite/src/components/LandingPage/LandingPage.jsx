@@ -18,9 +18,26 @@ export default function LandingPage() {
   const landingStocks = useSelector(state => state.stocks?.multiple_stocks)
   const chartRefs = useRef([])
   const chartInstances = useRef([])
-
-  // console.log('lists ==>', lists)
-  // console.log('landingStocks ==>', landingStocks)
+  const allMyStocks = useSelector(state => state.lists?.stocks_data)
+  
+  const allStockSymbols = new Set()
+  lists?.forEach(ele => {
+    allStockSymbols.add(ele.stock_symbol)
+  })
+  const allStockSymbolList = Array.from(allStockSymbols)
+  // get top gainers and losers
+  const myTopGainers = [];
+  const myTopLosers = [];
+  if (allMyStocks) {
+    allStockSymbolList.forEach(ele => {
+      if (allMyStocks[ele]) {
+        allMyStocks[ele].current_price > allMyStocks[ele].open ? myTopGainers.push(allMyStocks[ele]) : myTopLosers.push(allMyStocks[ele]);
+      }
+    });
+  }
+  myTopGainers.sort((a, b) => b.current_price - b.open - (a.current_price - a.open));
+  console.log('myTopGainers ==>', myTopGainers);
+  console.log('myTopLosers ==>', myTopLosers);
 
   const landingStocksSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"]
   useEffect(() => {
@@ -54,17 +71,17 @@ export default function LandingPage() {
             <div className="landing-content">
               <div className="landing-gainer-loser-container">
                 <h2>My Top Gainers</h2>
-                {lists?.map((eachList) => (
-                  <div key={eachList?.id}>
-                    <p>{eachList?.list_name}: {eachList?.stock_symbol}</p>
+                {myTopGainers?.map((eachList) => (
+                  <div key={eachList?.ticker}>
+                    <p>{eachList?.ticker}: {eachList?.current_price.toFixed(2)}</p>
                   </div>
                 ))}
               </div>
               <div className="landing-gainer-loser-container">
                 <h2>My Top Losers</h2>
-                {lists?.map((eachList) => (
-                  <div key={eachList?.id}>
-                    <p>{eachList?.list_name}: {eachList?.stock_symbol}</p>
+                {myTopLosers?.map((eachList) => (
+                  <div key={eachList?.ticker}>
+                    <p>{eachList?.ticker}: {eachList?.current_price.toFixed(2)}</p>
                   </div>
                 ))}
               </div>
@@ -80,7 +97,7 @@ export default function LandingPage() {
                 {landingStocksSymbols?.slice(0, 3)?.map((eachSymbol, index) => (
                   <div className="landing-stock-tab" key={eachSymbol}>
                     <p>{landingStocks?.[eachSymbol]?.name}</p>
-                    <p>{landingStocks?.[eachSymbol]?.currentPrice}</p>
+                    <p>{landingStocks?.[eachSymbol]?.currentPrice.toFixed(2)}</p>
                     <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[index] = el}></canvas>
                   </div>
                 ))}
@@ -100,8 +117,11 @@ export default function LandingPage() {
           </section>
 
           <div className="landing-content">
-            <h2>News</h2>
+            <h2>Market News</h2>
+            <h2>MyNews</h2>
           </div>
+
+
 
         </section>
 

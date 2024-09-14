@@ -55,7 +55,6 @@ def get_all_stocks_for_user(list_name):
             "name": stock_info.get("shortName", "N/A"),
             "info": stock_info,
             "current_price": current_price
-
         }
         stocks_data[eachSymbol] = stock_data
 
