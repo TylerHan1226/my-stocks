@@ -107,6 +107,7 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) 
                 data: stock[period],
                 borderColor: chartColor,
                 fill: false,
+                borderWidth: 2,
             }]
         },
         options: {
@@ -129,7 +130,7 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) 
                             yMin: annotationValue,
                             yMax: annotationValue,
                             borderColor: lightGrey,
-                            borderWidth: 2,
+                            borderWidth: 1,
                             borderDash: [6, 6],
                             label: {
                                 content: 'Annotation Line',
