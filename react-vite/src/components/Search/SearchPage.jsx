@@ -63,9 +63,9 @@ export default function SearchPage() {
         if (!user) {
             return nav('/')
         }
-        setIsLoading(true)
+        // setIsLoading(true)
         dispatch(getOneStockThunk(searchInput))
-            // .then(() => setIsLoading(false))
+            .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
     }, [nav, dispatch, searchInput, user])
 
@@ -73,9 +73,10 @@ export default function SearchPage() {
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
     useEffect(() => {
         if (stock?.historical_data_1d && chartRef.current) {
-            makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
-            setIsLoading(false)
+            makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen, setIsLoading)
+            // setIsLoading(false)
         }
+        
     }, [chartPeriod, stock, chartInstance, chartRef, isGreen])
 
     if (isLoading) {
