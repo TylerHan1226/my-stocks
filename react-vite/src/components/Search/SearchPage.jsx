@@ -65,7 +65,7 @@ export default function SearchPage() {
         }
         setIsLoading(true)
         dispatch(getOneStockThunk(searchInput))
-            .then(() => setIsLoading(false))
+            // .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
     }, [nav, dispatch, searchInput, user])
 
@@ -74,6 +74,7 @@ export default function SearchPage() {
     useEffect(() => {
         if (stock?.historical_data_1d && chartRef.current) {
             makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
+            setIsLoading(false)
         }
     }, [chartPeriod, stock, chartInstance, chartRef, isGreen])
 
