@@ -1,32 +1,36 @@
 FROM python:3.9.18-alpine3.18
 
-RUN apk add build-base
-RUN apk add postgresql-dev gcc python3-dev musl-dev
-RUN apk add --update nodejs npm
+# Install necessary packages
+RUN apk add --no-cache build-base postgresql-dev gcc python3-dev musl-dev nodejs npm
 
+# Set environment variables
 ARG FLASK_APP
-ARG FLASK_ENV
+ARG FLASK_DEBUG
 ARG DATABASE_URL
 ARG SCHEMA
 ARG SECRET_KEY
-# ARG S3_BUCKET
-# ARG S3_KEY
-# ARG S3_SECRET
 
+# Set working directory
 WORKDIR /var/www
 
+# Copy requirements.txt and install dependencies
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
-RUN pip install psycopg2
-RUN pip install email-validator
-RUN pip install requests
-RUN pip check
+# Create and activate virtual environment, then install dependencies
+RUN python -m venv venv
+RUN . venv/bin/activate && pip install --upgrade pip
+RUN . venv/bin/activate && pip install -r requirements.txt --retries 5 --timeout 30
+RUN . venv/bin/activate && pip check
 
+# Copy the rest of the application code
 COPY . .
 
+# Install chart.js and chartjs-plugin-annotation using npm
 RUN npm install chart.js chartjs-plugin-annotation
 
-RUN flask db upgrade
-RUN flask seed all
-CMD gunicorn app:app
+# Run database migrations and seed data
+RUN . venv/bin/activate && flask db upgrade
+RUN . venv/bin/activate && flask seed all
+
+# Set the command to run the application
+CMD . venv/bin/activate && gunicorn app:app
