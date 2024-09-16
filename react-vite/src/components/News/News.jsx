@@ -34,8 +34,9 @@ export default function News() {
     }
 
     return (
-        <div className="page-container">
-            <h1>News</h1>
+        <section className="page-container">
+            <section className='page-content-container'>
+            <h1 className="page-title">News</h1>
             <div className="news-container">
                 {
                     news?.map(ele => (
@@ -64,7 +65,7 @@ export default function News() {
                             <button className="news-btns" onClick={() => handlePrevPage()}>Previous</button>
                         )
                     }
-                  {[1, 2, 3, 4, 5].map(pageNumber => (
+                    {[1, 2, 3, 4, 5].map(pageNumber => (
                         <button
                             key={pageNumber}
                             className={`news-btns ${currentPage === pageNumber ? 'active' : ''}`}
@@ -80,7 +81,7 @@ export default function News() {
                     }
                 </div>
             </div>
-
-        </div>
+            </section>
+        </section>
     )
 }

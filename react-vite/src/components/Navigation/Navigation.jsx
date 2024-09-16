@@ -2,14 +2,15 @@ import "./Navigation.css";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
-
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import SearchModal from "../Search/SearchModal";
+
 import { GiReceiveMoney } from "react-icons/gi";
-import { TbCheckupList } from "react-icons/tb";
+import { ImNewspaper } from "react-icons/im";
 import { FaSearch } from "react-icons/fa";
+import { IoListOutline } from "react-icons/io5";
 
 
 export default function Navigation() {
@@ -38,7 +39,10 @@ export default function Navigation() {
                 />
               </div>
               <NavLink to="/my_lists">
-                <TbCheckupList className="nav-user-action-icon nav-list-icon" />
+                <IoListOutline className="nav-user-action-icon nav-list-icon" />
+              </NavLink>
+              <NavLink to="/news/1">
+                <ImNewspaper className="nav-user-action-icon nav-list-icon" />
               </NavLink>
             </section>
             <ProfileButton />

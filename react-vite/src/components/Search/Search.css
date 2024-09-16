@@ -3,7 +3,11 @@
     width: 1200px;
     margin: 0 auto 0 auto;
 }
-
+.search-info-about-container {
+    display: flex;
+    flex-direction: row;
+    gap: 160px;
+}
 .search-info-boxes {
     /* border: green 1px solid; */
     display: flex;
@@ -51,4 +55,41 @@
     width: 33%;
     display: flex;
     flex-direction: column;
+}
+
+.stock-chart-container {
+    /* border: 1px solid orange; */
+    margin: 4px 0 36px 0;
+}
+.stock-sparkline-chart {
+    /* border: 1px solid blue; */
+    margin: 0 auto 0 auto;
+    max-width: 900px;
+    min-width: 900px;
+    max-height: 420px;
+    min-height: 420px;
+}
+
+.stock-chart-btn-container {
+    /* border: 1px solid red; */
+    width: 900px;
+    margin: 24px auto 0 auto;
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+    justify-content: center;
+    align-items: center;
+}
+.stock-chart-btns {
+    color: var(--theme-green);
+    border-radius: 24px;
+    background-color: black;
+    border: none;
+    width: 80px;
+    height: 24px;
+}
+.stock-chart-btns:hover {
+    cursor: pointer;
+    background-color: var(--dark-green);
+    color: white;
 }

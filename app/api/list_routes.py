@@ -48,16 +48,63 @@ def get_all_stocks_for_user(list_name):
         except AttributeError:
             # If fast_info is not available, use the last closing price from info
             current_price = stock_info.get('regularMarketPrice', None)
-
+        # Fetch historical data for 1 day
+        historical_data_1d = stock.history(period="1d", interval="5m")['Close'].dropna().tolist()  # Hourly data for 1 day
 
         stock_data = {
             "ticker": eachSymbol,
             "name": stock_info.get("shortName", "N/A"),
             "info": stock_info,
-            "current_price": current_price
-
+            "current_price": current_price,
+            "historical_data_1d": historical_data_1d
         }
         stocks_data[eachSymbol] = stock_data
+
+    return jsonify({
+        "user_id": current_user.id,
+        "stocks_data": stocks_data
+    })
+
+
+# Get all stocks of all lists
+# /api/lists/all-stocks
+@list_routes.route('/all-stocks', methods=['GET'])
+@login_required
+def get_all_stocks_of_all_lists():
+    # Fetch all lists for the current user
+    my_lists = MyList.query.filter_by(user_id=current_user.id).all()
+    
+    if not my_lists:
+        return jsonify({"error": "No lists found for the current user"}), 404
+
+    stocks_data = {}
+    symbols = [my_list.stock_symbol for my_list in my_lists]
+    for symbol in symbols:
+        stock = yf.Ticker(symbol)
+        stock_info = stock.info
+        if not stock_info:
+            stocks_data[symbol] = {"error": "Stock not found"}
+            continue
+
+        # Get the current price
+        try:
+            current_price = stock.fast_info.get('lastPrice', None)
+        except AttributeError:
+            # If fast_info is not available, use the last closing price from info
+            current_price = stock_info.get('regularMarketPrice', None)
+
+        # Fetch historical data for 1 day
+        historical_data_1d = stock.history(period="1d", interval="5m")['Close'].dropna().tolist()  # Hourly data for 1 day
+
+        # Create a dictionary to return
+        stock_data = {
+            "ticker": symbol,
+            "name": stock_info.get("shortName", "N/A"),
+            "info": stock_info,
+            "currentPrice": current_price,
+            "historical_data_1d": historical_data_1d,
+        }
+        stocks_data[symbol] = stock_data
 
     return jsonify({
         "user_id": current_user.id,

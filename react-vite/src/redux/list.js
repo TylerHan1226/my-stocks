@@ -1,5 +1,6 @@
 export const LOAD_ALL_MY_LISTS = 'list/LOAD_ALL_MY_LISTS'
 export const LOAD_ALL_STOCK_INFO_UNDER_LIST = 'list/LOAD_ALL_STOCK_INFO_UNDER_LIST'
+export const LOAD_ALL_STOCKS = 'list/LOAD_ALL_STOCKS'
 export const ADD_LIST = 'list/ADD_LIST'
 export const UPDATE_LIST = 'list/UPDATE_LIST'
 export const UPDATE_LIST_NAMES = 'list/UPDATE_LIST_NAMES'
@@ -13,6 +14,10 @@ export const loadAllMyLists = (lists) => ({
 export const loadAllStockInList = (listStocks) => ({
     type: LOAD_ALL_STOCK_INFO_UNDER_LIST,
     payload: listStocks
+})
+export const loadAllStocks = (allStocks) => ({
+    type: LOAD_ALL_STOCKS,
+    payload: allStocks
 })
 export const addList = (newList) => ({
     type: ADD_LIST,
@@ -67,6 +72,15 @@ export const getAllStocksInListThunk = (list_id) => async (dispatch) => {
         throw error
     }
 
+}
+export const getAllMyStocksThunk = () => async (dispatch) => {
+    const res = await fetch('/api/lists/all-stocks')
+    if (!res.ok) {
+        throw new Error('Failed to fetch all stocks')
+    }
+    const data = await res.json()
+    dispatch(loadAllStocks(data))
+    return data
 }
 export const addListThunk = (newListData) => async (dispatch) => {
     // can receive object {"list_name": listName, "stock_symbol": stockSymbol}
@@ -145,6 +159,9 @@ function listReducer(state = initialState, action) {
             return { ...state, ...action.payload }
         }
         case LOAD_ALL_STOCK_INFO_UNDER_LIST: {
+            return { ...state, ...action.payload }
+        }
+        case LOAD_ALL_STOCKS: {
             return { ...state, ...action.payload }
         }
         case ADD_LIST: {

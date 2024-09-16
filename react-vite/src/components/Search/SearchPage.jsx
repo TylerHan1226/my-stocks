@@ -1,11 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useModal } from "../../context/Modal";
-
 import Loading from "../Loading/Loading";
 import { getOneStockThunk } from "../../redux/stock";
 import AddListModal from "../MyList/AddListModal";
+import Chart from 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+Chart.register(annotationPlugin);
+import { makeChart } from "../Helper/Helper";
 
 export default function SearchPage() {
     const nav = useNavigate()
@@ -14,7 +18,8 @@ export default function SearchPage() {
     const user = useSelector(state => state.session.user)
     const stock = useSelector(state => state.stocks)
     const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const chartRef = useRef(null)
+    const chartInstance = useRef(null)
 
     const stockName = stock?.name
     const stockSymbol = stock?.ticker
@@ -37,15 +42,21 @@ export default function SearchPage() {
     const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
     const stockYieldDailyReturn = (stock?.info?.ytdReturn * 100)?.toFixed(2)
     const stockNetAssets = stock?.info?.totalAssets
-    const stock50DAvg = stock?.info?.fiftyDayAverage.toFixed(2)
+    const stock50DAvg = stock?.info?.fiftyDayAverage?.toFixed(2)
     const stockDayHigh = stock?.info?.dayHigh?.toFixed(2)
-    const stockDayLow = stock?.info?.dayLow.toFixed(2)
+    const stockDayLow = stock?.info?.dayLow?.toFixed(2)
     const stock52WkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
+
+    const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />)
+    }
+
+    const handleChartPeriod = () => {
+        console.log('handleChartPeriod clicked!')
     }
 
     useEffect(() => {
@@ -53,24 +64,25 @@ export default function SearchPage() {
             return nav('/')
         }
         setIsLoading(true)
-        setError(null)
         dispatch(getOneStockThunk(searchInput))
             .then(() => setIsLoading(false))
-            .catch((err) => {
-                setIsLoading(false)
-                setError(err)
-            })
         window.scrollTo(0, 0)
     }, [nav, dispatch, searchInput, user])
+
+    // chart
+    const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
+    useEffect(() => {
+        if (stock?.historical_data_1d && chartRef.current) {
+            makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
+        }
+    }, [stock, chartPeriod])
 
     if (isLoading) {
         return <Loading />
     }
 
-    if (error || !stock || !Object.keys(stock).length) {
-        alert("Stock not found")
-        nav('/')
-    }
+    console.log('stock ==>', stock)
+
 
     return (
         <section className="page-container">
@@ -84,10 +96,48 @@ export default function SearchPage() {
                             ADD TO LIST
                         </button>
                     </div>
+                    <div className="stock-chart-container">
+                        <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
+                        <div className="stock-chart-btn-container">
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
+                                onClick={handleChartPeriod}>
+                                1D
+                            </button>
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
+                                onClick={handleChartPeriod}>
+                                1W
+                            </button>
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
+                                onClick={handleChartPeriod}>
+                                1M
+                            </button>
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
+                                onClick={handleChartPeriod}>
+                                3M
+                            </button>
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
+                                onClick={handleChartPeriod}>
+                                1Y
+                            </button>
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
+                                onClick={handleChartPeriod}>
+                                5Y
+                            </button>
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
+                                onClick={handleChartPeriod}>
+                                10Y
+                            </button>
+                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
+                                onClick={handleChartPeriod}>
+                                YTD
+                            </button>
+                        </div>
+                    </div>
+
                     <h2>About</h2>
                     <div className="search-info-boxes">
-                        <p className="font-size-20px">{stockBusSum}</p>
-                        <div className="search-info-texts-container">
+                        <p>{stockBusSum}</p>
+                        <div className="search-info-about-container">
                             {stockComOfficers?.length > 0 &&
                                 <p className="search-info-text">
                                     CEO: {stockComOfficers?.filter(ele => ele.title.includes("CEO"))[0]?.name}
@@ -205,5 +255,5 @@ export default function SearchPage() {
             </section>
 
         </section>
-    );
+    )
 }

@@ -2,7 +2,6 @@
 .news-container {
     width: 85%;
     margin: 24px auto 24px auto;
-    /* border: 1px solid blue; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,7 +12,6 @@
     width: 80%;
     display: flex;
     flex-direction: row;
-    /* height: 360px; */
 }
 
 .news-image {
@@ -27,7 +25,7 @@
 }
 
 .news-text {
-    color: rgb(190, 0, 0);
+    color: white;
 }
 
 .news-text-container {
@@ -40,7 +38,7 @@
 
 .news-readMore {
     color: white;
-    background-color: rgb(190, 0, 0, 0.5);
+    background-color: var(--them-green-dim);
     border-radius: 4px;
     padding: 12px;
     border: 0px solid black;
@@ -58,12 +56,13 @@
 }
 
 .news-btns.active {
-    background-color: rgb(190, 0, 0);
+    background-color: var(--dark-green);
     color: white;
 }
 
-/* .news-btns:hover {
-    box-shadow: 0 0 10px 2px rgb(225, 0, 0, 0.75);
-    background-color: rgb(235, 0, 0);
+.news-btns:hover,
+.news-readMore:hover {
+    box-shadow: 0 0 10px 2px var(--them-green-dim);
+    background-color: var(--dark-green);
     cursor: pointer;
-} */
+}

@@ -1,14 +1,52 @@
 
-.page-container {
-    padding: 68px;
-    /* margin-top: 12px; */
+.landing-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
-.page-title {
-    font-size: 36px;
+.landing-content {
+    width: 520px;
+    padding: 12px;
 }
 
-.page-content-container {
-    margin-top: 120px;
-    min-height: 500px;
+.landing-stocks-container {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+}
+.landing-stocks-3tab-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.landing-stock-tab {
+    width: 180px;
+    height: 200px;
+    margin: 0 16px 0 0;
+}
+.stock-sparkline-chart-small {
+    padding: 12px;
+    margin-top: 16px;
+    max-height: 80px;
+    min-height: 80px;
+    width: 180px;
+}
+
+.landing-stock-percentage-container {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    height: 18px;
+    align-items: center;
+}
+.landing-stock-text {
+    height: 42px;
+}
+.landing-stock-arrow {
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
