@@ -49,7 +49,7 @@ export default function SearchPage() {
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
 
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
-
+    console.log(setChartPeriod)
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />)
@@ -75,7 +75,7 @@ export default function SearchPage() {
         if (stock?.historical_data_1d && chartRef.current) {
             makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
         }
-    }, [stock, chartPeriod])
+    }, [chartPeriod, stock, chartInstance, chartRef, isGreen])
 
     if (isLoading) {
         return <Loading />

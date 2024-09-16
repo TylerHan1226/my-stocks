@@ -1,7 +1,6 @@
 import "./LandingPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { getAllMyListsThunk } from "../../redux/list";
 import { getMultipleStocksThunk } from "../../redux/stock";
 import Chart from 'chart.js/auto';
@@ -12,7 +11,7 @@ import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 Chart.register(annotationPlugin);
 
 export default function LandingPage() {
-  const nav = useNavigate()
+
   const dispatch = useDispatch()
   const user = useSelector(state => state.session.user)
   const lists = useSelector(state => state.lists?.My_Lists)
