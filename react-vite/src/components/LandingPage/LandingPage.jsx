@@ -2,7 +2,7 @@ import "./LandingPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllMyListsThunk, getAllMyStocksThunk, getAllStocksInListThunk } from "../../redux/list";
+import { getAllMyListsThunk } from "../../redux/list";
 import { getMultipleStocksThunk } from "../../redux/stock";
 import Chart from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -11,120 +11,143 @@ import { makeChartSmall } from "../Helper/Helper";
 Chart.register(annotationPlugin);
 
 export default function LandingPage() {
-  const nav = useNavigate()
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.session.user)
-  const lists = useSelector(state => state.lists?.My_Lists)
-  const landingStocks = useSelector(state => state.stocks?.multiple_stocks)
-  const chartRefs = useRef([])
-  const chartInstances = useRef([])
-  const allMyStocks = useSelector(state => state.lists?.stocks_data)
-  
-  const allStockSymbols = new Set()
-  lists?.forEach(ele => {
-    allStockSymbols.add(ele.stock_symbol)
-  })
-  const allStockSymbolList = Array.from(allStockSymbols)
+  const nav = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.session.user);
+  const lists = useSelector(state => state.lists?.My_Lists);
+  const landingStocks = useSelector(state => state.stocks?.multiple_stocks);
+  const chartRefs = useRef([]);
+  const chartInstances = useRef([]);
+  const prevAllMyStocksSymbolArr = useRef([]);
+
+  const allMyStocksSymbols = new Set(lists?.map(ele => ele.stock_symbol));
+  const allMyStocksSymbolArr = Array.from(allMyStocksSymbols);
+
+  console.log('allMyStocksSymbolArr ==>', allMyStocksSymbolArr);
+
+  const marketSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"];
+  const landingStocksSymbols = marketSymbols.concat(allMyStocksSymbolArr);
+
+  useEffect(() => {
+    dispatch(getAllMyListsThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+      if (user && JSON.stringify(prevAllMyStocksSymbolArr.current) !== JSON.stringify(allMyStocksSymbolArr)) {
+          console.log('landingStocksSymbols ==>', landingStocksSymbols);
+        dispatch(getMultipleStocksThunk(landingStocksSymbols));
+        prevAllMyStocksSymbolArr.current = allMyStocksSymbolArr;
+      }
+  }, [dispatch, user, allMyStocksSymbolArr, landingStocksSymbols]);
+
+  console.log('landingStocks ==>', landingStocks);
+
   // get top gainers and losers
   const myTopGainers = [];
   const myTopLosers = [];
-  if (allMyStocks) {
-    allStockSymbolList.forEach(ele => {
-      if (allMyStocks[ele]) {
-        allMyStocks[ele].current_price > allMyStocks[ele].open ? myTopGainers.push(allMyStocks[ele]) : myTopLosers.push(allMyStocks[ele]);
-      }
-    });
+  if (landingStocks && allMyStocksSymbolArr) {
+      allMyStocksSymbolArr.forEach(ele => {
+          const stock = landingStocks[ele]
+          if (stock.currentPrice > stock.info.previousClose) {
+            myTopGainers.push(stock)
+          } else {
+            myTopLosers.push(stock)
+          }
+      });
   }
-  myTopGainers.sort((a, b) => b.current_price - b.open - (a.current_price - a.open));
-  console.log('myTopGainers ==>', myTopGainers);
-  console.log('myTopLosers ==>', myTopLosers);
+  myTopGainers.sort((a, b) => a.currentPrice / (a.currentPrice - a.info.previousClose) - b.currentPrice / (b.currentPrice - b.info.previousClose))
+  myTopLosers.sort((a, b) => a.currentPrice / (a.currentPrice - a.info.previousClose) - b.currentPrice / (b.currentPrice - b.info.previousClose))
+  const myTopGainerSymbols = myTopGainers?.map(ele => ele?.ticker)?.slice(0, 3)
+  const myTopLoserSymbols = myTopLosers?.map(ele => ele?.ticker)?.slice(0, 3)
 
-  const landingStocksSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"]
-  useEffect(() => {
-    dispatch(getAllMyListsThunk())
-    dispatch(getMultipleStocksThunk(landingStocksSymbols))
-    dispatch(getAllMyStocksThunk())
-  }, [dispatch, user])
+  // Create Charts
+  const createChart = (symbol, index, chartIndex) => {
+    if (landingStocks[symbol]?.historical_data_1d && chartRefs.current[chartIndex]) {
+      if (!chartInstances.current[chartIndex]) {
+        chartInstances.current[chartIndex] = { current: null };
+      }
+      const stockCurrentPrice = landingStocks[symbol]?.currentPrice;
+      const stockLastClosePrice = landingStocks[symbol]?.info?.previousClose;
+      const isGreen = stockCurrentPrice > stockLastClosePrice;
+      makeChartSmall('historical_data_1d', landingStocks[symbol], chartInstances.current[chartIndex], chartRefs.current[chartIndex], isGreen);
+    }
+  };
 
   useEffect(() => {
     if (landingStocks) {
-      landingStocksSymbols.forEach((symbol, index) => {
-        if (landingStocks[symbol]?.historical_data_1d && chartRefs.current[index]) {
-          if (!chartInstances.current[index]) {
-            chartInstances.current[index] = { current: null }
-          }
-          const stockCurrentPrice = landingStocks[symbol]?.currentPrice
-          const stockLastClosePrice = landingStocks[symbol]?.info?.previousClose
-          const isGreen = stockCurrentPrice > stockLastClosePrice ? true : false
-          makeChartSmall('historical_data_1d', landingStocks[symbol], chartInstances.current[index], chartRefs.current[index], isGreen)
-        }
-      })
+
+      // Create charts for market symbols
+      marketSymbols.forEach((symbol, index) => {
+        createChart(symbol, index, index);
+      });
+  
+      // Create charts for top gainers
+      myTopGainerSymbols.forEach((symbol, index) => {
+        const chartIndex = marketSymbols.length + index;
+        createChart(symbol, index, chartIndex);
+      });
+  
+      // Create charts for top losers
+      myTopLoserSymbols.forEach((symbol, index) => {
+        const chartIndex = marketSymbols.length + myTopGainers.length + index;
+        createChart(symbol, index, chartIndex);
+      });
     }
-  }, [landingStocks])
+  }, [landingStocks, landingStocksSymbols, allMyStocksSymbolArr, myTopGainers, myTopLosers]);
+
+  const stockElement = (symbols, offset = 0) => {
+    return symbols?.map((eachSymbol, index) => {
+      const percentage = ((((landingStocks?.[eachSymbol]?.currentPrice - landingStocks?.[eachSymbol]?.info.previousClose)) / landingStocks?.[eachSymbol]?.info.previousClose) * 100).toFixed(2);
+      return (
+        <div className="landing-stock-tab" key={eachSymbol}>
+          <p>{landingStocks?.[eachSymbol]?.name}</p>
+          <p>{landingStocks?.[eachSymbol]?.currentPrice.toFixed(2)}</p>
+          <p>{percentage}%</p>
+          <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[offset + index] = el}></canvas>
+        </div>
+      );
+    });
+  }
+  
 
   return (
     <section className="page-container">
       <section className="page-content-container">
-        <section className="landing-container">
-
-          {user &&
+        {user ? (
+          <section className="landing-container">
             <div className="landing-content">
               <div className="landing-gainer-loser-container">
                 <h2>My Top Gainers</h2>
-                {myTopGainers?.map((eachList) => (
-                  <div key={eachList?.ticker}>
-                    <p>{eachList?.ticker}: {eachList?.current_price.toFixed(2)}</p>
-                  </div>
-                ))}
+                <div className="landing-stocks-3tab-container">
+                  {stockElement(myTopGainerSymbols, marketSymbols.length)}
+                </div>
               </div>
               <div className="landing-gainer-loser-container">
                 <h2>My Top Losers</h2>
-                {myTopLosers?.map((eachList) => (
-                  <div key={eachList?.ticker}>
-                    <p>{eachList?.ticker}: {eachList?.current_price.toFixed(2)}</p>
-                  </div>
-                ))}
+                <div className="landing-stocks-3tab-container">
+                  {stockElement(myTopLoserSymbols, marketSymbols.length + myTopGainers.length)}
+                </div>
               </div>
             </div>
-
-          }
-
-          <section className="landing-content">
-            <h2>Market</h2>
-            <div className="landing-stocks-container">
-
-              <div className="landing-stocks-3tab-container">
-                {landingStocksSymbols?.slice(0, 3)?.map((eachSymbol, index) => (
-                  <div className="landing-stock-tab" key={eachSymbol}>
-                    <p>{landingStocks?.[eachSymbol]?.name}</p>
-                    <p>{landingStocks?.[eachSymbol]?.currentPrice.toFixed(2)}</p>
-                    <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[index] = el}></canvas>
-                  </div>
-                ))}
+            <section className="landing-content">
+              <h2>Market</h2>
+              <div className="landing-stocks-container">
+                <div className="landing-stocks-3tab-container">
+                  {stockElement(marketSymbols.slice(0, 3))}
+                </div>
+                <div className="landing-stocks-3tab-container">
+                  {stockElement(marketSymbols.slice(3, 6), 3)}
+                </div>
               </div>
-
-              <div className="landing-stocks-3tab-container">
-                {landingStocksSymbols?.slice(3, 6)?.map((eachSymbol, index) => (
-                  <div className="landing-stock-tab" key={eachSymbol}>
-                    <p>{landingStocks?.[eachSymbol]?.name}</p>
-                    <p>{landingStocks?.[eachSymbol]?.currentPrice.toFixed(2)}</p>
-                    <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[index + 3] = el}></canvas>
-                  </div>
-                ))}
-              </div>
-
+            </section>
+            <div className="landing-content">
+              <h2>Market News</h2>
+              <h2>MyNews</h2>
             </div>
           </section>
-
-          <div className="landing-content">
-            <h2>Market News</h2>
-            <h2>MyNews</h2>
-          </div>
-
-
-
-        </section>
-
+        ) : (
+          <h2>Please Log In</h2>
+        )}
       </section>
     </section>
   );

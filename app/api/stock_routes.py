@@ -123,3 +123,5 @@ def getMultipleStocks():
         stocks_data[symbol] = stock_data
 
     return jsonify(stocks_data)
+
+

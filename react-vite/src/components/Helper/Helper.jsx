@@ -73,6 +73,7 @@ export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
 
 
 export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) => {
+    // console.log('Creating chart for symbol:', stock);
     if (chartInstance && chartInstance.current) {
         chartInstance.current.destroy()
     }
