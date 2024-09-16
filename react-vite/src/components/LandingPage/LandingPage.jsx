@@ -1,12 +1,13 @@
 import "./LandingPage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAllMyListsThunk } from "../../redux/list";
 import { getMultipleStocksThunk } from "../../redux/stock";
 import Chart from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { makeChartSmall } from "../Helper/Helper";
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
+import Loading from "../Loading/Loading";
 
 Chart.register(annotationPlugin);
 
@@ -21,6 +22,7 @@ export default function LandingPage() {
   const prevAllMyStocksSymbolArr = useRef([])
   const allMyStocksSymbols = new Set(lists?.map(ele => ele.stock_symbol))
   const allMyStocksSymbolArr = Array.from(allMyStocksSymbols)
+  const [isLoading, setIsLoading] = useState(true)
 
   const marketSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"]
   const landingStocksSymbols = marketSymbols.concat(allMyStocksSymbolArr)
@@ -30,25 +32,25 @@ export default function LandingPage() {
   }, [dispatch])
 
   useEffect(() => {
-      if (user && JSON.stringify(prevAllMyStocksSymbolArr.current) !== JSON.stringify(allMyStocksSymbolArr)) {
-          console.log('landingStocksSymbols ==>', landingStocksSymbols)
-        dispatch(getMultipleStocksThunk(landingStocksSymbols))
-        prevAllMyStocksSymbolArr.current = allMyStocksSymbolArr
-      }
+    if (user && JSON.stringify(prevAllMyStocksSymbolArr.current) !== JSON.stringify(allMyStocksSymbolArr)) {
+      console.log('landingStocksSymbols ==>', landingStocksSymbols)
+      dispatch(getMultipleStocksThunk(landingStocksSymbols))
+      prevAllMyStocksSymbolArr.current = allMyStocksSymbolArr
+    }
   }, [dispatch, user, allMyStocksSymbolArr, landingStocksSymbols])
 
   // get top gainers and losers
   const myTopGainers = []
   const myTopLosers = []
   if (landingStocks && allMyStocksSymbolArr) {
-      allMyStocksSymbolArr.forEach(ele => {
-          const stock = landingStocks[ele]
-          if (stock.currentPrice > stock.info.previousClose) {
-            myTopGainers.push(stock)
-          } else {
-            myTopLosers.push(stock)
-          }
-      })
+    allMyStocksSymbolArr.forEach(ele => {
+      const stock = landingStocks[ele]
+      if (stock.currentPrice > stock.info.previousClose) {
+        myTopGainers.push(stock)
+      } else {
+        myTopLosers.push(stock)
+      }
+    })
   }
   myTopGainers.sort((a, b) => a.currentPrice / (a.currentPrice - a.info.previousClose) - b.currentPrice / (b.currentPrice - b.info.previousClose))
   myTopLosers.sort((a, b) => a.currentPrice / (a.currentPrice - a.info.previousClose) - b.currentPrice / (b.currentPrice - b.info.previousClose))
@@ -72,20 +74,26 @@ export default function LandingPage() {
     if (landingStocks) {
       // Create charts for market symbols
       marketSymbols.forEach((symbol, index) => {
-        createChart(symbol, index, index);
+        createChart(symbol, index, index)
       });
       // Create charts for top gainers
       myTopGainerSymbols.forEach((symbol, index) => {
-        const chartIndex = marketSymbols.length + index;
-        createChart(symbol, index, chartIndex);
+        const chartIndex = marketSymbols.length + index
+        createChart(symbol, index, chartIndex)
       });
       // Create charts for top losers
       myTopLoserSymbols.forEach((symbol, index) => {
-        const chartIndex = marketSymbols.length + myTopGainers.length + index;
-        createChart(symbol, index, chartIndex);
-      });
+        const chartIndex = marketSymbols.length + myTopGainers.length + index
+        createChart(symbol, index, chartIndex)
+      })
+      setIsLoading(false)
     }
-  }, [landingStocks, landingStocksSymbols, allMyStocksSymbolArr, myTopGainers, myTopLosers]);
+    window.scrollTo(0, 0)
+  }, [landingStocks, landingStocksSymbols, allMyStocksSymbolArr, myTopGainers, myTopLosers])
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   const stockElement = (symbols, offset = 0) => {
     return symbols?.map((eachSymbol, index) => {
@@ -103,14 +111,14 @@ export default function LandingPage() {
       );
     });
   }
-  
+
 
   return (
     <section className="page-container">
       <section className="page-content-container">
-        {user ? (
+        
           <section className="landing-container">
-            <section className="landing-content">
+          {user && <section className="landing-content">
               <div className="landing-stocks-container">
                 <div className="">
                   <h2>My Top Gainers</h2>
@@ -125,14 +133,13 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-
-            </section>
+            </section>}
 
             <section className="landing-content">
               <h2>Market News</h2>
               <h2>MyNews</h2>
             </section>
-            
+
             <section className="landing-content">
               <h2>Market</h2>
               <div className="landing-stocks-container">
@@ -146,9 +153,6 @@ export default function LandingPage() {
             </section>
 
           </section>
-        ) : (
-          <h2>Please Log In</h2>
-        )}
       </section>
     </section>
   );

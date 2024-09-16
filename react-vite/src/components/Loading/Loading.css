@@ -28,7 +28,7 @@
     border-radius: inherit;
     background: var(--theme-green);
     box-shadow: -10px 0 12px 3px white;
-    animation: fillBar 1.5s linear forwards;
+    animation: fillBar 5s linear forwards;
 }
 
 @keyframes fillBar {

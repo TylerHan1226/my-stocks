@@ -30,14 +30,14 @@ def getOneStock(symbol):
     history = pd.DataFrame()
     years_of_history = 0
 
-        for period in periods:
-            try:
-                history = stock.history(period=period)
-                if isinstance(history, pd.DataFrame) and not history.empty:
-                    years_of_history = (history.index[-1] - history.index[0]).days / 365.25
-                    break
-            except Exception as e:
-                logger.error(f"Error fetching {period} history for {symbol}: {str(e)}")
+    for period in periods:
+        try:
+            history = stock.history(period=period)
+            if isinstance(history, pd.DataFrame) and not history.empty:
+                years_of_history = (history.index[-1] - history.index[0]).days / 365.25
+                break
+        except Exception as e:
+            logger.error(f"Error fetching {period} history for {symbol}: {str(e)}")
 
     if isinstance(history, pd.DataFrame) and not history.empty:
         history = history.reset_index()
