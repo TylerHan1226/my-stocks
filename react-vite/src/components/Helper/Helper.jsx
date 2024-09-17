@@ -111,7 +111,7 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) 
                 data: stock[period],
                 borderColor: chartColor,
                 fill: false,
-                borderWidth: 1.5,
+                borderWidth: 2,
             }]
         },
         options: {

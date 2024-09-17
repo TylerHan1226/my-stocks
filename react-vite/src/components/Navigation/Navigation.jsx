@@ -8,7 +8,7 @@ import SignupFormModal from "../SignupFormModal";
 import SearchModal from "../Search/SearchModal";
 
 import { GiReceiveMoney } from "react-icons/gi";
-import { ImNewspaper } from "react-icons/im";
+// import { ImNewspaper } from "react-icons/im";
 import { FaSearch } from "react-icons/fa";
 import { IoListOutline } from "react-icons/io5";
 
@@ -41,9 +41,9 @@ export default function Navigation() {
               <NavLink to="/my_lists">
                 <IoListOutline className="nav-user-action-icon nav-list-icon" />
               </NavLink>
-              <NavLink to="/news/1">
+              {/* <NavLink to="/news/1">
                 <ImNewspaper className="nav-user-action-icon nav-list-icon" />
-              </NavLink>
+              </NavLink> */}
             </section>
             <ProfileButton />
           </>

@@ -76,12 +76,12 @@ export default function LandingPage() {
       // Create charts for market symbols
       marketSymbols.forEach((symbol, index) => {
         createChart(symbol, index, index)
-      });
+      })
       // Create charts for top gainers
       myTopGainerSymbols.forEach((symbol, index) => {
         const chartIndex = marketSymbols.length + index
         createChart(symbol, index, chartIndex)
-      });
+      })
       // Create charts for top losers
       myTopLoserSymbols.forEach((symbol, index) => {
         const chartIndex = marketSymbols.length + myTopGainers.length + index
@@ -90,7 +90,17 @@ export default function LandingPage() {
       setIsLoading(false)
     }
     window.scrollTo(0, 0)
-  }, [landingStocks, landingStocksSymbols, allMyStocksSymbolArr, myTopGainers, myTopLosers])
+  }, [user, landingStocks, landingStocksSymbols, allMyStocksSymbolArr, myTopGainers, myTopLosers])
+
+  if (!user) {
+    return (
+      <section className="page-container">
+        <section className="page-content-container">
+        <h1>Please Log In to Start</h1>
+        </section>
+      </section>
+    )
+  }
 
   if (isLoading) {
     return <Loading />
