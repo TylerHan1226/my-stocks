@@ -27,7 +27,7 @@ export default function SearchPage() {
     const stockOpenPrice = stock?.info?.previousClose?.toFixed(2);
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d');
     const { setModalContent } = useModal();
-
+    console.log(setChartPeriod)
     const handleOpenModal = () => {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />);
     };
