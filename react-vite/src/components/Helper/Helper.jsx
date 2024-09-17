@@ -5,6 +5,8 @@ Chart.register(annotationPlugin);
 
 export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
     // Check if chartInstance.current exists and has a destroy method
+    console.log('chartInstance in makeChart ==>', chartInstance)
+    console.log('chartRef in makeChart ==>', chartRef)
     if (chartInstance.current && typeof chartInstance.current.destroy === 'function') {
         chartInstance.current.destroy()
     }
@@ -34,6 +36,7 @@ export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
                 data: stock[period],
                 borderColor: chartColor,
                 fill: false,
+                borderWidth: 3,
             }]
         },
         options: {
@@ -108,7 +111,7 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) 
                 data: stock[period],
                 borderColor: chartColor,
                 fill: false,
-                borderWidth: 2,
+                borderWidth: 1.5,
             }]
         },
         options: {

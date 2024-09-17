@@ -33,7 +33,14 @@
     min-height: 80px;
     width: 180px;
 }
-
+.stock-sparkline-chart-small:hover {
+    /* background-color: var(--theme-green); */
+    padding: 4px;
+    margin-top: 16px;
+    max-height: 80px;
+    min-height: 80px;
+    width: 180px;
+}
 .landing-stock-percentage-container {
     display: flex;
     flex-direction: row;

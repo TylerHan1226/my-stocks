@@ -8,6 +8,7 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 import { makeChartSmall } from "../Helper/Helper";
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 import Loading from "../Loading/Loading";
+import { NavLink } from "react-router-dom";
 
 Chart.register(annotationPlugin);
 
@@ -106,7 +107,9 @@ export default function LandingPage() {
             <p className={`landing-stock-text ${percentage > 0 ? 'is-green' : 'is-red'}`}>{percentage}%</p>
             {percentage > 0 ? <p className="is-green landing-stock-text"><GoTriangleUp className="landing-stock-arrow" /></p> : <p className="is-red landing-stock-text"><GoTriangleDown className="landing-stock-arrow" /></p>}
           </div>
-          <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[offset + index] = el}></canvas>
+          <NavLink to={`/search/${eachSymbol}`}>
+            <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[offset + index] = el}></canvas>
+          </NavLink>
         </div>
       );
     });

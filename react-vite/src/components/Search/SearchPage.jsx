@@ -63,6 +63,7 @@ export default function SearchPage() {
         if (!user) {
             return nav('/')
         }
+        setIsLoading(true)
         dispatch(getOneStockThunk(searchInput))
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
@@ -71,9 +72,10 @@ export default function SearchPage() {
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
     useEffect(() => {
         if (stock?.historical_data_1d && chartRef.current) {
+            console.log('Creating chart with data:', stock[chartPeriod])
             makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
         }
-    }, [chartPeriod, stock, chartInstance, chartRef, isGreen])
+    }, [chartPeriod, stock, chartInstance, chartRef, isGreen, isLoading])
 
     if (isLoading) {
         return <Loading />
