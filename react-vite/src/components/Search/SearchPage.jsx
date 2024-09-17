@@ -18,8 +18,8 @@ export default function SearchPage() {
     const user = useSelector(state => state.session.user)
     const stock = useSelector(state => state.stocks)
     const [isLoading, setIsLoading] = useState(true)
-    const chartRef = useRef([])
-    const chartInstance = useRef([])
+    const chartRef = useRef(null)
+    const chartInstance = useRef(null)
 
     const stockName = stock?.name
     const stockSymbol = stock?.ticker
@@ -63,27 +63,21 @@ export default function SearchPage() {
         if (!user) {
             return nav('/')
         }
-        // setIsLoading(true)
         dispatch(getOneStockThunk(searchInput))
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
     }, [nav, dispatch, searchInput, user])
 
-    // chart
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
     useEffect(() => {
         if (stock?.historical_data_1d && chartRef.current) {
-            makeChart('historical_data_1d', stock, chartInstance, chartRef, isGreen)
-            // setIsLoading(false)
+            makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
         }
-        
     }, [chartPeriod, stock, chartInstance, chartRef, isGreen])
 
     if (isLoading) {
         return <Loading />
     }
-
-    console.log('stock ==>', stock)
 
 
     return (

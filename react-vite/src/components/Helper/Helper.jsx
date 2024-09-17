@@ -4,14 +4,15 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 Chart.register(annotationPlugin);
 
 export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
-    if (chartInstance.current) {
+    // Check if chartInstance.current exists and has a destroy method
+    if (chartInstance.current && typeof chartInstance.current.destroy === 'function') {
         chartInstance.current.destroy()
     }
     const ctx = chartRef.current.getContext('2d')
     const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
     const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim()
-    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim() 
-    const chartColor = isGreen ? themeGreen: themeRed
+    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim()
+    const chartColor = isGreen ? themeGreen : themeRed
     let annotationValue
 
     if (period === 'historical_data_1d') {
@@ -73,7 +74,7 @@ export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
 
 
 export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) => {
-    // console.log('Creating chart for symbol:', stock);
+    // console.log('Creating chart for symbol:', stock)
     if (chartInstance && chartInstance.current) {
         chartInstance.current.destroy()
     }
