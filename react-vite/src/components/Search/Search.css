@@ -21,9 +21,14 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
-
 .search-info-text {
     font-size: 20px;
+}
+.stock-header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 12px 0;
 }
 .stock-page-action-btn-container {
     display: flex;
@@ -36,7 +41,7 @@
     background-color: black;
     border: 1px var(--theme-green) solid;
     color: white;
-    margin: 0 0 12px auto;
+    margin: 0 24px 0 auto;
 }
 
 .stock-page-action-btn:hover,
@@ -63,7 +68,7 @@
 }
 .stock-sparkline-chart {
     /* border: 1px solid blue; */
-    margin: 0 auto 0 auto;
+    margin: 20px auto 0 auto;
     max-width: 900px;
     min-width: 900px;
     max-height: 420px;
@@ -99,4 +104,19 @@
 .chart-btns-selected-red {
     background-color: var(--dark-red);
     color: white;
+}
+
+.stock-chart-price-container {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    height: 24px;
+    margin-left: 150px;
+}
+.stock-chart-arrow {
+    font-size: 36px;
+}
+.stock-chart-price-text {
+    font-size: 20px;
 }

@@ -7,6 +7,7 @@ import { getOneStockThunk } from "../../redux/stock";
 import AddListModal from "../MyList/AddListModal";
 import Chart from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 
 Chart.register(annotationPlugin);
 import { makeChart } from "../Helper/Helper";
@@ -47,6 +48,7 @@ export default function SearchPage() {
     const stockDayLow = stock?.info?.dayLow?.toFixed(2)
     const stock52WkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
+    const stockPercentage = (((stock?.currentPrice - stock?.info?.previousClose) / stock?.info?.previousClose) * 100).toFixed(2)
 
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
@@ -90,16 +92,31 @@ export default function SearchPage() {
     return (
         <section className="page-container">
             <section className="page-content-container">
+                <div className="stock-header-container">
                 <h1 className="page-title">{`${stockName} (${stockSymbol})`}</h1>
-                <section className="search-info-container">
-                    <div className="stock-page-action-btn-container">
-                        <button
+                <button
                             className="stock-page-action-btn"
                             onClick={handleOpenModal}>
                             ADD TO LIST
                         </button>
+                </div>
+
+                <section className="search-info-container">
+                    <div className="stock-page-action-btn-container">
+                    <div className="stock-chart-price-container">
+                            <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>{!isNaN(stockCurrentPrice) ? `${stockCurrentPrice}` : 'N/A'}</h2>
+                            <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>{`(${stockPercentage}%)`}</h2>
+                            {stockPercentage > 0 ?
+                                <p className="is-green">
+                                    <GoTriangleUp className="stock-chart-arrow" />
+                                </p> : <p className="is-red">
+                                    <GoTriangleDown className="stock-chart-arrow" />
+                                </p>}
+                        </div>
+
                     </div>
                     <div className="stock-chart-container">
+
                         <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
                         <div className="stock-chart-btn-container">
                             {['historical_data_1d', 'historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr', 'historical_data_ytd'].map(period => (
