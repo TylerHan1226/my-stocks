@@ -58,7 +58,6 @@ export default function SearchPage() {
     }
 
     const handleChartPeriod = (period) => {
-        console.log('period ==>', period)
         setChartPeriod(period)
     }
     const getButtonClass = (period) => {
@@ -79,7 +78,6 @@ export default function SearchPage() {
 
     useEffect(() => {
         if (stock?.historical_data_1d && chartRef.current) {
-            console.log('Creating chart with data:', stock[chartPeriod])
             makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
         }
     }, [chartPeriod, stock, chartInstance, chartRef, isGreen, isLoading])
@@ -88,168 +86,170 @@ export default function SearchPage() {
         return <Loading />
     }
 
-
     return (
         <section className="page-container">
-            <section className="page-content-container">
-                <div className="stock-header-container">
-                <h1 className="page-title">{`${stockName} (${stockSymbol})`}</h1>
-                <button
+            {Object.keys(stock).length > 0 ? (
+                <section className="page-content-container">
+                    <div className="stock-header-container">
+                        <h1 className="page-title">{`${stockName} (${stockSymbol})`}</h1>
+                        <button
                             className="stock-page-action-btn"
                             onClick={handleOpenModal}>
                             ADD TO LIST
                         </button>
-                </div>
-
-                <section className="search-info-container">
-                    <div className="stock-page-action-btn-container">
-                    <div className="stock-chart-price-container">
-                            <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>{!isNaN(stockCurrentPrice) ? `${stockCurrentPrice}` : 'N/A'}</h2>
-                            <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>{`(${stockPercentage}%)`}</h2>
-                            {stockPercentage > 0 ?
-                                <p className="is-green">
-                                    <GoTriangleUp className="stock-chart-arrow" />
-                                </p> : <p className="is-red">
-                                    <GoTriangleDown className="stock-chart-arrow" />
-                                </p>}
-                        </div>
-
                     </div>
-                    <div className="stock-chart-container">
-
-                        <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
-                        <div className="stock-chart-btn-container">
-                            {['historical_data_1d', 'historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr', 'historical_data_ytd'].map(period => (
-                                <button
-                                    key={period}
-                                    className={getButtonClass(period)}
-                                    onClick={() => handleChartPeriod(period)}>
-                                    {period.replace('historical_data_', '').toUpperCase()}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <h2>About</h2>
-                    <div className="search-info-boxes">
-                        <p>{stockBusSum}</p>
-                        <div className="search-info-about-container">
-                            {stockComOfficers?.length > 0 &&
-                                <p className="search-info-text">
-                                    CEO: {stockComOfficers?.filter(ele => ele.title.includes("CEO"))[0]?.name}
-                                </p>
-                            }
-                            {stockEmployeeNum?.length > 0 &&
-                                <p className="search-info-text">
-                                    Full-time Employees: {stockEmployeeNum}
-                                </p>
-                            }
-                            {stockHeadquarter?.length > 0 &&
-                                <p className="search-info-text">
-                                    Headquarters: {stockHeadquarter}
-                                </p>
-                            }
-                        </div>
-                    </div>
-                    <h2>Key Statistics</h2>
-                    <div className="search-info-boxes">
-                        <div className="search-info-texts-container">
-
-                            <div className="stock-info-column">
-                                <p className="search-info-text">
-                                    Current Price: {!isNaN(stockCurrentPrice) ? `${stockCurrentPrice}` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Previous close price: {!isNaN(stockPreviousClosePrice) ? `${stockPreviousClosePrice}` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Open price: {!isNaN(stockOpenPrice) ? `${stockOpenPrice}` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Bid: {!isNaN(stockBid)
-                                        ? (!isNaN(stockBidSize)
-                                            ? `${stockBid} x ${stockBidSize}`
-                                            : `${stockBid}`)
-                                        : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Ask: {!isNaN(stockAsk)
-                                        ? (!isNaN(stockAskSize)
-                                            ? `${stockAsk} x ${stockAskSize}`
-                                            : `${stockAsk}`)
-                                        : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    50-day average: {!isNaN(stock50DAvg) ? `${stock50DAvg}` : 'N/A'}
-                                </p>
-
-                            </div>
-
-                            <div className="stock-info-column">
-
-                                <p className="search-info-text">
-                                    Volume: {!isNaN(stockVolume)
-                                        ? (stockVolume > 1000000000000
-                                            ? `${(stockVolume / 1000000000000).toFixed(2)}T`
-                                            : stockVolume > 1000000000
-                                                ? `${(stockVolume / 1000000000).toFixed(2)}B`
-                                                : `${(stockVolume / 1000000).toFixed(2)}M`)
-                                        : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    High today: {!isNaN(stockDayHigh) ? `${stockDayHigh}` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Low today: {!isNaN(stockDayLow) ? `${stockDayLow}` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    52 Week high: {!isNaN(stock52WkHigh) ? `${stock52WkHigh}` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    52 Week low: {!isNaN(stock52WkLow) ? `${stock52WkLow}` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Market cap: {!isNaN(stockMarketCap) ? (stockMarketCap > 1000000000000
-                                        ? (stockMarketCap / 1000000000000)?.toFixed(2) + 'T'
-                                        : stockMarketCap > 1000000000
-                                            ? (stockMarketCap / 1000000000)?.toFixed(2) + 'B'
-                                            : (stockMarketCap / 1000000)?.toFixed(2) + 'M') : 'N/A'}
-                                </p>
-
-                            </div>
-
-                            <div className="stock-info-column">
-
-                                <p className="search-info-text">
-                                    Net Assets: {!isNaN(stockNetAssets) ? (stockNetAssets > 1000000000000
-                                        ? (stockNetAssets / 1000000000000)?.toFixed(2) + 'T'
-                                        : stockNetAssets > 1000000000
-                                            ? (stockNetAssets / 1000000000)?.toFixed(2) + 'B'
-                                            : (stockNetAssets / 1000000)?.toFixed(2) + 'M') : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Price-Earning ratio: {!isNaN(stockPERatio) ? `${stockPERatio}` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Forward Price-Earning ratio: {!isNaN(stockFwPERatio) ? `${stockFwPERatio}` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Dividend Yield: {!isNaN(stockDividendYield) ? `${stockDividendYield}%` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Yield: {!isNaN(stockYield) ? `${stockYield}%` : 'N/A'}
-                                </p>
-                                <p className="search-info-text">
-                                    Yield Daily Total Return: {!isNaN(stockYieldDailyReturn) ? `${stockYieldDailyReturn}%` : 'N/A'}
-                                </p>
-
+                    <section className="search-info-container">
+                        <div className="stock-page-action-btn-container">
+                            <div className="stock-chart-price-container">
+                                <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>{!isNaN(stockCurrentPrice) ? `${stockCurrentPrice}` : 'N/A'}</h2>
+                                <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>{`(${stockPercentage}%)`}</h2>
+                                {stockPercentage > 0 ?
+                                    <p className="is-green">
+                                        <GoTriangleUp className="stock-chart-arrow" />
+                                    </p> : <p className="is-red">
+                                        <GoTriangleDown className="stock-chart-arrow" />
+                                    </p>}
                             </div>
 
                         </div>
-                    </div>
+                        <div className="stock-chart-container">
+
+                            <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
+                            <div className="stock-chart-btn-container">
+                                {['historical_data_1d', 'historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr', 'historical_data_ytd'].map(period => (
+                                    <button
+                                        key={period}
+                                        className={getButtonClass(period)}
+                                        onClick={() => handleChartPeriod(period)}>
+                                        {period.replace('historical_data_', '').toUpperCase()}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <h2>About</h2>
+                        <div className="search-info-boxes">
+                            <p>{stockBusSum}</p>
+                            <div className="search-info-about-container">
+                                {stockComOfficers?.length > 0 &&
+                                    <p className="search-info-text">
+                                        CEO: {stockComOfficers?.filter(ele => ele.title.includes("CEO"))[0]?.name}
+                                    </p>
+                                }
+                                {stockEmployeeNum?.length > 0 &&
+                                    <p className="search-info-text">
+                                        Full-time Employees: {stockEmployeeNum}
+                                    </p>
+                                }
+                                {stockHeadquarter?.length > 0 &&
+                                    <p className="search-info-text">
+                                        Headquarters: {stockHeadquarter}
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                        <h2>Key Statistics</h2>
+                        <div className="search-info-boxes">
+                            <div className="search-info-texts-container">
+
+                                <div className="stock-info-column">
+                                    <p className="search-info-text">
+                                        Current Price: {!isNaN(stockCurrentPrice) ? `${stockCurrentPrice}` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Previous close price: {!isNaN(stockPreviousClosePrice) ? `${stockPreviousClosePrice}` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Open price: {!isNaN(stockOpenPrice) ? `${stockOpenPrice}` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Bid: {!isNaN(stockBid)
+                                            ? (!isNaN(stockBidSize)
+                                                ? `${stockBid} x ${stockBidSize}`
+                                                : `${stockBid}`)
+                                            : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Ask: {!isNaN(stockAsk)
+                                            ? (!isNaN(stockAskSize)
+                                                ? `${stockAsk} x ${stockAskSize}`
+                                                : `${stockAsk}`)
+                                            : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        50-day average: {!isNaN(stock50DAvg) ? `${stock50DAvg}` : 'N/A'}
+                                    </p>
+
+                                </div>
+
+                                <div className="stock-info-column">
+
+                                    <p className="search-info-text">
+                                        Volume: {!isNaN(stockVolume)
+                                            ? (stockVolume > 1000000000000
+                                                ? `${(stockVolume / 1000000000000).toFixed(2)}T`
+                                                : stockVolume > 1000000000
+                                                    ? `${(stockVolume / 1000000000).toFixed(2)}B`
+                                                    : `${(stockVolume / 1000000).toFixed(2)}M`)
+                                            : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        High today: {!isNaN(stockDayHigh) ? `${stockDayHigh}` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Low today: {!isNaN(stockDayLow) ? `${stockDayLow}` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        52 Week high: {!isNaN(stock52WkHigh) ? `${stock52WkHigh}` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        52 Week low: {!isNaN(stock52WkLow) ? `${stock52WkLow}` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Market cap: {!isNaN(stockMarketCap) ? (stockMarketCap > 1000000000000
+                                            ? (stockMarketCap / 1000000000000)?.toFixed(2) + 'T'
+                                            : stockMarketCap > 1000000000
+                                                ? (stockMarketCap / 1000000000)?.toFixed(2) + 'B'
+                                                : (stockMarketCap / 1000000)?.toFixed(2) + 'M') : 'N/A'}
+                                    </p>
+
+                                </div>
+
+                                <div className="stock-info-column">
+
+                                    <p className="search-info-text">
+                                        Net Assets: {!isNaN(stockNetAssets) ? (stockNetAssets > 1000000000000
+                                            ? (stockNetAssets / 1000000000000)?.toFixed(2) + 'T'
+                                            : stockNetAssets > 1000000000
+                                                ? (stockNetAssets / 1000000000)?.toFixed(2) + 'B'
+                                                : (stockNetAssets / 1000000)?.toFixed(2) + 'M') : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Price-Earning ratio: {!isNaN(stockPERatio) ? `${stockPERatio}` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Forward Price-Earning ratio: {!isNaN(stockFwPERatio) ? `${stockFwPERatio}` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Dividend Yield: {!isNaN(stockDividendYield) ? `${stockDividendYield}%` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Yield: {!isNaN(stockYield) ? `${stockYield}%` : 'N/A'}
+                                    </p>
+                                    <p className="search-info-text">
+                                        Yield Daily Total Return: {!isNaN(stockYieldDailyReturn) ? `${stockYieldDailyReturn}%` : 'N/A'}
+                                    </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+                </section>) : (
+                <section className="page-content-container">
+                    <h1 className="page-title">Stock Not Found</h1>
                 </section>
-            </section>
-
+            )}
         </section>
     )
 }
