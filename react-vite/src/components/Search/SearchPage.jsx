@@ -62,7 +62,7 @@ export default function SearchPage() {
     const getButtonClass = (period) => {
         const isSelected = chartPeriod === period;
         const colorClass = isGreen ? 'green' : 'red';
-        return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`;
+        return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
 
     useEffect(() => {
