@@ -13,6 +13,20 @@ stock_routes = Blueprint('stocks', __name__)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Function to calculate stock growth and percentage change
+def get_stock_growth(symbol, period):
+    stock = yf.Ticker(symbol)
+    data = stock.history(period=period)
+    if data.empty:
+        return None, None
+    
+    start_price = data['Close'].iloc[0]
+    end_price = data['Close'].iloc[-1]
+    growth = end_price - start_price
+    percentage_change = (growth / start_price) * 100
+    
+    return growth, percentage_change
+
 # get one specific stock
 # /api/stocks/<symbol>
 @stock_routes.route('/<symbol>')
@@ -61,11 +75,21 @@ def getOneStock(symbol):
     historical_data_1d = stock.history(period="1d", interval="5m")['Close'].dropna().tolist()  # Hourly data for 1 day
     historical_data_1wk = stock.history(period="5d", interval="1h")['Close'].dropna().tolist()  # Daily data for 1 week
     historical_data_1mo = stock.history(period="1mo", interval="1d")['Close'].dropna().tolist()  # Daily data for 1 month
-    historical_data_3mo = stock.history(period="3mo", interval="1d")['Close'].dropna().tolist()  # Daily data for 3 months
-    historical_data_1yr = stock.history(period="1y", interval="5d")['Close'].dropna().tolist()  # Monthly data for 1 year
-    historical_data_5yr = stock.history(period="5y", interval="1mo")['Close'].dropna().tolist()  # Monthly data for 5 years
-    historical_data_10yr = stock.history(period="10y", interval="1mo")['Close'].dropna().tolist()  # Monthly data for 10 years
+    historical_data_3mo = stock.history(period="3mo", interval="1h")['Close'].dropna().tolist()  # Daily data for 3 months
+    historical_data_1yr = stock.history(period="1y", interval="1d")['Close'].dropna().tolist()  # Monthly data for 1 year
+    historical_data_5yr = stock.history(period="5y", interval="1d")['Close'].dropna().tolist()  # Monthly data for 5 years
+    historical_data_10yr = stock.history(period="10y", interval="1d")['Close'].dropna().tolist()  # Monthly data for 10 years
     historical_data_ytd = stock.history(period="ytd", interval="1d")['Close'].dropna().tolist()  # Daily data for year-to-date
+
+    # Calculate stock growth and percentage change for different periods
+    periods_for_growth = ["1d", "5d", "1mo", "3mo", "1y", "5y", "10y", "ytd"]
+    stock_growth = {}
+    for period in periods_for_growth:
+        growth, percentage_change = get_stock_growth(symbol, period)
+        stock_growth[period] = {
+            "growth": growth,
+            "percentage_change": percentage_change
+        }
 
     # Create a dictionary to return
     stock_data = {
@@ -83,8 +107,8 @@ def getOneStock(symbol):
         "historical_data_5yr": historical_data_5yr,
         "historical_data_10yr": historical_data_10yr,
         "historical_data_ytd": historical_data_ytd,
+        "stock_growth": stock_growth,
     }
-    print(f"Fetched data for {symbol}: {stock_data}")
     return jsonify(stock_data)
 
 

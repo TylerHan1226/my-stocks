@@ -48,10 +48,12 @@ export default function SearchPage() {
     const stockDayLow = stock?.info?.dayLow?.toFixed(2)
     const stock52WkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
-    const stockPercentage = (((stock?.currentPrice - stock?.info?.previousClose) / stock?.info?.previousClose) * 100).toFixed(2)
+    const stockPriceChange = stock?.currentPrice - stock?.info?.previousClose
+    const stockPercentage = ((stockPriceChange / stock?.info?.previousClose) * 100).toFixed(2)
 
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
+    const isNoPeriod = !(Object.keys(stock).length && stock[chartPeriod])
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />)
@@ -62,11 +64,17 @@ export default function SearchPage() {
     }
     const getButtonClass = (period) => {
         const isSelected = chartPeriod === period
-        const periodIsGreen = stock[chartPeriod][0] < stock[chartPeriod][stock[chartPeriod].length - 1]
+        const periodIsGreen = !isNoPeriod ? stock[chartPeriod][0] < stock[chartPeriod][stock[chartPeriod].length - 1] : true
         const colorClass = periodIsGreen ? 'green' : 'red'
         return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
     
+    let periodPriceChange = 0
+    let periodPercentage = 0
+    if (chartPeriod !== 'historical_data_1d') {
+        periodPriceChange = stockCurrentPrice - stock[chartPeriod][0]
+        periodPercentage = (periodPriceChange / stock[chartPeriod][0]) * 100
+    }
 
     useEffect(() => {
         if (!user) {
@@ -80,7 +88,7 @@ export default function SearchPage() {
 
     useEffect(() => {
         if (Object.keys(stock).length > 0 && chartRef.current) {
-            const periodIsGreen = stock[chartPeriod][0] < stock[chartPeriod][stock[chartPeriod].length - 1]
+            const periodIsGreen = !isNoPeriod ? stock[chartPeriod][0] < stock[chartPeriod][stock[chartPeriod].length - 1] : true
             makeChart(chartPeriod, stock, chartInstance, chartRef, periodIsGreen)
         }
     }, [chartPeriod, stock, chartInstance, chartRef, isLoading])
@@ -95,6 +103,7 @@ export default function SearchPage() {
                 <section className="page-content-container">
                     <div className="stock-header-container">
                         <h1 className="page-title">{`${stockName} (${stockSymbol})`}</h1>
+                        <h1 className="page-title stock-page-title-price">${stockCurrentPrice}</h1>
                         <button
                             className="stock-page-action-btn"
                             onClick={handleOpenModal}>
@@ -104,8 +113,12 @@ export default function SearchPage() {
                     <section className="search-info-container">
                         <div className="stock-page-action-btn-container">
                             <div className="stock-chart-price-container">
-                                <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>{!isNaN(stockCurrentPrice) ? `${stockCurrentPrice}` : 'N/A'}</h2>
-                                <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>{`(${stockPercentage}%)`}</h2>
+                                <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>
+                                    {stockPriceChange > 0 ? `+${stockPriceChange.toFixed(2)}` : `${stockPriceChange.toFixed(2)}`}
+                                </h2>
+                                <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>
+                                    {`(${stockPercentage}%)`}
+                                </h2>
                                 {stockPercentage > 0 ?
                                     <p className="is-green">
                                         <GoTriangleUp className="stock-chart-arrow" />
@@ -113,7 +126,22 @@ export default function SearchPage() {
                                         <GoTriangleDown className="stock-chart-arrow" />
                                     </p>}
                             </div>
-
+                        </div>
+                        <div className="stock-page-action-btn-container">
+                            <div className="stock-chart-price-container">
+                                <h2 className={`stock-chart-price-text`}>
+                                    {periodPriceChange.toFixed(2)}
+                                </h2>
+                                <h2 className={`stock-chart-price-text`}>
+                                    {`(${periodPercentage.toFixed(2)}%)`}
+                                </h2>
+                                {stockPercentage > 0 ?
+                                    <p className="is-green">
+                                        <GoTriangleUp className="stock-chart-arrow" />
+                                    </p> : <p className="is-red">
+                                        <GoTriangleDown className="stock-chart-arrow" />
+                                    </p>}
+                            </div>
                         </div>
                         <div className="stock-chart-container">
 

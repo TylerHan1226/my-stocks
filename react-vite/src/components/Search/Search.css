@@ -30,6 +30,9 @@
     align-items: center;
     margin: 0 0 12px 0;
 }
+.stock-page-title-price {
+    margin: 0 0 0 24px;
+}
 .stock-page-action-btn-container {
     display: flex;
     flex-direction: row;
