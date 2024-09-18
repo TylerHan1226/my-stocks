@@ -30,7 +30,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     dispatch(getAllMyListsThunk())
-  }, [dispatch])
+  }, [dispatch, user])
 
   useEffect(() => {
     if (user && JSON.stringify(prevAllMyStocksSymbolArr.current) !== JSON.stringify(allMyStocksSymbolArr)) {

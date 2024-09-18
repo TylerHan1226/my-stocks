@@ -1,6 +1,5 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
-from .stocks.stocks import seed_stocks, undo_stocks
 from .my_lists import seed_my_lists, undo_my_lists
 
 from app.models.db import db, environment, SCHEMA
@@ -31,17 +30,3 @@ def undo():
     undo_my_lists()
     undo_users()
     # Add other undo functions here
-
-# pipenv shell flask seed stocks
-@seed_commands.command('stocks')
-def stock_seeder():
-    if environment == 'production':
-        undo_stocks()
-        # undo_markets()
-    seed_stocks()
-    # seed_markets()
-
-# pipenv shell flask seed undo-stocks
-@seed_commands.command('undo-stocks')
-def stock_unseeder():
-    undo_stocks()

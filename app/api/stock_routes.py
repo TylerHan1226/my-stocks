@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Stock
 import pandas as pd
 import yfinance as yf
 import datetime as dt
