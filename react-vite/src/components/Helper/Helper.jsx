@@ -4,9 +4,7 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 Chart.register(annotationPlugin);
 
 export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
-    // Check if chartInstance.current exists and has a destroy method
-    console.log('chartInstance in makeChart ==>', chartInstance)
-    console.log('chartRef in makeChart ==>', chartRef)
+
     if (chartInstance.current && typeof chartInstance.current.destroy === 'function') {
         chartInstance.current.destroy()
     }
@@ -20,7 +18,9 @@ export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
     if (period === 'historical_data_1d') {
         annotationValue = stock?.info?.previousClose
     } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr', 'historical_data_ytd'].includes(period)) {
-        annotationValue = stock[period]?.[0]
+        if (stock[period] && stock[period].length > 0) {
+            annotationValue = stock[period][0]
+        }
     }
 
     if (annotationValue === undefined || annotationValue === null) {

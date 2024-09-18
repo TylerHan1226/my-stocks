@@ -49,14 +49,15 @@ export default function SearchPage() {
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
 
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
-    console.log(setChartPeriod)
+
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />)
     }
 
-    const handleChartPeriod = () => {
-        console.log('handleChartPeriod clicked!')
+    const handleChartPeriod = (period) => {
+        console.log('period ==>', period)
+        setChartPeriod(period)
     }
 
     useEffect(() => {
@@ -97,36 +98,68 @@ export default function SearchPage() {
                     <div className="stock-chart-container">
                         <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
                         <div className="stock-chart-btn-container">
-                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
-                                onClick={handleChartPeriod}>
+                            <button className={`stock-chart-btns
+                            ${isGreen && chartPeriod !== 'historical_data_1d' ? 'is-green' : ''}
+                            ${!isGreen && chartPeriod !== 'historical_data_1d' ? 'is-red' : ''}
+                            ${isGreen && chartPeriod == 'historical_data_1d' ? 'chart-btns-selected-green' : ''}
+                            ${!isGreen && chartPeriod == 'historical_data_1d' ? 'chart-btns-selected-red' : ''}`}
+                                onClick={() => handleChartPeriod('historical_data_1d')}>
                                 1D
                             </button>
-                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
-                                onClick={handleChartPeriod}>
+                            <button className={`stock-chart-btns
+                            ${isGreen && chartPeriod !== 'historical_data_1wk' ? 'is-green' : ''}
+                            ${!isGreen && chartPeriod !== 'historical_data_1wk' ? 'is-red' : ''}
+                            ${isGreen && chartPeriod == 'historical_data_1wk' ? 'chart-btns-selected-green' : ''}
+                            ${!isGreen && chartPeriod == 'historical_data_1wk' ? 'chart-btns-selected-red' : ''}`}
+                                onClick={() => handleChartPeriod('historical_data_1wk')}>
                                 1W
                             </button>
-                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
-                                onClick={handleChartPeriod}>
+                            <button className={`stock-chart-btns
+                            ${isGreen && chartPeriod !== 'historical_data_1mo' ? 'is-green' : ''}
+                            ${!isGreen && chartPeriod !== 'historical_data_1mo' ? 'is-red' : ''}
+                            ${isGreen && chartPeriod == 'historical_data_1mo' ? 'chart-btns-selected-green' : ''}
+                            ${!isGreen && chartPeriod == 'historical_data_1mo' ? 'chart-btns-selected-red' : ''}`}
+                                onClick={() => handleChartPeriod('historical_data_1mo')}>
                                 1M
                             </button>
-                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
-                                onClick={handleChartPeriod}>
+                            <button className={`stock-chart-btns
+                            ${isGreen && chartPeriod !== 'historical_data_3mo' ? 'is-green' : ''}
+                            ${!isGreen && chartPeriod !== 'historical_data_3mo' ? 'is-red' : ''}
+                            ${isGreen && chartPeriod == 'historical_data_3mo' ? 'chart-btns-selected-green' : ''}
+                            ${!isGreen && chartPeriod == 'historical_data_3mo' ? 'chart-btns-selected-red' : ''}`}
+                                onClick={() => handleChartPeriod('historical_data_3mo')}>
                                 3M
                             </button>
-                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
-                                onClick={handleChartPeriod}>
+                            <button className={`stock-chart-btns
+                            ${isGreen && chartPeriod !== 'historical_data_1yr' ? 'is-green' : ''}
+                            ${!isGreen && chartPeriod !== 'historical_data_1yr' ? 'is-red' : ''}
+                            ${isGreen && chartPeriod == 'historical_data_1yr' ? 'chart-btns-selected-green' : ''}
+                            ${!isGreen && chartPeriod == 'historical_data_1yr' ? 'chart-btns-selected-red' : ''}`}
+                                onClick={() => handleChartPeriod('historical_data_1yr')}>
                                 1Y
                             </button>
-                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
-                                onClick={handleChartPeriod}>
+                            <button className={`stock-chart-btns
+                            ${isGreen && chartPeriod !== 'historical_data_5yr' ? 'is-green' : ''}
+                            ${!isGreen && chartPeriod !== 'historical_data_5yr' ? 'is-red' : ''}
+                            ${isGreen && chartPeriod == 'historical_data_5yr' ? 'chart-btns-selected-green' : ''}
+                            ${!isGreen && chartPeriod == 'historical_data_5yr' ? 'chart-btns-selected-red' : ''}`}
+                                onClick={() => handleChartPeriod('historical_data_5yr')}>
                                 5Y
                             </button>
-                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
-                                onClick={handleChartPeriod}>
+                            <button className={`stock-chart-btns
+                            ${isGreen && chartPeriod !== 'historical_data_10yr' ? 'is-green' : ''}
+                            ${!isGreen && chartPeriod !== 'historical_data_10yr' ? 'is-red' : ''}
+                            ${isGreen && chartPeriod == 'historical_data_10yr' ? 'chart-btns-selected-green' : ''}
+                            ${!isGreen && chartPeriod == 'historical_data_10yr' ? 'chart-btns-selected-red' : ''}`}
+                                onClick={() => handleChartPeriod('historical_data_10yr')}>
                                 10Y
                             </button>
-                            <button className={`stock-chart-btns ${isGreen ? 'is-green' : 'is-red'}`}
-                                onClick={handleChartPeriod}>
+                            <button className={`stock-chart-btns
+                            ${isGreen && chartPeriod !== 'historical_data_ytd' ? 'is-green' : ''}
+                            ${!isGreen && chartPeriod !== 'historical_data_ytd' ? 'is-red' : ''}
+                            ${isGreen && chartPeriod == 'historical_data_ytd' ? 'chart-btns-selected-green' : ''}
+                            ${!isGreen && chartPeriod == 'historical_data_ytd' ? 'chart-btns-selected-red' : ''}`}
+                                onClick={() => handleChartPeriod('historical_data_ytd')}>
                                 YTD
                             </button>
                         </div>

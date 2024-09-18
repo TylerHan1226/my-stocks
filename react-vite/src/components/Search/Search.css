@@ -90,6 +90,13 @@
 }
 .stock-chart-btns:hover {
     cursor: pointer;
+    color: white;
+}
+.chart-btns-selected-green {
     background-color: var(--dark-green);
+    color: white;
+}
+.chart-btns-selected-red {
+    background-color: var(--dark-red);
     color: white;
 }
