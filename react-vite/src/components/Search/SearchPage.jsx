@@ -61,10 +61,12 @@ export default function SearchPage() {
         setChartPeriod(period)
     }
     const getButtonClass = (period) => {
-        const isSelected = chartPeriod === period;
-        const colorClass = isGreen ? 'green' : 'red';
+        const isSelected = chartPeriod === period
+        const periodIsGreen = stock[chartPeriod][0] < stock[chartPeriod][stock[chartPeriod].length - 1]
+        const colorClass = periodIsGreen ? 'green' : 'red'
         return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
+    
 
     useEffect(() => {
         if (!user) {
@@ -77,10 +79,11 @@ export default function SearchPage() {
     }, [nav, dispatch, searchInput, user])
 
     useEffect(() => {
-        if (stock?.historical_data_1d && chartRef.current) {
-            makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
+        if (Object.keys(stock).length > 0 && chartRef.current) {
+            const periodIsGreen = stock[chartPeriod][0] < stock[chartPeriod][stock[chartPeriod].length - 1]
+            makeChart(chartPeriod, stock, chartInstance, chartRef, periodIsGreen)
         }
-    }, [chartPeriod, stock, chartInstance, chartRef, isGreen, isLoading])
+    }, [chartPeriod, stock, chartInstance, chartRef, isLoading])
 
     if (isLoading) {
         return <Loading />
