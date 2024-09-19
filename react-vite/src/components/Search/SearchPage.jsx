@@ -70,7 +70,7 @@ export default function SearchPage() {
         const colorClass = periodIsGreen ? 'green' : 'red'
         return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
-
+    // Get period history based on trading days
     const stockHistory = stock?.history
     const periodTDMapping = {
         'historical_data_1wk': -5,
@@ -85,7 +85,13 @@ export default function SearchPage() {
     const stockPeriodPriceChange = hasHistory ? stockCurrentPrice - stockPeriodHistory[0]?.Close : null
     const stockPeriodPricePercentage = hasHistory ? (stockPeriodPriceChange / stockPeriodHistory[0]?.Close) * 100 : null
     
-    // const stockYTDPriceChange = stockCurrentPrice - 
+    // const currentDate = new Date().toISOString().split('T')[0]
+    // const currentYear = currentDate?.split('-')[0]
+    // const firstTDData = stockHistory?.filter(ele => ele?.Date.includes(currentYear))[0]
+    // const stockYTDPriceChange = stockCurrentPrice - firstTDData?.Close
+    // const stockYTDPricePercentage = (stockYTDPriceChange / firstTDData?.Close) * 100
+    // console.log('firstTDData ==>', firstTDData)
+    // console.log('stockYTDPricePercentage ==>', stockYTDPricePercentage)
 
     useEffect(() => {
         if (!user) {
