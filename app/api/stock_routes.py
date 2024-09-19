@@ -60,12 +60,13 @@ def getOneStock(symbol):
     # Fetch data with appropriate intervals
     historical_data_1d = stock.history(period="1d", interval="5m")['Close'].dropna().tolist()  # Hourly data for 1 day
     historical_data_1wk = stock.history(period="5d", interval="1h")['Close'].dropna().tolist()  # Daily data for 1 week
-    historical_data_1mo = stock.history(period="1mo", interval="1d")['Close'].dropna().tolist()  # Daily data for 1 month
+    historical_data_1mo = stock.history(period="1mo", interval="1h")['Close'].dropna().tolist()  # Daily data for 1 month
     historical_data_3mo = stock.history(period="3mo", interval="1h")['Close'].dropna().tolist()  # Daily data for 3 months
+    historical_data_6mo = stock.history(period="6mo", interval="1d")['Close'].dropna().tolist()  # Daily data for 3 months
     historical_data_1yr = stock.history(period="1y", interval="1d")['Close'].dropna().tolist()  # Monthly data for 1 year
-    historical_data_5yr = stock.history(period="5y", interval="1d")['Close'].dropna().tolist()  # Monthly data for 5 years
-    historical_data_10yr = stock.history(period="10y", interval="1d")['Close'].dropna().tolist()  # Monthly data for 10 years
-    historical_data_ytd = stock.history(period="ytd", interval="1d")['Close'].dropna().tolist()  # Daily data for year-to-date
+    historical_data_5yr = stock.history(period="5y", interval="5d")['Close'].dropna().tolist()  # Monthly data for 5 years
+    historical_data_10yr = stock.history(period="10y", interval="5d")['Close'].dropna().tolist()  # Monthly data for 10 years
+    # historical_data_ytd = stock.history(period="ytd", interval="1d")['Close'].dropna().tolist()  # Daily data for year-to-date
 
     # Create a dictionary to return
     stock_data = {
@@ -79,10 +80,11 @@ def getOneStock(symbol):
         "historical_data_1wk": historical_data_1wk,
         "historical_data_1mo": historical_data_1mo,
         "historical_data_3mo": historical_data_3mo,
+        "historical_data_6mo": historical_data_6mo,
         "historical_data_1yr": historical_data_1yr,
         "historical_data_5yr": historical_data_5yr,
         "historical_data_10yr": historical_data_10yr,
-        "historical_data_ytd": historical_data_ytd,
+        # "historical_data_ytd": historical_data_ytd,
     }
     return jsonify(stock_data)
 

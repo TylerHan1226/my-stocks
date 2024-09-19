@@ -17,7 +17,7 @@ export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
 
     if (period === 'historical_data_1d') {
         annotationValue = stock?.info?.previousClose
-    } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr', 'historical_data_ytd'].includes(period)) {
+    } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr'].includes(period)) {
         if (stock[period] && stock[period].length > 0) {
             annotationValue = stock[period][0]
         }
@@ -25,7 +25,11 @@ export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
 
     if (annotationValue === undefined || annotationValue === null) {
         console.error('Annotation value is not defined')
-        return
+        annotationValue = 0
+    }
+    // Add currentPrice to the end of the stock[period] array
+    if (stock[period] && stock.currentPrice !== undefined) {
+        stock[period].push(stock.currentPrice);
     }
 
     chartInstance.current = new Chart(ctx, {
@@ -94,13 +98,17 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) 
 
     if (period === 'historical_data_1d') {
         annotationValue = stock?.info?.previousClose
-    } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr', 'historical_data_ytd'].includes(period)) {
+    } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr'].includes(period)) {
         annotationValue = stock[period]?.[0]
     }
 
     if (annotationValue === undefined || annotationValue === null) {
         console.error('Annotation value is not defined')
         return
+    }
+    // Add currentPrice to the end of the stock[period] array
+    if (stock[period] && stock.currentPrice !== undefined) {
+        stock[period].push(stock.currentPrice);
     }
 
     chartInstance.current = new Chart(ctx, {

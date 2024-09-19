@@ -51,10 +51,27 @@ export default function SearchPage() {
     const stockPriceChange = stock?.currentPrice - stock?.info?.previousClose
     const stockPercentage = ((stockPriceChange / stock?.info?.previousClose) * 100).toFixed(2)
 
-
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
     const isNoPeriod = !(Object.keys(stock).length && stock[chartPeriod])
+    
+
+    // Get period history based on trading days
+    const stockHistory = stock?.history
+    const periodTDMapping = {
+        'historical_data_1wk': -5,
+        'historical_data_1mo': -21,
+        'historical_data_3mo': -63,
+        'historical_data_6mo': -126,
+        'historical_data_1yr': -252,
+        'historical_data_5yr': -1260,
+        'historical_data_10yr': -2520
+    }
+    const stockPeriodHistory = stockHistory?.slice(periodTDMapping[chartPeriod] || 0)
+    const hasHistory = stockPeriodHistory?.length > 0
+    const stockPeriodPriceChange = hasHistory ? stockCurrentPrice - stockPeriodHistory[0]?.Open : null
+    const stockPeriodPricePercentage = hasHistory ? (stockPeriodPriceChange / stockPeriodHistory[0]?.Open) * 100 : null
+    const periodIsGreen = !isNoPeriod ? stockPeriodPriceChange > 0 : false
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
@@ -66,32 +83,9 @@ export default function SearchPage() {
     }
     const getButtonClass = (period) => {
         const isSelected = chartPeriod === period
-        const periodIsGreen = !isNoPeriod ? stock[chartPeriod][0] < stock[chartPeriod][stock[chartPeriod].length - 1] : true
-        const colorClass = periodIsGreen ? 'green' : 'red'
+        const colorClass = chartPeriod == 'historical_data_1d' ? isGreen ? 'green' : 'red' : periodIsGreen ? 'green' : 'red'
         return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
-    // Get period history based on trading days
-    const stockHistory = stock?.history
-    const periodTDMapping = {
-        'historical_data_1wk': -5,
-        'historical_data_1mo': -21,
-        'historical_data_3mo': -63,
-        'historical_data_1yr': -252,
-        'historical_data_5yr': -1260,
-        'historical_data_10yr': -2520
-    }
-    const stockPeriodHistory = stockHistory?.slice(periodTDMapping[chartPeriod] || 0)
-    const hasHistory = stockPeriodHistory?.length > 0
-    const stockPeriodPriceChange = hasHistory ? stockCurrentPrice - stockPeriodHistory[0]?.Close : null
-    const stockPeriodPricePercentage = hasHistory ? (stockPeriodPriceChange / stockPeriodHistory[0]?.Close) * 100 : null
-    
-    // const currentDate = new Date().toISOString().split('T')[0]
-    // const currentYear = currentDate?.split('-')[0]
-    // const firstTDData = stockHistory?.filter(ele => ele?.Date.includes(currentYear))[0]
-    // const stockYTDPriceChange = stockCurrentPrice - firstTDData?.Close
-    // const stockYTDPricePercentage = (stockYTDPriceChange / firstTDData?.Close) * 100
-    // console.log('firstTDData ==>', firstTDData)
-    // console.log('stockYTDPricePercentage ==>', stockYTDPricePercentage)
 
     useEffect(() => {
         if (!user) {
@@ -105,8 +99,12 @@ export default function SearchPage() {
 
     useEffect(() => {
         if (Object.keys(stock).length > 0 && chartRef.current) {
-            const periodIsGreen = !isNoPeriod ? stock[chartPeriod][0] < stock[chartPeriod][stock[chartPeriod].length - 1] : true
-            makeChart(chartPeriod, stock, chartInstance, chartRef, periodIsGreen)
+            if (chartPeriod == 'historical_data_1d') {
+                makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
+            } else {
+                makeChart(chartPeriod, stock, chartInstance, chartRef, periodIsGreen)
+            }
+            
         }
     }, [chartPeriod, stock, chartInstance, chartRef, isLoading])
 
@@ -150,7 +148,7 @@ export default function SearchPage() {
                                     {`(${stockPercentage}%)`}
                                 </p>
                             </div>
-                            {chartPeriod !== 'historical_data_1d' && chartPeriod !== 'historical_data_ytd' &&
+                            {chartPeriod !== 'historical_data_1d' &&
                                 <div className="stock-chart-period-price">
                                     {stockPeriodPriceChange > 0 ?
                                         <p className="is-green">
@@ -170,13 +168,16 @@ export default function SearchPage() {
                         <div className="stock-chart-container">
                             <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
                             <div className="stock-chart-btn-container">
-                                {['historical_data_1d', 'historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr', 'historical_data_ytd'].map(period => (
-                                    stock[period].length > 0 && (
+                                {['historical_data_1d', 'historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr'].map(period => (
+                                    stock[period]?.length > 0 && (
                                         <button
                                             key={period}
                                             className={getButtonClass(period)}
                                             onClick={() => handleChartPeriod(period)}>
-                                            {period.replace('historical_data_', '').toUpperCase()}
+                                            {period.replace('historical_data_', '').toUpperCase() == '10YR' ?
+                                                period.replace('historical_data_', '').toUpperCase().slice(0, 3) :
+                                                period.replace('historical_data_', '').toUpperCase().slice(0, 2)
+                                            }
                                         </button>
                                     )
                                 ))}
