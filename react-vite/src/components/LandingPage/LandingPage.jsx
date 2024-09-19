@@ -9,6 +9,7 @@ import { makeChartSmall } from "../Helper/Helper";
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 import Loading from "../Loading/Loading";
 import { NavLink } from "react-router-dom";
+import { getMarketNewsThunk } from "../../redux/news";
 
 Chart.register(annotationPlugin);
 
@@ -23,13 +24,17 @@ export default function LandingPage() {
   const prevAllMyStocksSymbolArr = useRef([])
   const allMyStocksSymbols = new Set(lists?.map(ele => ele.stock_symbol))
   const allMyStocksSymbolArr = Array.from(allMyStocksSymbols)
+  const marketNews = useSelector(state => state.news?.market_news)
   const [isLoading, setIsLoading] = useState(true)
 
   const marketSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"]
   const landingStocksSymbols = marketSymbols.concat(allMyStocksSymbolArr)
 
+  console.log('marketNews ==>', marketNews)
+
   useEffect(() => {
     dispatch(getAllMyListsThunk())
+    dispatch(getMarketNewsThunk())
   }, [dispatch, user])
 
   useEffect(() => {

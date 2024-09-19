@@ -4,10 +4,10 @@ import json, requests
 
 news_routes = Blueprint('news', __name__)
 
-# get all the news
-# /api/news/<int:page>
-@news_routes.route('/<int:page>')
-def all_news(page):
+# get market news
+# /api/news/market
+@news_routes.route('/market')
+def all_news():
     api_key = "4780de20273648b0b968dbc62a48cc20"
     url = "https://newsapi.org/v2/everything"
     # ?q=yahoo%20finance&language=en&sortBy=publishedAt&apiKey=4780de20273648b0b968dbc62a48cc20
@@ -21,11 +21,7 @@ def all_news(page):
     response = requests.get(url, params=params)
     data = response.json()['articles']
     filtered_data = [article for article in data if article['title'] != '[Removed]' and article['urlToImage'] is not None and len(article['urlToImage']) != 0 and 'biztoc.com' not in article['url']]
-    item_per_page = 5
-    start = (page - 1) * item_per_page
-    end = start + item_per_page
-    paginated_data = filtered_data[start:end]
 
-    return jsonify(paginated_data), 200
+    return jsonify(filtered_data), 200
 
 

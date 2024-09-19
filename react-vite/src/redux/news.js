@@ -1,15 +1,15 @@
 
 // Action Creators
-export const LOAD_ALL_NEWS = 'news/LOAD_ALL_NEWS'
+export const LOAD_MARKET_NEWS = 'news/LOAD_MARKET_NEWS'
 
-export const loadAllNews = (news) => ({
-    type: LOAD_ALL_NEWS,
+export const loadMarketNews = (news) => ({
+    type: LOAD_MARKET_NEWS,
     news
 })
 
-//Get All News Thunk
-export const getAllNewsThunk = (page) => async (dispatch) => {
-    const res = await fetch(`/api/news/${page}`)
+//Get Market News Thunk
+export const getMarketNewsThunk = () => async (dispatch) => {
+    const res = await fetch(`/api/news/market`)
     if (!res.ok) {
         throw new Error('Failed to fetch news')
     }
@@ -17,14 +17,14 @@ export const getAllNewsThunk = (page) => async (dispatch) => {
     if (news.errors) {
         return news.errors
     }
-    dispatch(loadAllNews(news))
+    dispatch(loadMarketNews(news))
     return news
 }
 
 export const newsReducer = (state = {}, action) => {
     switch (action.type) {
-        case LOAD_ALL_NEWS: {
-            return {...state, "News": action.news}
+        case LOAD_MARKET_NEWS: {
+            return {...state, "market_news": action.news}
         }
         default:
             return state
