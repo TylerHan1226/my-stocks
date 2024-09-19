@@ -51,9 +51,11 @@ export default function SearchPage() {
     const stockPriceChange = stock?.currentPrice - stock?.info?.previousClose
     const stockPercentage = ((stockPriceChange / stock?.info?.previousClose) * 100).toFixed(2)
 
+
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
     const isNoPeriod = !(Object.keys(stock).length && stock[chartPeriod])
+
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />)
@@ -68,13 +70,22 @@ export default function SearchPage() {
         const colorClass = periodIsGreen ? 'green' : 'red'
         return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
-    
-    let periodPriceChange = 0
-    let periodPercentage = 0
-    if (chartPeriod !== 'historical_data_1d') {
-        periodPriceChange = stockCurrentPrice - stock[chartPeriod][0]
-        periodPercentage = (periodPriceChange / stock[chartPeriod][0]) * 100
+
+    const stockHistory = stock?.history
+    const periodTDMapping = {
+        'historical_data_1wk': -5,
+        'historical_data_1mo': -21,
+        'historical_data_3mo': -63,
+        'historical_data_1yr': -252,
+        'historical_data_5yr': -1260,
+        'historical_data_10yr': -2520
     }
+    const stockPeriodHistory = stockHistory?.slice(periodTDMapping[chartPeriod] || 0)
+    const hasHistory = stockPeriodHistory?.length > 0
+    const stockPeriodPriceChange = hasHistory ? stockCurrentPrice - stockPeriodHistory[0]?.Close : null
+    const stockPeriodPricePercentage = hasHistory ? (stockPeriodPriceChange / stockPeriodHistory[0]?.Close) * 100 : null
+    
+    // const stockYTDPriceChange = stockCurrentPrice - 
 
     useEffect(() => {
         if (!user) {
@@ -94,7 +105,13 @@ export default function SearchPage() {
     }, [chartPeriod, stock, chartInstance, chartRef, isLoading])
 
     if (isLoading) {
-        return <Loading />
+        return (
+            <section className="page-container">
+                <section className="page-content-container">
+                    <Loading />
+                </section>
+            </section>
+        )
     }
 
     return (
@@ -111,49 +128,51 @@ export default function SearchPage() {
                         </button>
                     </div>
                     <section className="search-info-container">
-                        <div className="stock-page-action-btn-container">
-                            <div className="stock-chart-price-container">
-                                <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>
-                                    {stockPriceChange > 0 ? `+${stockPriceChange.toFixed(2)}` : `${stockPriceChange.toFixed(2)}`}
-                                </h2>
-                                <h2 className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>
-                                    {`(${stockPercentage}%)`}
-                                </h2>
-                                {stockPercentage > 0 ?
-                                    <p className="is-green">
-                                        <GoTriangleUp className="stock-chart-arrow" />
-                                    </p> : <p className="is-red">
-                                        <GoTriangleDown className="stock-chart-arrow" />
-                                    </p>}
-                            </div>
-                        </div>
-                        <div className="stock-page-action-btn-container">
-                            <div className="stock-chart-price-container">
-                                <h2 className={`stock-chart-price-text`}>
-                                    {periodPriceChange.toFixed(2)}
-                                </h2>
-                                <h2 className={`stock-chart-price-text`}>
-                                    {`(${periodPercentage.toFixed(2)}%)`}
-                                </h2>
-                                {stockPercentage > 0 ?
-                                    <p className="is-green">
-                                        <GoTriangleUp className="stock-chart-arrow" />
-                                    </p> : <p className="is-red">
-                                        <GoTriangleDown className="stock-chart-arrow" />
-                                    </p>}
-                            </div>
-                        </div>
-                        <div className="stock-chart-container">
 
+                        <div className="stock-chart-price-container">
+                            <div className="stock-chart-price">
+                                {stockPercentage > 0 ?
+                                    <p className="is-green">
+                                        <GoTriangleUp className="stock-chart-arrow" />
+                                    </p> : <p className="is-red">
+                                        <GoTriangleDown className="stock-chart-arrow" />
+                                    </p>}
+                                <p className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>
+                                    {stockPriceChange > 0 ? `+${stockPriceChange.toFixed(2)}` : `${stockPriceChange.toFixed(2)}`}
+                                </p>
+                                <p className={`stock-chart-price-text ${isGreen ? 'is-green' : 'is-red'}`}>
+                                    {`(${stockPercentage}%)`}
+                                </p>
+                            </div>
+                            {chartPeriod !== 'historical_data_1d' && chartPeriod !== 'historical_data_ytd' &&
+                                <div className="stock-chart-period-price">
+                                    {stockPeriodPriceChange > 0 ?
+                                        <p className="is-green">
+                                            <GoTriangleUp className="stock-chart-arrow" />
+                                        </p> : <p className="is-red">
+                                            <GoTriangleDown className="stock-chart-arrow" />
+                                        </p>}
+                                    <p className={`stock-chart-price-text ${stockPeriodPriceChange > 0 ? 'is-green' : 'is-red'}`}>
+                                        {stockPeriodPriceChange > 0 ? `+${stockPeriodPriceChange.toFixed(2)}` : `${stockPeriodPriceChange.toFixed(2)}`}
+                                    </p>
+                                    <p className={`stock-chart-price-text ${stockPeriodPriceChange > 0 ? 'is-green' : 'is-red'}`}>
+                                        {stockPeriodPricePercentage > 0 ? `(+${stockPeriodPricePercentage.toFixed(2)}%)` : `(${stockPeriodPricePercentage.toFixed(2)}%)`} in the past {-periodTDMapping[chartPeriod]} trading days
+                                    </p>
+                                </div>}
+                        </div>
+
+                        <div className="stock-chart-container">
                             <canvas className="stock-sparkline-chart" ref={chartRef}></canvas>
                             <div className="stock-chart-btn-container">
                                 {['historical_data_1d', 'historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr', 'historical_data_ytd'].map(period => (
-                                    <button
-                                        key={period}
-                                        className={getButtonClass(period)}
-                                        onClick={() => handleChartPeriod(period)}>
-                                        {period.replace('historical_data_', '').toUpperCase()}
-                                    </button>
+                                    stock[period].length > 0 && (
+                                        <button
+                                            key={period}
+                                            className={getButtonClass(period)}
+                                            onClick={() => handleChartPeriod(period)}>
+                                            {period.replace('historical_data_', '').toUpperCase()}
+                                        </button>
+                                    )
                                 ))}
                             </div>
                         </div>

@@ -2,12 +2,11 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllMyListsThunk, getAllStocksInListThunk } from "../../redux/list"
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import Loading from "../Loading/Loading";
-import { IoMdArrowRoundUp, IoMdArrowRoundDown } from "react-icons/io";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import StockOptionModal from "./StockOptionModal";
-
+import Loading from "../Loading/Loading";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 
 export default function List() {
     const dispatch = useDispatch();
@@ -30,7 +29,13 @@ export default function List() {
         return nav('/')
     }
     if (isLoading) {
-        return <Loading />
+        return (
+            <section className="page-container">
+                <section className="page-content-container">
+                    <Loading />
+                </section>
+            </section>
+        )
     }
 
 
@@ -52,10 +57,10 @@ export default function List() {
                                     {listStockData[eachSymbol]?.current_price && listStockData[eachSymbol]?.info?.previousClose ?
                                         (listStockData[eachSymbol].current_price > listStockData[eachSymbol].info.previousClose ?
                                             (<div className="stock-tab-title stock-tab-up-arrow">
-                                                <IoMdArrowRoundUp />
+                                                <GoTriangleUp />
                                             </div>) :
                                             (<div className="stock-tab-title stock-tab-down-arrow">
-                                                <IoMdArrowRoundDown />
+                                                <GoTriangleDown />
                                             </div>)
                                         ) : null
                                     }

@@ -38,7 +38,13 @@ export default function AllLists() {
     }, [dispatch])
 
     if (isLoading) {
-        return <Loading />
+        return (
+            <section className="page-container">
+                <section className="page-content-container">
+                    <Loading />
+                </section>
+            </section>
+        )
     }
 
     return (

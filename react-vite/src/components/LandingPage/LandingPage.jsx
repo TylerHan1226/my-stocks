@@ -54,7 +54,7 @@ export default function LandingPage() {
     })
   }
   myTopGainers.sort((a, b) => a.currentPrice / (a.currentPrice - a.info.previousClose) - b.currentPrice / (b.currentPrice - b.info.previousClose))
-  myTopLosers.sort((a, b) => a.currentPrice / (a.currentPrice - a.info.previousClose) - b.currentPrice / (b.currentPrice - b.info.previousClose))
+  myTopLosers.sort((a, b) => b.currentPrice / (b.currentPrice - b.info.previousClose) - a.currentPrice / (a.currentPrice - a.info.previousClose))
   const myTopGainerSymbols = myTopGainers?.map(ele => ele?.ticker)?.slice(0, 3)
   const myTopLoserSymbols = myTopLosers?.map(ele => ele?.ticker)?.slice(0, 3)
 
@@ -103,8 +103,14 @@ export default function LandingPage() {
   }
 
   if (isLoading) {
-    return <Loading />
-  }
+    return (
+        <section className="page-container">
+            <section className="page-content-container">
+                <Loading />
+            </section>
+        </section>
+    )
+}
 
   const stockElement = (symbols, offset = 0) => {
     return symbols?.map((eachSymbol, index) => {
@@ -149,11 +155,6 @@ export default function LandingPage() {
             </section>}
 
             <section className="landing-content">
-              <h2>Market News</h2>
-              <h2>MyNews</h2>
-            </section>
-
-            <section className="landing-content">
               <h2>Market</h2>
               <div className="landing-stocks-container">
                 <div className="landing-stocks-3tab-container">
@@ -163,6 +164,11 @@ export default function LandingPage() {
                   {stockElement(marketSymbols.slice(3, 6), 3)}
                 </div>
               </div>
+            </section>
+            
+            <section className="landing-content">
+              <h2>Market News</h2>
+              <h2>MyNews</h2>
             </section>
 
           </section>

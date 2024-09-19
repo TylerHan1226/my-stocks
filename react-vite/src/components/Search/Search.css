@@ -33,7 +33,7 @@
 .stock-page-title-price {
     margin: 0 0 0 24px;
 }
-.stock-page-action-btn-container {
+.stock-chart-price-container {
     display: flex;
     flex-direction: row;
 }
@@ -109,13 +109,21 @@
     color: white;
 }
 
-.stock-chart-price-container {
+.stock-chart-price {
     display: flex;
     flex-direction: row;
     gap: 16px;
     align-items: center;
     height: 24px;
     margin-left: 150px;
+}
+.stock-chart-period-price {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    height: 24px;
+    margin: 0 150px 0 auto;
 }
 .stock-chart-arrow {
     font-size: 36px;
