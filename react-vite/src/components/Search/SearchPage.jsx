@@ -6,11 +6,13 @@ import Loading from "../Loading/Loading";
 import { getOneStockThunk } from "../../redux/stock";
 import AddListModal from "../MyList/AddListModal";
 import Chart from 'chart.js/auto';
+// import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 
 Chart.register(annotationPlugin);
 import { makeChart } from "../Helper/Helper";
+import CompareStocks from "./CompareStocks";
 
 export default function SearchPage() {
     const nav = useNavigate()
@@ -54,7 +56,8 @@ export default function SearchPage() {
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
     const isNoPeriod = !(Object.keys(stock).length && stock[chartPeriod])
-    
+
+    const [stockToCompare, setStockToCompare] = useState('')
 
     // Get period history based on trading days
     const stockHistory = stock?.history
@@ -75,8 +78,11 @@ export default function SearchPage() {
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
-        setModalContent(<AddListModal stockSymbol={stockSymbol} />)
+        setModalContent(<AddListModal
+            stockSymbol={stockSymbol}
+            />)
     }
+    
 
     const handleChartPeriod = (period) => {
         setChartPeriod(period)
@@ -86,6 +92,16 @@ export default function SearchPage() {
         const colorClass = chartPeriod == 'historical_data_1d' ? isGreen ? 'green' : 'red' : periodIsGreen ? 'green' : 'red'
         return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
+
+    const handleCompareBtn = () => {
+        console.log('handleCompareBtn clicked!')
+        setModalContent(<CompareStocks
+            stockToCompare={stockToCompare}
+            setStockToCompare={setStockToCompare}
+        />)
+    }
+
+    console.log('stockToCompare ==>', stockToCompare)
 
     useEffect(() => {
         if (!user) {
@@ -104,7 +120,7 @@ export default function SearchPage() {
             } else {
                 makeChart(chartPeriod, stock, chartInstance, chartRef, periodIsGreen)
             }
-            
+
         }
     }, [chartPeriod, stock, chartInstance, chartRef, isLoading])
 
@@ -125,11 +141,18 @@ export default function SearchPage() {
                     <div className="stock-header-container">
                         <h1 className="page-title">{`${stockName} (${stockSymbol})`}</h1>
                         <h1 className="page-title stock-page-title-price">${stockCurrentPrice}</h1>
-                        <button
-                            className="stock-page-action-btn"
-                            onClick={handleOpenModal}>
-                            ADD TO LIST
-                        </button>
+                        <div className="stock-page-action-btn-container">
+                            <button
+                                className="stock-page-action-btn"
+                                onClick={handleOpenModal}>
+                                ADD TO LIST
+                            </button>
+                            <button
+                                className="stock-page-action-btn"
+                                onClick={handleCompareBtn}>
+                                COMPARE
+                            </button>
+                        </div>
                     </div>
                     <section className="search-info-container">
 

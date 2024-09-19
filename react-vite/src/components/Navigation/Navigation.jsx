@@ -6,9 +6,7 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import SearchModal from "../Search/SearchModal";
-
 import { GiReceiveMoney } from "react-icons/gi";
-// import { ImNewspaper } from "react-icons/im";
 import { FaSearch } from "react-icons/fa";
 import { IoListOutline } from "react-icons/io5";
 
