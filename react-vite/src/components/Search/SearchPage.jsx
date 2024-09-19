@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { useModal } from "../../context/Modal";
 import Loading from "../Loading/Loading";
-import { getOneStockThunk } from "../../redux/stock";
+import { getOneStockThunk, getStocksToCompareThunk } from "../../redux/stock";
 import AddListModal from "../MyList/AddListModal";
 import Chart from 'chart.js/auto';
 // import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
@@ -100,8 +100,16 @@ export default function SearchPage() {
             setStockToCompare={setStockToCompare}
         />)
     }
-
+    
     console.log('stockToCompare ==>', stockToCompare)
+    const stocksToCompareArr = []
+    if (stockToCompare) stocksToCompareArr.push(stockToCompare)
+    console.log('stocksToCompareArr ==>', stocksToCompareArr)
+    useEffect(() => {
+        if (stocksToCompareArr.length > 0) {
+            dispatch(getStocksToCompareThunk(stocksToCompareArr))
+        }
+    }, [dispatch, stockToCompare])
 
     useEffect(() => {
         if (!user) {
