@@ -11,7 +11,7 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 
 Chart.register(annotationPlugin);
-import { makeChart } from "../Helper/Helper";
+import { makeChart, makeChartPercentage } from "../Helper/Helper";
 import CompareStocks from "./CompareStocks";
 
 export default function SearchPage() {
@@ -60,6 +60,7 @@ export default function SearchPage() {
 
     const [stockToCompare, setStockToCompare] = useState('')
     const [stocksToCompareArr, setStocksToCompareArr] = useState([])
+    const [isChartPercentage, setIsChartPercentage] = useState(false)
 
     // Get period history based on trading days
     const stockHistory = stock?.history
@@ -101,15 +102,10 @@ export default function SearchPage() {
     if (stockToCompare && !stocksToCompareArr.includes(stockToCompare)) {
         setStocksToCompareArr([...stocksToCompareArr, stockToCompare])
     }
-    
-    // // check stocks to compare
-    // console.log('stockToCompare ==>', stockToCompare)
-    // console.log('stocksToCompareArr ==>', stocksToCompareArr)
-    // console.log('stocksToCompareData ==>', stocksToCompareData)
-    // useEffect(() => {
-    //     console.log('stocksToCompareArr after useEffect ==>', stocksToCompareArr)
-    //     console.log('stocksToCompareData after useEffect ==>', stocksToCompareData)
-    // }, [stockToCompare, stocksToCompareArr])
+    const handleShowPercentage = () => {
+        setIsChartPercentage(prev => !prev)
+        console.log('isChartPercentage ==> ', isChartPercentage)
+    }
 
     useEffect(() => {
         if (stocksToCompareArr.length > 0) {
@@ -130,9 +126,13 @@ export default function SearchPage() {
     useEffect(() => {
         if (Object.keys(stock).length > 0 && chartRef.current) {
             const stocksData = { [stockSymbol]: stock, ...stocksToCompareData }
-            makeChart(chartPeriod, stocksData, chartInstance, chartRef)
+            if (!isChartPercentage) {
+                makeChart(chartPeriod, stocksData, chartInstance, chartRef, periodIsGreen)
+            } else {
+                makeChartPercentage(chartPeriod, stocksData, chartInstance, chartRef, periodIsGreen)
+            }
         }
-    }, [chartPeriod, stock, stocksToCompareData, chartInstance, chartRef, isLoading])
+    }, [chartPeriod, stock, stocksToCompareData, chartInstance, chartRef, isLoading, isChartPercentage])
 
     if (isLoading) {
         return (
@@ -161,6 +161,11 @@ export default function SearchPage() {
                                 className="stock-page-action-btn"
                                 onClick={handleCompareBtn}>
                                 COMPARE
+                            </button>
+                            <button
+                                className="stock-page-action-btn"
+                                onClick={handleShowPercentage}>
+                                See Growth Percentage
                             </button>
                         </div>
                     </div>
