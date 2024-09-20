@@ -7,6 +7,11 @@
     --dark-red: rgb(150, 25, 25);
     --light-red: rgb(250, 35, 35);
     --text-field-grey: rgb(180, 180, 180, 0.8);
+    --chart-orange: rgb(225, 126, 0);
+    --chart-blue: rgb(50, 50, 200);
+    --chart-pink: rgb(225, 125, 150);
+    --chart-yellow: rgb(165, 185, 50);
+    --chart-cyan: rgb(100, 225, 225);
 }
 
 h1, h2, h3, h4 {

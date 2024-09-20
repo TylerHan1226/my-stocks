@@ -96,25 +96,27 @@ export default function SearchPage() {
     const handleCompareBtn = () => {
         console.log('handleCompareBtn clicked!')
         setModalContent(<CompareStocks stockToCompare={stockToCompare} setStockToCompare={setStockToCompare} />)
-        if (stockToCompare && !stocksToCompareArr.includes(stockToCompare)) {
-            setStocksToCompareArr([...stocksToCompareArr, stockToCompare])
-        }
+        if (stocksToCompareArr.length > 5) alert('Can only compare with 5 stocks')
+    }
+    if (stockToCompare && !stocksToCompareArr.includes(stockToCompare)) {
+        setStocksToCompareArr([...stocksToCompareArr, stockToCompare])
     }
     
-    // check stocks to compare
-    console.log('stockToCompare ==>', stockToCompare)
-    console.log('stocksToCompareArr ==>', stocksToCompareArr)
-    console.log('stocksToCompareData ==>', stocksToCompareData)
-    useEffect(() => {
-        console.log('stocksToCompareArr after useEffect ==>', stocksToCompareArr)
-        console.log('stocksToCompareData after useEffect ==>', stocksToCompareData)
-    }, [stockToCompare, stocksToCompareArr])
+    // // check stocks to compare
+    // console.log('stockToCompare ==>', stockToCompare)
+    // console.log('stocksToCompareArr ==>', stocksToCompareArr)
+    // console.log('stocksToCompareData ==>', stocksToCompareData)
+    // useEffect(() => {
+    //     console.log('stocksToCompareArr after useEffect ==>', stocksToCompareArr)
+    //     console.log('stocksToCompareData after useEffect ==>', stocksToCompareData)
+    // }, [stockToCompare, stocksToCompareArr])
 
     useEffect(() => {
         if (stocksToCompareArr.length > 0) {
-            dispatch(getStocksToCompareThunk(stocksToCompareArr))
+            setIsLoading(true)
+            dispatch(getStocksToCompareThunk(stocksToCompareArr)).then(() => setIsLoading(false))
         }
-    }, [dispatch, stocksToCompareArr])
+    }, [dispatch, stocksToCompareArr, stockToCompare])
 
     useEffect(() => {
         if (!user) {
@@ -127,8 +129,8 @@ export default function SearchPage() {
 
     useEffect(() => {
         if (Object.keys(stock).length > 0 && chartRef.current) {
-            const stocksData = { [stockSymbol]: stock, ...stocksToCompareData };
-            makeChart(chartPeriod, stocksData, chartInstance, chartRef);
+            const stocksData = { [stockSymbol]: stock, ...stocksToCompareData }
+            makeChart(chartPeriod, stocksData, chartInstance, chartRef)
         }
     }, [chartPeriod, stock, stocksToCompareData, chartInstance, chartRef, isLoading])
 
