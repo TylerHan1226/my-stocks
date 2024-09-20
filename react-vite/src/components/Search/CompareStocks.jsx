@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Search.css";
 import { useModal } from "../../context/Modal";
-import { FaSearch } from "react-icons/fa";
+import { TiPlus } from "react-icons/ti";
 
 export default function CompareStocks({setStockToCompare}) {
     const [stockToSearch, setStockToSearch] = useState("")
@@ -19,9 +19,11 @@ export default function CompareStocks({setStockToCompare}) {
         } else {
             setError("")
             // nav(`/search/${stockToSearch}`)
-            // window.location.reload()
+            
             setStockToCompare(stockToSearch)
             console.log('stockToSearch ==>', stockToSearch)
+            
+            // window.location.reload()
             closeModal()
         }
     };
@@ -38,7 +40,7 @@ export default function CompareStocks({setStockToCompare}) {
                         onChange={(e) => setStockToSearch(e.target.value.toUpperCase())}
                     />
                     <button className="search-modal-btn" type="submit">
-                        <p className="search-modal-btn-text"><FaSearch /></p>
+                        <p className="search-modal-btn-text"><TiPlus /></p>
                     </button>
                 </div>
                 {error && <p className="validation-error-text">* {error}</p>}

@@ -3,80 +3,88 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 
 Chart.register(annotationPlugin);
 
-export const makeChart = (period, stock, chartInstance, chartRef, isGreen) => {
-
+export const makeChart = (period, stocksData, chartInstance, chartRef) => {
     if (chartInstance.current && typeof chartInstance.current.destroy === 'function') {
-        chartInstance.current.destroy()
+        chartInstance.current.destroy();
     }
-    const ctx = chartRef.current.getContext('2d')
-    const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
-    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim()
-    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim()
-    const chartColor = isGreen ? themeGreen : themeRed
-    let annotationValue
+    const ctx = chartRef.current.getContext('2d');
+    const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim();
+    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim();
+    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim();
 
-    if (period === 'historical_data_1d') {
-        annotationValue = stock?.info?.previousClose
-    } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr'].includes(period)) {
-        if (stock[period] && stock[period].length > 0) {
-            annotationValue = stock[period][0]
+    const datasets = Object.keys(stocksData).map(stockKey => {
+        const stock = stocksData[stockKey];
+        const isGreen = stock.currentPrice > stock.info.previousClose;
+        const chartColor = isGreen ? themeGreen : themeRed;
+        let annotationValue;
+
+        if (period === 'historical_data_1d') {
+            annotationValue = stock?.info?.previousClose;
+        } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr'].includes(period)) {
+            if (stock[period] && stock[period].length > 0) {
+                annotationValue = stock[period][0];
+            }
         }
-    }
 
-    if (annotationValue === undefined || annotationValue === null) {
-        console.error('Annotation value is not defined')
-        annotationValue = 0
-    }
-    // Add currentPrice to the end of the stock[period] array
-    if (stock[period] && stock.currentPrice !== undefined) {
-        stock[period].push(stock.currentPrice);
-    }
+        if (annotationValue === undefined || annotationValue === null) {
+            console.error('Annotation value is not defined');
+            annotationValue = 0;
+        }
+
+        // Add currentPrice to the end of the stock[period] array
+        if (stock[period] && stock.currentPrice !== undefined) {
+            stock[period].push(stock.currentPrice);
+        }
+
+        return {
+            label: stockKey,
+            data: stock[period],
+            borderColor: chartColor,
+            fill: false,
+            borderWidth: 3,
+        };
+    });
 
     chartInstance.current = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: Array(stock[period]?.length).fill(''),
-            datasets: [{
-                data: stock[period],
-                borderColor: chartColor,
-                fill: false,
-                borderWidth: 3,
-            }]
+            labels: Array(stocksData[Object.keys(stocksData)[0]][period]?.length).fill(''),
+            datasets: datasets,
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
                 x: { display: true },
-                y: { display: true }
+                y: { display: true },
             },
             elements: {
-                point: { radius: 0 }
+                point: { radius: 0 },
             },
             plugins: {
-                legend: { display: false },
+                legend: { display: true },
                 tooltip: { enabled: true },
                 annotation: {
                     annotations: {
                         line1: {
                             type: 'line',
-                            yMin: annotationValue,
-                            yMax: annotationValue,
+                            yMin: Object.keys(stocksData).length == 1 ? stocksData[Object.keys(stocksData)[0]].info.previousClose : 0,
+                            yMax: Object.keys(stocksData).length == 1 ? stocksData[Object.keys(stocksData)[0]].info.previousClose : 0,
                             borderColor: lightGrey,
                             borderWidth: 2,
                             borderDash: [6, 6],
                             label: {
                                 content: 'Annotation Line',
                                 enabled: true,
-                                position: 'end'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+                                position: 'end',
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    });
+};
 
 
 

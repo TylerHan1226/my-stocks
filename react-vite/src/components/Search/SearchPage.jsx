@@ -23,6 +23,7 @@ export default function SearchPage() {
     const [isLoading, setIsLoading] = useState(true)
     const chartRef = useRef(null)
     const chartInstance = useRef(null)
+    const stocksToCompareData = useSelector(state => state.stocks?.stocks_to_compare)
 
     const stockName = stock?.name
     const stockSymbol = stock?.ticker
@@ -52,12 +53,13 @@ export default function SearchPage() {
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
     const stockPriceChange = stock?.currentPrice - stock?.info?.previousClose
     const stockPercentage = ((stockPriceChange / stock?.info?.previousClose) * 100).toFixed(2)
-
+    
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
     const isNoPeriod = !(Object.keys(stock).length && stock[chartPeriod])
 
     const [stockToCompare, setStockToCompare] = useState('')
+    const [stocksToCompareArr, setStocksToCompareArr] = useState([])
 
     // Get period history based on trading days
     const stockHistory = stock?.history
@@ -78,11 +80,8 @@ export default function SearchPage() {
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
-        setModalContent(<AddListModal
-            stockSymbol={stockSymbol}
-            />)
+        setModalContent(<AddListModal stockSymbol={stockSymbol} />)
     }
-    
 
     const handleChartPeriod = (period) => {
         setChartPeriod(period)
@@ -93,44 +92,45 @@ export default function SearchPage() {
         return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
 
+    
     const handleCompareBtn = () => {
         console.log('handleCompareBtn clicked!')
-        setModalContent(<CompareStocks
-            stockToCompare={stockToCompare}
-            setStockToCompare={setStockToCompare}
-        />)
+        setModalContent(<CompareStocks stockToCompare={stockToCompare} setStockToCompare={setStockToCompare} />)
+        if (stockToCompare && !stocksToCompareArr.includes(stockToCompare)) {
+            setStocksToCompareArr([...stocksToCompareArr, stockToCompare])
+        }
     }
     
+    // check stocks to compare
     console.log('stockToCompare ==>', stockToCompare)
-    const stocksToCompareArr = []
-    if (stockToCompare) stocksToCompareArr.push(stockToCompare)
     console.log('stocksToCompareArr ==>', stocksToCompareArr)
+    console.log('stocksToCompareData ==>', stocksToCompareData)
+    useEffect(() => {
+        console.log('stocksToCompareArr after useEffect ==>', stocksToCompareArr)
+        console.log('stocksToCompareData after useEffect ==>', stocksToCompareData)
+    }, [stockToCompare, stocksToCompareArr])
+
     useEffect(() => {
         if (stocksToCompareArr.length > 0) {
             dispatch(getStocksToCompareThunk(stocksToCompareArr))
         }
-    }, [dispatch, stockToCompare])
+    }, [dispatch, stocksToCompareArr])
 
     useEffect(() => {
         if (!user) {
             return nav('/')
         }
         setIsLoading(true)
-        dispatch(getOneStockThunk(searchInput))
-            .then(() => setIsLoading(false))
+        dispatch(getOneStockThunk(searchInput)).then(() => setIsLoading(false))
         window.scrollTo(0, 0)
     }, [nav, dispatch, searchInput, user])
 
     useEffect(() => {
         if (Object.keys(stock).length > 0 && chartRef.current) {
-            if (chartPeriod == 'historical_data_1d') {
-                makeChart(chartPeriod, stock, chartInstance, chartRef, isGreen)
-            } else {
-                makeChart(chartPeriod, stock, chartInstance, chartRef, periodIsGreen)
-            }
-
+            const stocksData = { [stockSymbol]: stock, ...stocksToCompareData };
+            makeChart(chartPeriod, stocksData, chartInstance, chartRef);
         }
-    }, [chartPeriod, stock, chartInstance, chartRef, isLoading])
+    }, [chartPeriod, stock, stocksToCompareData, chartInstance, chartRef, isLoading])
 
     if (isLoading) {
         return (
