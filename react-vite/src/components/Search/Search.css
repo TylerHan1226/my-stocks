@@ -136,3 +136,6 @@
 .stock-chart-price-text {
     font-size: 20px;
 }
+.is-background-green {
+    background-color: var(--dark-green);
+}

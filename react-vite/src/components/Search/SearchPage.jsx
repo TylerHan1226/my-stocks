@@ -161,9 +161,9 @@ export default function SearchPage() {
                                 COMPARE
                             </button>
                             <button
-                                className="stock-page-action-btn"
+                                className={`stock-page-action-btn ${isChartPercentage ? 'is-background-green' : ''}`}
                                 onClick={handleShowPercentage}>
-                                See Growth Percentage
+                                Growth Percentage
                             </button>
                         </div>
                     </div>
