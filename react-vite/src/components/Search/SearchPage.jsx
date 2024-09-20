@@ -126,11 +126,9 @@ export default function SearchPage() {
     useEffect(() => {
         if (Object.keys(stock).length > 0 && chartRef.current) {
             const stocksData = { [stockSymbol]: stock, ...stocksToCompareData }
-            if (!isChartPercentage) {
-                makeChart(chartPeriod, stocksData, chartInstance, chartRef, periodIsGreen)
-            } else {
-                makeChartPercentage(chartPeriod, stocksData, chartInstance, chartRef, periodIsGreen)
-            }
+            const makeChartFunction = isChartPercentage ? makeChartPercentage : makeChart
+            const isGreenValue = chartPeriod === 'historical_data_1d' ? isGreen : periodIsGreen
+            makeChartFunction(chartPeriod, stocksData, chartInstance, chartRef, isGreenValue)
         }
     }, [chartPeriod, stock, stocksToCompareData, chartInstance, chartRef, isLoading, isChartPercentage])
 

@@ -24,30 +24,30 @@ export const makeChart = (period, stocksData, chartInstance, chartRef, isGreen) 
     const datasets = Object.keys(stocksData).map((stockKey, index) => {
         const stock = stocksData[stockKey];
         const chartColor = index === 0 ? (isGreen ? themeGreen : themeRed) : colors[index - 1];
-        let annotationValue;
+        let annotationValue
 
         if (period === 'historical_data_1d') {
-            annotationValue = stock?.info?.previousClose;
+            annotationValue = stock?.info?.previousClose
         } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr'].includes(period)) {
             if (stock[period] && stock[period].length > 0) {
-                annotationValue = stock[period][0];
+                annotationValue = stock[period][0]
             }
         }
 
         if (annotationValue === undefined || annotationValue === null) {
-            console.error('Annotation value is not defined');
-            annotationValue = 0;
+            console.error('Annotation value is not defined')
+            annotationValue = 0
         }
 
         // Add currentPrice to the end of the stock[period] array
         if (stock[period] && stock.currentPrice !== undefined) {
-            stock[period].push(stock.currentPrice);
+            stock[period].push(stock.currentPrice)
         }
 
         // Normalize the length of the data arrays and fill missing values with the last known value
-        const normalizedData = [...stock[period]];
+        const normalizedData = [...stock[period]]
         while (normalizedData.length < maxLength) {
-            normalizedData.push(normalizedData[normalizedData.length - 1]);
+            normalizedData.push(normalizedData[normalizedData.length - 1])
         }
 
         return {
@@ -56,8 +56,8 @@ export const makeChart = (period, stocksData, chartInstance, chartRef, isGreen) 
             borderColor: chartColor,
             fill: false,
             borderWidth: 3,
-        };
-    });
+        }
+    })
 
     chartInstance.current = new Chart(ctx, {
         type: 'line',
@@ -97,50 +97,50 @@ export const makeChart = (period, stocksData, chartInstance, chartRef, isGreen) 
                 },
             },
         },
-    });
+    })
 }
 
 export const makeChartPercentage = (period, stocksData, chartInstance, chartRef, isGreen) => {
     if (chartInstance.current && typeof chartInstance.current.destroy === 'function') {
-        chartInstance.current.destroy();
+        chartInstance.current.destroy()
     }
-    const ctx = chartRef.current.getContext('2d');
-    const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim();
-    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim();
-    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim();
-    const chartOrange = getComputedStyle(document.documentElement).getPropertyValue('--chart-orange').trim();
-    const chartBlue = getComputedStyle(document.documentElement).getPropertyValue('--chart-blue').trim();
-    const chartPink = getComputedStyle(document.documentElement).getPropertyValue('--chart-pink').trim();
-    const chartYellow = getComputedStyle(document.documentElement).getPropertyValue('--chart-yellow').trim();
-    const chartCyan = getComputedStyle(document.documentElement).getPropertyValue('--chart-cyan').trim();
-    const colors = [chartOrange, chartBlue, chartPink, chartCyan, chartYellow];
+    const ctx = chartRef.current.getContext('2d')
+    const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
+    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim()
+    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim()
+    const chartOrange = getComputedStyle(document.documentElement).getPropertyValue('--chart-orange').trim()
+    const chartBlue = getComputedStyle(document.documentElement).getPropertyValue('--chart-blue').trim()
+    const chartPink = getComputedStyle(document.documentElement).getPropertyValue('--chart-pink').trim()
+    const chartYellow = getComputedStyle(document.documentElement).getPropertyValue('--chart-yellow').trim()
+    const chartCyan = getComputedStyle(document.documentElement).getPropertyValue('--chart-cyan').trim()
+    const colors = [chartOrange, chartBlue, chartPink, chartCyan, chartYellow]
 
     const datasets = Object.keys(stocksData).map((stockKey, index) => {
-        const stock = stocksData[stockKey];
-        const chartColor = index === 0 ? (isGreen ? themeGreen : themeRed) : colors[index - 1];
-        let annotationValue;
+        const stock = stocksData[stockKey]
+        const chartColor = index === 0 ? (isGreen ? themeGreen : themeRed) : colors[index - 1]
+        let annotationValue
 
         if (period === 'historical_data_1d') {
-            annotationValue = stock?.info?.previousClose;
+            annotationValue = stock?.info?.previousClose
         } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr'].includes(period)) {
             if (stock[period] && stock[period].length > 0) {
-                annotationValue = stock[period][0];
+                annotationValue = stock[period][0]
             }
         }
 
         if (annotationValue === undefined || annotationValue === null) {
-            console.error('Annotation value is not defined');
-            annotationValue = 0;
+            console.error('Annotation value is not defined')
+            annotationValue = 0
         }
 
         // Add currentPrice to the end of the stock[period] array
         if (stock[period] && stock.currentPrice !== undefined) {
-            stock[period].push(stock.currentPrice);
+            stock[period].push(stock.currentPrice)
         }
 
         // Calculate the growth percentage
-        const initialPrice = stock[period][0];
-        const growthData = stock[period].map(price => ((price - initialPrice) / initialPrice) * 100);
+        const initialPrice = stock[period][0]
+        const growthData = stock[period].map(price => ((price - initialPrice) / initialPrice) * 100)
 
         return {
             label: stockKey,
@@ -148,8 +148,8 @@ export const makeChartPercentage = (period, stocksData, chartInstance, chartRef,
             borderColor: chartColor,
             fill: false,
             borderWidth: 3,
-        };
-    });
+        }
+    })
 
     chartInstance.current = new Chart(ctx, {
         type: 'line',
@@ -189,8 +189,8 @@ export const makeChartPercentage = (period, stocksData, chartInstance, chartRef,
                 },
             },
         },
-    });
-};
+    })
+}
 
 
 
