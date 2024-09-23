@@ -95,7 +95,6 @@ export default function SearchPage() {
 
     
     const handleCompareBtn = () => {
-        console.log('handleCompareBtn clicked!')
         setModalContent(<CompareStocks stockToCompare={stockToCompare} setStockToCompare={setStockToCompare} />)
         if (stocksToCompareArr.length > 5) alert('Can only compare with 5 stocks')
     }
@@ -104,7 +103,6 @@ export default function SearchPage() {
     }
     const handleShowPercentage = () => {
         setIsChartPercentage(prev => !prev)
-        console.log('isChartPercentage ==> ', isChartPercentage)
     }
 
     useEffect(() => {

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Search.css";
 import { useModal } from "../../context/Modal";
 import { TiPlus } from "react-icons/ti";
@@ -7,7 +6,6 @@ import { TiPlus } from "react-icons/ti";
 export default function CompareStocks({setStockToCompare}) {
     const [stockToSearch, setStockToSearch] = useState("")
     const [error, setError] = useState("")
-    const nav = useNavigate()
     const { closeModal } = useModal()
 
     const handleSearch = (e) => {
@@ -18,12 +16,7 @@ export default function CompareStocks({setStockToCompare}) {
             setError("Please enter valid stock symbol")
         } else {
             setError("")
-            // nav(`/search/${stockToSearch}`)
-            
             setStockToCompare(stockToSearch)
-            console.log('stockToSearch ==>', stockToSearch)
-            
-            // window.location.reload()
             closeModal()
         }
     };

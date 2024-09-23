@@ -3,27 +3,28 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 
 Chart.register(annotationPlugin);
 
+
 export const makeChart = (period, stocksData, chartInstance, chartRef, isGreen) => {
     if (chartInstance.current && typeof chartInstance.current.destroy === 'function') {
-        chartInstance.current.destroy();
+        chartInstance.current.destroy()
     }
-    const ctx = chartRef.current.getContext('2d');
-    const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim();
-    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim();
-    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim();
-    const chartOrange = getComputedStyle(document.documentElement).getPropertyValue('--chart-orange').trim();
-    const chartBlue = getComputedStyle(document.documentElement).getPropertyValue('--chart-blue').trim();
-    const chartPink = getComputedStyle(document.documentElement).getPropertyValue('--chart-pink').trim();
-    const chartYellow = getComputedStyle(document.documentElement).getPropertyValue('--chart-yellow').trim();
-    const chartCyan = getComputedStyle(document.documentElement).getPropertyValue('--chart-cyan').trim();
-    const colors = [chartOrange, chartBlue, chartPink, chartCyan, chartYellow];
+    const ctx = chartRef.current.getContext('2d')
+    const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
+    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim()
+    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim()
+    const chartOrange = getComputedStyle(document.documentElement).getPropertyValue('--chart-orange').trim()
+    const chartBlue = getComputedStyle(document.documentElement).getPropertyValue('--chart-blue').trim()
+    const chartPink = getComputedStyle(document.documentElement).getPropertyValue('--chart-pink').trim()
+    const chartYellow = getComputedStyle(document.documentElement).getPropertyValue('--chart-yellow').trim()
+    const chartCyan = getComputedStyle(document.documentElement).getPropertyValue('--chart-cyan').trim()
+    const colors = [chartOrange, chartBlue, chartPink, chartCyan, chartYellow]
 
     // Find the maximum length of the data arrays
-    const maxLength = Math.max(...Object.keys(stocksData).map(stockKey => stocksData[stockKey][period].length));
+    const maxLength = Math.max(...Object.keys(stocksData).map(stockKey => stocksData[stockKey][period].length))
 
     const datasets = Object.keys(stocksData).map((stockKey, index) => {
-        const stock = stocksData[stockKey];
-        const chartColor = index === 0 ? (isGreen ? themeGreen : themeRed) : colors[index - 1];
+        const stock = stocksData[stockKey]
+        const chartColor = index === 0 ? (isGreen ? themeGreen : themeRed) : colors[index - 1]
         let annotationValue
 
         if (period === 'historical_data_1d') {
@@ -82,10 +83,10 @@ export const makeChart = (period, stocksData, chartInstance, chartRef, isGreen) 
                     annotations: {
                         line1: {
                             type: 'line',
-                            yMin: Object.keys(stocksData).length == 1 ? stocksData[Object.keys(stocksData)[0]].info.previousClose : 0,
-                            yMax: Object.keys(stocksData).length == 1 ? stocksData[Object.keys(stocksData)[0]].info.previousClose : 0,
+                            yMin:  stocksData[Object.keys(stocksData)[0]].info.previousClose,
+                            yMax: stocksData[Object.keys(stocksData)[0]].info.previousClose,
                             borderColor: lightGrey,
-                            borderWidth: 2,
+                            borderWidth: Object.keys(stocksData).length == 1 && period =='historical_data_1d' ? 2 : 0,
                             borderDash: [6, 6],
                             label: {
                                 content: 'Annotation Line',
@@ -132,12 +133,10 @@ export const makeChartPercentage = (period, stocksData, chartInstance, chartRef,
             console.error('Annotation value is not defined')
             annotationValue = 0
         }
-
         // Add currentPrice to the end of the stock[period] array
         if (stock[period] && stock.currentPrice !== undefined) {
             stock[period].push(stock.currentPrice)
         }
-
         // Calculate the growth percentage
         const initialPrice = stock[period][0]
         const growthData = stock[period].map(price => ((price - initialPrice) / initialPrice) * 100)
@@ -177,7 +176,7 @@ export const makeChartPercentage = (period, stocksData, chartInstance, chartRef,
                             yMin: Object.keys(stocksData).length == 1 ? stocksData[Object.keys(stocksData)[0]].info.previousClose : 0,
                             yMax: Object.keys(stocksData).length == 1 ? stocksData[Object.keys(stocksData)[0]].info.previousClose : 0,
                             borderColor: lightGrey,
-                            borderWidth: 2,
+                            borderWidth: Object.keys(stocksData).length == 1 && period =='historical_data_1d' ? 2 : 0,
                             borderDash: [6, 6],
                             label: {
                                 content: 'Annotation Line',
