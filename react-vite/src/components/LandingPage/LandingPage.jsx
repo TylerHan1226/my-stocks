@@ -147,13 +147,24 @@ export default function LandingPage() {
           <section className="landing-news-content">
             <div className="landing-info-tabs">
               <h2>Market News</h2>
-              {marketNews?.length > 0 && marketNews?.slice(0, 5)?.map((ele, index) => (
+              <section className="landing-news-container">
+              {marketNews?.length > 0 && marketNews?.slice(0, 10)?.map((ele, index) => (
                 <div className="landing-news-tab" key={index}>
-                  <p>{ele.title}</p>
-                  <p>{ele.publisher}</p>
-                  <p>{ele.date?.split('T')[0]}</p>
+                  <div className="landing-news-info">
+                    <p>{ele.title}</p>
+                    <div className="landing-news-dtl-info">
+                      <p>{ele.publisher}</p>
+                      <p> | {ele.date?.split('T')[0]} | </p>
+                      <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
+                        Read More
+                      </NavLink>
+                    </div>
+                    
+                  </div>
+                  <img className="landing-news-img" src={ele.image_url} />
                 </div>
               ))}
+              </section>
             </div>
             <div className="landing-info-tabs">
               <h2>MyNews</h2>
@@ -175,7 +186,6 @@ export default function LandingPage() {
                 </div>
               </section>
             </div>
-
             {user &&
               <div className="landing-info-tabs">
                 <section className="landing-3stocks-container">
@@ -191,6 +201,7 @@ export default function LandingPage() {
               </div>
             }
           </section>
+
         </section>
       </section>
     </section>

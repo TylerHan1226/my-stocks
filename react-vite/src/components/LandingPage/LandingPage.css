@@ -7,7 +7,6 @@
 }
 .landing-info-tabs {
     border: solid 1px var(--border-grey);
-    /* border: solid 1px red; */
     border-radius: 12px;
     margin: 0 0 12px 0;
     padding: 12px;
@@ -19,9 +18,47 @@
 .landing-news-content {
     width: 900px;
 }
-/* .landing-news-tab {
-    border: solid blue 1px;
-} */
+.landing-news-container {
+    overflow-y: auto;
+    height: 580px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+/* Custom scrollbar styles */
+.landing-news-container::-webkit-scrollbar {
+    width: 8px;
+}
+.landing-news-container::-webkit-scrollbar-track {
+    background: black;
+}
+.landing-news-container::-webkit-scrollbar-thumb {
+    background: var(--theme-green);
+    border-radius: 10px;
+}
+.landing-news-tab {
+    /* border: solid blue 1px; */
+    /* height: 90px; */
+    display: flex;
+    flex-direction: row;
+}
+.landing-news-read-more {
+    text-decoration: none;
+    color: var(--theme-green);
+}
+.landing-news-dtl-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    height: 16px;
+}
+.landing-news-img {
+    height: 100px;
+    min-width: 200px;
+    object-fit: cover;
+    margin-left: auto;
+}
 .landing-3stocks-container {
     display: flex;
     flex-direction: row;
