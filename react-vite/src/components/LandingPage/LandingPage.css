@@ -61,7 +61,7 @@
     height: 100px;
     min-width: 200px;
     object-fit: cover;
-    margin-left: auto;
+    margin: 0 12px 0 auto;
 }
 .landing-3stocks-container {
     display: flex;
@@ -72,7 +72,7 @@
     width: 240px;
 }
 .landing-gainer-loser-title {
-    margin: 0 0 48px 0;
+    margin: 20px 0 40px 0;
 }
 .landing-stock-tab {
     height: 180px;

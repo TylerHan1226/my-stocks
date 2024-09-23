@@ -27,19 +27,19 @@ export default function LandingPage() {
   const allMyStocksSymbols = new Set(lists?.map(ele => ele.stock_symbol))
   const allMyStocksSymbolArr = Array.from(allMyStocksSymbols)
   const [isLoading, setIsLoading] = useState(true)
-  const [showMarket, setShowMarket] = useState(true)
-  const [showMyStocks, setShowMyStocks] = useState(true)
   const marketSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"]
   const landingStocksSymbols = marketSymbols.concat(allMyStocksSymbolArr)
 
-  const handleMarket = () => {
-    setShowMarket(prev => !prev)
-  }
-  const handleMyStocks = () => {
-    setShowMyStocks(prev => !prev)
-  }
-  const isDisableMarket = showMarket == true && showMyStocks == false
-  const isDisableMyStock = showMarket == false && showMyStocks == true
+  // const [showMarket, setShowMarket] = useState(true)
+  // const [showMyStocks, setShowMyStocks] = useState(true)
+  // const handleMarket = () => {
+  //   setShowMarket(prev => !prev)
+  // }
+  // const handleMyStocks = () => {
+  //   setShowMyStocks(prev => !prev)
+  // }
+  // const isDisableMarket = showMarket == true && showMyStocks == false
+  // const isDisableMyStock = showMarket == false && showMyStocks == true
 
   useEffect(() => {
     dispatch(getAllMyListsThunk())
@@ -153,7 +153,7 @@ export default function LandingPage() {
 
           <section className="landing-news-content">
 
-            {showMarket &&
+
               <div className="landing-info-tabs">
                 <h2>Market News</h2>
                 <section className="landing-news-container">
@@ -173,9 +173,10 @@ export default function LandingPage() {
                     </div>
                   ))}
                 </section>
-              </div>}
+              </div>
+              
 
-            {showMyStocks &&
+
               <div className="landing-info-tabs">
                 <h2>My News</h2>
                 <section className="landing-news-container">
@@ -195,13 +196,13 @@ export default function LandingPage() {
                     </div>
                   ))}
                 </section>
-              </div>}
+              </div>
 
           </section>
 
           <section className="landing-stock-content">
 
-            {showMarket &&
+
               <div className="landing-info-tabs">
                 <h2>Market</h2>
                 <section className="landing-3stocks-container">
@@ -212,9 +213,9 @@ export default function LandingPage() {
                     {stockElement(marketSymbols.slice(3, 6), 3)}
                   </div>
                 </section>
-              </div>}
+              </div>
 
-            {showMyStocks &&
+
               <div className="landing-info-tabs">
                 <section className="landing-3stocks-container">
                   <div className="landing-3stocks">
@@ -226,11 +227,11 @@ export default function LandingPage() {
                     {stockElement(myTopLoserSymbols, marketSymbols.length + myTopGainers.length)}
                   </div>
                 </section>
-              </div>}
+              </div>
 
           </section>
 
-          <section className="landing-btn-container">
+          {/* <section className="landing-btn-container">
             <button className={`stock-page-action-btn ${showMarket ? 'is-background-green' : ''}`}
               onClick={handleMarket}
               disabled={isDisableMarket}
@@ -243,7 +244,7 @@ export default function LandingPage() {
               >
               My Stocks
             </button>
-          </section>
+          </section> */}
 
         </section>
       </section>
