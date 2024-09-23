@@ -1,27 +1,29 @@
 from flask import Blueprint, jsonify, request, redirect
 from flask_login import login_required, current_user
 import json, requests
+import yfinance as yf
+import datetime as dt
 
 news_routes = Blueprint('news', __name__)
 
-# get market news
 # /api/news/market
 @news_routes.route('/market')
 def all_news():
-    api_key = "4780de20273648b0b968dbc62a48cc20"
-    url = "https://newsapi.org/v2/everything"
-    # ?q=yahoo%20finance&language=en&sortBy=publishedAt&apiKey=4780de20273648b0b968dbc62a48cc20
-    params = {
-        "q": 'yahoo finance',
-        'language': 'en',
-        'sortBy': 'publishedAt',
-        'apiKey': api_key,
-        'pageSize': 30
-    }
-    response = requests.get(url, params=params)
-    data = response.json()['articles']
-    filtered_data = [article for article in data if article['title'] != '[Removed]' and article['urlToImage'] is not None and len(article['urlToImage']) != 0 and 'biztoc.com' not in article['url']]
-
-    return jsonify(filtered_data), 200
-
-
+    market_symbols = ["^GSPC", "^IXIC", "^DJI", "^RUT"]
+    response = {}
+    for market in market_symbols:
+        res = yf.Ticker(market)
+        for article in res.news:
+            if article["publisher"] in ["Motley Fool", "Insider Monkey"]:
+                continue
+            formatted_article = {}
+            formatted_article["title"] = article["title"]
+            formatted_article["publisher"] = article["publisher"]
+            formatted_article["link"] = article["link"]
+            formatted_article["date"] = dt.datetime.fromtimestamp(article["providerPublishTime"]).strftime("%Y-%m-%dT%H:%M:%SZ")
+            try:
+                formatted_article["url"] = article["thumbnail"]["resolutions"][1]["url"]
+            except:
+                formatted_article["url"] = None
+            response[article["uuid"]] = formatted_article
+    return jsonify(list(response.values()))

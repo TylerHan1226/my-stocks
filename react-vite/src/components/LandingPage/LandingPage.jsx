@@ -19,18 +19,20 @@ export default function LandingPage() {
   const user = useSelector(state => state.session.user)
   const lists = useSelector(state => state.lists?.My_Lists)
   const landingStocks = useSelector(state => state.stocks?.multiple_stocks)
+  const marketNews = useSelector(state => state.news?.market_news)
   const chartRefs = useRef([])
   const chartInstances = useRef([])
   const prevAllMyStocksSymbolArr = useRef([])
   const allMyStocksSymbols = new Set(lists?.map(ele => ele.stock_symbol))
   const allMyStocksSymbolArr = Array.from(allMyStocksSymbols)
-  const marketNews = useSelector(state => state.news?.market_news)
+
   const [isLoading, setIsLoading] = useState(true)
 
   const marketSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"]
   const landingStocksSymbols = marketSymbols.concat(allMyStocksSymbolArr)
-
-  console.log('marketNews ==>', marketNews)
+  // const currentDate = new Date().toISOString()
+  // console.log('currentDate ==>', currentDate)
+  console.log('marketNews =>', marketNews)
 
   useEffect(() => {
     dispatch(getAllMyListsThunk())
@@ -39,7 +41,6 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (user && JSON.stringify(prevAllMyStocksSymbolArr.current) !== JSON.stringify(allMyStocksSymbolArr)) {
-      console.log('landingStocksSymbols ==>', landingStocksSymbols)
       dispatch(getMultipleStocksThunk(landingStocksSymbols))
       prevAllMyStocksSymbolArr.current = allMyStocksSymbolArr
     }
@@ -75,6 +76,25 @@ export default function LandingPage() {
       makeChartSmall('historical_data_1d', landingStocks[symbol], chartInstances.current[chartIndex], chartRefs.current[chartIndex], isGreen)
     }
   }
+  // Stock tabs
+  const stockElement = (symbols, offset = 0) => {
+    return symbols?.map((eachSymbol, index) => {
+      const percentage = ((((landingStocks?.[eachSymbol]?.currentPrice - landingStocks?.[eachSymbol]?.info.previousClose)) / landingStocks?.[eachSymbol]?.info.previousClose) * 100).toFixed(2)
+      return (
+        <div className="landing-stock-tab" key={eachSymbol}>
+          <h4 className="landing-stock-text">{landingStocks?.[eachSymbol]?.name}</h4>
+          <div className="landing-stock-percentage-container">
+            <p className="landing-stock-text">{landingStocks?.[eachSymbol]?.currentPrice.toFixed(2)}</p>
+            <p className={`landing-stock-text ${percentage > 0 ? 'is-green' : 'is-red'}`}>{percentage}%</p>
+            {percentage > 0 ? <p className="is-green landing-stock-text"><GoTriangleUp className="landing-stock-arrow" /></p> : <p className="is-red landing-stock-text"><GoTriangleDown className="landing-stock-arrow" /></p>}
+          </div>
+          <NavLink to={`/search/${eachSymbol}`}>
+            <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[offset + index] = el}></canvas>
+          </NavLink>
+        </div>
+      )
+    })
+  }
 
   useEffect(() => {
     if (landingStocks) {
@@ -97,11 +117,13 @@ export default function LandingPage() {
     window.scrollTo(0, 0)
   }, [user, landingStocks, landingStocksSymbols, allMyStocksSymbolArr, myTopGainers, myTopLosers])
 
+
+
   if (!user) {
     return (
       <section className="page-container">
         <section className="page-content-container">
-        <h1>Please Log In to Start</h1>
+          <h1>Please Log In to Start</h1>
         </section>
       </section>
     )
@@ -109,40 +131,21 @@ export default function LandingPage() {
 
   if (isLoading) {
     return (
-        <section className="page-container">
-            <section className="page-content-container">
-                <Loading />
-            </section>
+      <section className="page-container">
+        <section className="page-content-container">
+          <Loading />
         </section>
+      </section>
     )
-}
-
-  const stockElement = (symbols, offset = 0) => {
-    return symbols?.map((eachSymbol, index) => {
-      const percentage = ((((landingStocks?.[eachSymbol]?.currentPrice - landingStocks?.[eachSymbol]?.info.previousClose)) / landingStocks?.[eachSymbol]?.info.previousClose) * 100).toFixed(2);
-      return (
-        <div className="landing-stock-tab" key={eachSymbol}>
-          <h4 className="landing-stock-text">{landingStocks?.[eachSymbol]?.name}</h4>
-          <div className="landing-stock-percentage-container">
-            <p className="landing-stock-text">{landingStocks?.[eachSymbol]?.currentPrice.toFixed(2)}</p>
-            <p className={`landing-stock-text ${percentage > 0 ? 'is-green' : 'is-red'}`}>{percentage}%</p>
-            {percentage > 0 ? <p className="is-green landing-stock-text"><GoTriangleUp className="landing-stock-arrow" /></p> : <p className="is-red landing-stock-text"><GoTriangleDown className="landing-stock-arrow" /></p>}
-          </div>
-          <NavLink to={`/search/${eachSymbol}`}>
-            <canvas className="stock-sparkline-chart-small" ref={el => chartRefs.current[offset + index] = el}></canvas>
-          </NavLink>
-        </div>
-      );
-    });
   }
-
 
   return (
     <section className="page-container">
       <section className="page-content-container">
-        
-          <section className="landing-container">
-          {user && <section className="landing-content">
+        <section className="landing-container">
+
+          {user &&
+            <section className="landing-stock-content">
               <div className="landing-stocks-container">
                 <div className="">
                   <h2>My Top Gainers</h2>
@@ -159,24 +162,31 @@ export default function LandingPage() {
               </div>
             </section>}
 
-            <section className="landing-content">
-              <h2>Market</h2>
-              <div className="landing-stocks-container">
-                <div className="landing-stocks-3tab-container">
-                  {stockElement(marketSymbols.slice(0, 3))}
-                </div>
-                <div className="landing-stocks-3tab-container">
-                  {stockElement(marketSymbols.slice(3, 6), 3)}
-                </div>
+          <section className="landing-stock-content">
+            <h2>Market</h2>
+            <div className="landing-stocks-container">
+              <div className="landing-stocks-3tab-container">
+                {stockElement(marketSymbols.slice(0, 3))}
               </div>
-            </section>
-            
-            <section className="landing-content">
-              <h2>Market News</h2>
-              <h2>MyNews</h2>
-            </section>
-
+              <div className="landing-stocks-3tab-container">
+                {stockElement(marketSymbols.slice(3, 6), 3)}
+              </div>
+            </div>
           </section>
+
+          <section className="landing-news-content">
+            <h2>Market News</h2>
+            {marketNews?.length > 0 && marketNews?.map(ele => (
+              <div className="landing-news-tab" key={ele.url}>
+                <p>{ele.title}</p>
+                <p>{ele.publisher}</p>
+                <p>{ele.date?.split('T')[0]}</p>
+              </div>
+            ))}
+            <h2>MyNews</h2>
+          </section>
+
+        </section>
       </section>
     </section>
   );
