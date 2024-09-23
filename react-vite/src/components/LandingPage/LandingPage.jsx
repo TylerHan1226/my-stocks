@@ -81,7 +81,7 @@ export default function LandingPage() {
     return symbols?.map((eachSymbol, index) => {
       const percentage = ((((landingStocks?.[eachSymbol]?.currentPrice - landingStocks?.[eachSymbol]?.info.previousClose)) / landingStocks?.[eachSymbol]?.info.previousClose) * 100).toFixed(2)
       return (
-        <div className="landing-stock-tab" key={eachSymbol}>
+        <div className="landing-stock-tab" key={index}>
           <h4 className="landing-stock-text">{landingStocks?.[eachSymbol]?.name}</h4>
           <div className="landing-stock-percentage-container">
             <p className="landing-stock-text">{landingStocks?.[eachSymbol]?.currentPrice.toFixed(2)}</p>
@@ -144,48 +144,53 @@ export default function LandingPage() {
       <section className="page-content-container">
         <section className="landing-container">
 
-          {user &&
-            <section className="landing-stock-content">
-              <div className="landing-stocks-container">
-                <div className="">
-                  <h2>My Top Gainers</h2>
-                  <div className="landing-stocks-3tab-container">
-                    {stockElement(myTopGainerSymbols, marketSymbols.length)}
-                  </div>
+          <section className="landing-news-content">
+            <div className="landing-info-tabs">
+              <h2>Market News</h2>
+              {marketNews?.length > 0 && marketNews?.slice(0, 5)?.map((ele, index) => (
+                <div className="landing-news-tab" key={index}>
+                  <p>{ele.title}</p>
+                  <p>{ele.publisher}</p>
+                  <p>{ele.date?.split('T')[0]}</p>
                 </div>
-                <div className="">
-                  <h2>My Top Losers</h2>
-                  <div className="landing-stocks-3tab-container">
-                    {stockElement(myTopLoserSymbols, marketSymbols.length + myTopGainers.length)}
-                  </div>
-                </div>
-              </div>
-            </section>}
+              ))}
+            </div>
+            <div className="landing-info-tabs">
+              <h2>MyNews</h2>
+              <div className="landing-news-tab">
 
-          <section className="landing-stock-content">
-            <h2>Market</h2>
-            <div className="landing-stocks-container">
-              <div className="landing-stocks-3tab-container">
-                {stockElement(marketSymbols.slice(0, 3))}
-              </div>
-              <div className="landing-stocks-3tab-container">
-                {stockElement(marketSymbols.slice(3, 6), 3)}
               </div>
             </div>
           </section>
 
-          <section className="landing-news-content">
-            <h2>Market News</h2>
-            {marketNews?.length > 0 && marketNews?.map(ele => (
-              <div className="landing-news-tab" key={ele.url}>
-                <p>{ele.title}</p>
-                <p>{ele.publisher}</p>
-                <p>{ele.date?.split('T')[0]}</p>
-              </div>
-            ))}
-            <h2>MyNews</h2>
-          </section>
+          <section className="landing-stock-content">
+            <div className="landing-info-tabs">
+              <h2>Market</h2>
+              <section className="landing-3stocks-container">
+                <div className="landing-3stocks">
+                  {stockElement(marketSymbols.slice(0, 3))}
+                </div>
+                <div className="landing-3stocks">
+                  {stockElement(marketSymbols.slice(3, 6), 3)}
+                </div>
+              </section>
+            </div>
 
+            {user &&
+              <div className="landing-info-tabs">
+                <section className="landing-3stocks-container">
+                  <div className="landing-3stocks">
+                    <h2 className="landing-gainer-loser-title">My Top Gainers</h2>
+                    {stockElement(myTopGainerSymbols, marketSymbols.length)}
+                  </div>
+                  <div className="landing-3stocks">
+                    <h2 className="landing-gainer-loser-title">My Top Losers</h2>
+                    {stockElement(myTopLoserSymbols, marketSymbols.length + myTopGainers.length)}
+                  </div>
+                </section>
+              </div>
+            }
+          </section>
         </section>
       </section>
     </section>

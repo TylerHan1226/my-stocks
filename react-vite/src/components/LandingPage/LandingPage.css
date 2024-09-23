@@ -3,41 +3,45 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-}
-
-.landing-content {
-    width: 520px;
-    padding: 12px;
-}
-/* .landing-stocks-container {
-
-}
-.landing-news-content {
-    
-} */
-
-.landing-stocks-container {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    width: 100%;
-}
-.landing-stocks-3tab-container {
-    display: flex;
-    flex-direction: column;
     gap: 12px;
 }
+.landing-info-tabs {
+    border: solid 1px var(--border-grey);
+    /* border: solid 1px red; */
+    border-radius: 12px;
+    margin: 0 0 12px 0;
+    padding: 12px;
+    height: 680px;
+}
+/* .landing-stock-content {
+    border: solid 1px red;
+} */
+.landing-news-content {
+    width: 900px;
+}
+/* .landing-news-tab {
+    border: solid blue 1px;
+} */
+.landing-3stocks-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.landing-3stocks {
+    width: 240px;
+}
+.landing-gainer-loser-title {
+    margin: 0 0 48px 0;
+}
 .landing-stock-tab {
-    width: 180px;
-    height: 200px;
+    height: 180px;
     margin: 0 16px 0 0;
 }
 .stock-sparkline-chart-small {
-    padding: 12px;
+    padding: 16px;
     margin-top: 16px;
     max-height: 80px;
     min-height: 80px;
-    width: 180px;
 }
 .stock-sparkline-chart-small:hover {
     /* background-color: var(--theme-green); */
@@ -55,14 +59,11 @@
     align-items: center;
 }
 .landing-stock-text {
-    height: 42px;
+    height: 12px;
 }
 .landing-stock-arrow {
     font-size: 18px;
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-.landing-news-tab {
-    border: solid blue 1px;
 }

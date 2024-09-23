@@ -25,6 +25,10 @@ def all_news():
                 formatted_article["url"] = article["thumbnail"]["resolutions"][1]["url"]
             except:
                 formatted_article["url"] = None
+            try:
+                formatted_article["image_url"] = article["thumbnail"]["resolutions"][0]["url"]
+            except:
+                formatted_article["image_url"] = None
             response[article["uuid"]] = formatted_article
     return jsonify(list(response.values()))
 
