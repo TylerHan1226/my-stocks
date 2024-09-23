@@ -180,7 +180,7 @@ def edit_list_name(list_name):
         return [selected_list.to_dict() for selected_list in selected_lists], 200
     return form.errors, 400
 
-# remove a list
+# remove a list item
 # /api/lists/remove
 @list_routes.route('/<int:id>/remove', methods=['DELETE'])
 @login_required
@@ -194,6 +194,8 @@ def remove_stock(id):
     db.session.commit()
     return {'message': 'Successfully Deleted'}, 200
 
+# remove all list items under a list name
+# /api/lists/remove-list/<string:list_name>
 @list_routes.route('remove-list/<string:list_name>', methods=['DELETE'])
 @login_required
 def remove_list(list_name):

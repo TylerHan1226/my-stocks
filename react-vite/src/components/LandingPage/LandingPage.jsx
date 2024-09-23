@@ -1,15 +1,15 @@
 import "./LandingPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { getAllMyListsThunk } from "../../redux/list";
-import { getMultipleStocksThunk } from "../../redux/stock";
 import Chart from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { makeChartSmall } from "../Helper/Helper";
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 import Loading from "../Loading/Loading";
 import { NavLink } from "react-router-dom";
-import { getMarketNewsThunk } from "../../redux/news";
+import { getAllMyListsThunk } from "../../redux/list";
+import { getMultipleStocksThunk } from "../../redux/stock";
+import { getMarketNewsThunk, getMyNewsThunk } from "../../redux/news";
 
 Chart.register(annotationPlugin);
 
@@ -20,19 +20,16 @@ export default function LandingPage() {
   const lists = useSelector(state => state.lists?.My_Lists)
   const landingStocks = useSelector(state => state.stocks?.multiple_stocks)
   const marketNews = useSelector(state => state.news?.market_news)
+  const myNews = useSelector(state => state.news?.my_news)
   const chartRefs = useRef([])
   const chartInstances = useRef([])
   const prevAllMyStocksSymbolArr = useRef([])
   const allMyStocksSymbols = new Set(lists?.map(ele => ele.stock_symbol))
   const allMyStocksSymbolArr = Array.from(allMyStocksSymbols)
-
   const [isLoading, setIsLoading] = useState(true)
 
   const marketSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"]
   const landingStocksSymbols = marketSymbols.concat(allMyStocksSymbolArr)
-  // const currentDate = new Date().toISOString()
-  // console.log('currentDate ==>', currentDate)
-  console.log('marketNews =>', marketNews)
 
   useEffect(() => {
     dispatch(getAllMyListsThunk())
@@ -43,6 +40,7 @@ export default function LandingPage() {
     if (user && JSON.stringify(prevAllMyStocksSymbolArr.current) !== JSON.stringify(allMyStocksSymbolArr)) {
       dispatch(getMultipleStocksThunk(landingStocksSymbols))
       prevAllMyStocksSymbolArr.current = allMyStocksSymbolArr
+      dispatch(getMyNewsThunk(allMyStocksSymbolArr))
     }
   }, [dispatch, user, allMyStocksSymbolArr, landingStocksSymbols])
 
@@ -148,33 +146,47 @@ export default function LandingPage() {
             <div className="landing-info-tabs">
               <h2>Market News</h2>
               <section className="landing-news-container">
-              {marketNews?.length > 0 && marketNews?.slice(0, 10)?.map((ele, index) => (
-                <div className="landing-news-tab" key={index}>
-                  <div className="landing-news-info">
-                    <p>{ele.title}</p>
-                    <div className="landing-news-dtl-info">
-                      <p>{ele.publisher}</p>
-                      <p> | {ele.date?.split('T')[0]} | </p>
-                      <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
-                        Read More
-                      </NavLink>
+                {marketNews?.length > 0 && marketNews?.slice(0, 10)?.map((ele, index) => (
+                  <div className="landing-news-tab" key={index}>
+                    <div className="landing-news-info">
+                      <p>{ele.title}</p>
+                      <div className="landing-news-dtl-info">
+                        <p>{ele.publisher}</p>
+                        <p> | {ele.date?.split('T')[0]} | </p>
+                        <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
+                          Read More
+                        </NavLink>
+                      </div>
                     </div>
-                    
+                    <img className="landing-news-img" src={ele.image_url} />
                   </div>
-                  <img className="landing-news-img" src={ele.image_url} />
-                </div>
-              ))}
+                ))}
               </section>
             </div>
             <div className="landing-info-tabs">
-              <h2>MyNews</h2>
-              <div className="landing-news-tab">
-
-              </div>
+              <h2>My News</h2>
+              <section className="landing-news-container">
+                {myNews?.length > 0 && myNews?.slice(0, 10)?.map((ele, index) => (
+                  <div className="landing-news-tab" key={index}>
+                    <div className="landing-news-info">
+                      <p>{ele.title}</p>
+                      <div className="landing-news-dtl-info">
+                        <p>{ele.publisher}</p>
+                        <p> | {ele.date?.split('T')[0]} | </p>
+                        <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
+                          Read More
+                        </NavLink>
+                      </div>
+                    </div>
+                    <img className="landing-news-img" src={ele.image_url} />
+                  </div>
+                ))}
+              </section>
             </div>
           </section>
 
           <section className="landing-stock-content">
+
             <div className="landing-info-tabs">
               <h2>Market</h2>
               <section className="landing-3stocks-container">
@@ -186,20 +198,20 @@ export default function LandingPage() {
                 </div>
               </section>
             </div>
-            {user &&
-              <div className="landing-info-tabs">
-                <section className="landing-3stocks-container">
-                  <div className="landing-3stocks">
-                    <h2 className="landing-gainer-loser-title">My Top Gainers</h2>
-                    {stockElement(myTopGainerSymbols, marketSymbols.length)}
-                  </div>
-                  <div className="landing-3stocks">
-                    <h2 className="landing-gainer-loser-title">My Top Losers</h2>
-                    {stockElement(myTopLoserSymbols, marketSymbols.length + myTopGainers.length)}
-                  </div>
-                </section>
-              </div>
-            }
+
+            <div className="landing-info-tabs">
+              <section className="landing-3stocks-container">
+                <div className="landing-3stocks">
+                  <h2 className="landing-gainer-loser-title">My Top Gainers</h2>
+                  {stockElement(myTopGainerSymbols, marketSymbols.length)}
+                </div>
+                <div className="landing-3stocks">
+                  <h2 className="landing-gainer-loser-title">My Top Losers</h2>
+                  {stockElement(myTopLoserSymbols, marketSymbols.length + myTopGainers.length)}
+                </div>
+              </section>
+            </div>
+
           </section>
 
         </section>
