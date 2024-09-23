@@ -5,6 +5,11 @@
     justify-content: center;
     gap: 12px;
 }
+.landing-btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 .landing-info-tabs {
     border: solid 1px var(--border-grey);
     border-radius: 12px;
@@ -12,9 +17,10 @@
     padding: 12px;
     height: 680px;
 }
-/* .landing-stock-content {
-    border: solid 1px red;
-} */
+.landing-stock-content {
+    display: flex;
+    flex-direction: column;
+}
 .landing-news-content {
     width: 900px;
 }
@@ -37,8 +43,6 @@
     border-radius: 10px;
 }
 .landing-news-tab {
-    /* border: solid blue 1px; */
-    /* height: 90px; */
     display: flex;
     flex-direction: row;
 }

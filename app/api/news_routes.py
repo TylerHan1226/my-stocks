@@ -15,8 +15,6 @@ def market_news():
     for market in market_symbols:
         res = yf.Ticker(market)
         for article in res.news:
-            if article["publisher"] in ["Motley Fool", "Insider Monkey"]:
-                continue
             if article["title"] in seen_titles:
                 continue
             seen_titles.add(article["title"])
@@ -50,8 +48,6 @@ def get_news_for_multiple_stocks():
     for symbol in my_symbols:
         res = yf.Ticker(symbol)
         for article in res.news:
-            if article["publisher"] in ["Motley Fool", "Insider Monkey"]:
-                continue
             if article["title"] in seen_titles:
                 continue
             seen_titles.add(article["title"])

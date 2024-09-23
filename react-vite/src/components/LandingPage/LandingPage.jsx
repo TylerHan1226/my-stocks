@@ -27,9 +27,19 @@ export default function LandingPage() {
   const allMyStocksSymbols = new Set(lists?.map(ele => ele.stock_symbol))
   const allMyStocksSymbolArr = Array.from(allMyStocksSymbols)
   const [isLoading, setIsLoading] = useState(true)
-
+  const [showMarket, setShowMarket] = useState(true)
+  const [showMyStocks, setShowMyStocks] = useState(true)
   const marketSymbols = ["^GSPC", "^DJI", "^IXIC", "^RUT", "CL=F", "GC=F"]
   const landingStocksSymbols = marketSymbols.concat(allMyStocksSymbolArr)
+
+  const handleMarket = () => {
+    setShowMarket(prev => !prev)
+  }
+  const handleMyStocks = () => {
+    setShowMyStocks(prev => !prev)
+  }
+  const isDisableMarket = showMarket == true && showMyStocks == false
+  const isDisableMyStock = showMarket == false && showMyStocks == true
 
   useEffect(() => {
     dispatch(getAllMyListsThunk())
@@ -116,7 +126,6 @@ export default function LandingPage() {
   }, [user, landingStocks, landingStocksSymbols, allMyStocksSymbolArr, myTopGainers, myTopLosers])
 
 
-
   if (!user) {
     return (
       <section className="page-container">
@@ -143,75 +152,97 @@ export default function LandingPage() {
         <section className="landing-container">
 
           <section className="landing-news-content">
-            <div className="landing-info-tabs">
-              <h2>Market News</h2>
-              <section className="landing-news-container">
-                {marketNews?.length > 0 && marketNews?.slice(0, 10)?.map((ele, index) => (
-                  <div className="landing-news-tab" key={index}>
-                    <div className="landing-news-info">
-                      <p>{ele.title}</p>
-                      <div className="landing-news-dtl-info">
-                        <p>{ele.publisher}</p>
-                        <p> | {ele.date?.split('T')[0]} | </p>
-                        <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
-                          Read More
-                        </NavLink>
+
+            {showMarket &&
+              <div className="landing-info-tabs">
+                <h2>Market News</h2>
+                <section className="landing-news-container">
+                  {marketNews?.length > 0 && marketNews?.slice(0, 10)?.map((ele, index) => (
+                    <div className="landing-news-tab" key={index}>
+                      <div className="landing-news-info">
+                        <p>{ele.title}</p>
+                        <div className="landing-news-dtl-info">
+                          <p>{ele.publisher}</p>
+                          <p> | {ele.date?.split('T')[0]} | </p>
+                          <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
+                            Read More
+                          </NavLink>
+                        </div>
                       </div>
+                      <img className="landing-news-img" src={ele.image_url} />
                     </div>
-                    <img className="landing-news-img" src={ele.image_url} />
-                  </div>
-                ))}
-              </section>
-            </div>
-            <div className="landing-info-tabs">
-              <h2>My News</h2>
-              <section className="landing-news-container">
-                {myNews?.length > 0 && myNews?.slice(0, 10)?.map((ele, index) => (
-                  <div className="landing-news-tab" key={index}>
-                    <div className="landing-news-info">
-                      <p>{ele.title}</p>
-                      <div className="landing-news-dtl-info">
-                        <p>{ele.publisher}</p>
-                        <p> | {ele.date?.split('T')[0]} | </p>
-                        <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
-                          Read More
-                        </NavLink>
+                  ))}
+                </section>
+              </div>}
+
+            {showMyStocks &&
+              <div className="landing-info-tabs">
+                <h2>My News</h2>
+                <section className="landing-news-container">
+                  {myNews?.length > 0 && myNews?.slice(0, 10)?.map((ele, index) => (
+                    <div className="landing-news-tab" key={index}>
+                      <div className="landing-news-info">
+                        <p>{ele.title}</p>
+                        <div className="landing-news-dtl-info">
+                          <p>{ele.publisher}</p>
+                          <p> | {ele.date?.split('T')[0]} | </p>
+                          <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
+                            Read More
+                          </NavLink>
+                        </div>
                       </div>
+                      <img className="landing-news-img" src={ele.image_url} />
                     </div>
-                    <img className="landing-news-img" src={ele.image_url} />
-                  </div>
-                ))}
-              </section>
-            </div>
+                  ))}
+                </section>
+              </div>}
+
           </section>
 
           <section className="landing-stock-content">
 
-            <div className="landing-info-tabs">
-              <h2>Market</h2>
-              <section className="landing-3stocks-container">
-                <div className="landing-3stocks">
-                  {stockElement(marketSymbols.slice(0, 3))}
-                </div>
-                <div className="landing-3stocks">
-                  {stockElement(marketSymbols.slice(3, 6), 3)}
-                </div>
-              </section>
-            </div>
+            {showMarket &&
+              <div className="landing-info-tabs">
+                <h2>Market</h2>
+                <section className="landing-3stocks-container">
+                  <div className="landing-3stocks">
+                    {stockElement(marketSymbols.slice(0, 3))}
+                  </div>
+                  <div className="landing-3stocks">
+                    {stockElement(marketSymbols.slice(3, 6), 3)}
+                  </div>
+                </section>
+              </div>}
 
-            <div className="landing-info-tabs">
-              <section className="landing-3stocks-container">
-                <div className="landing-3stocks">
-                  <h2 className="landing-gainer-loser-title">My Top Gainers</h2>
-                  {stockElement(myTopGainerSymbols, marketSymbols.length)}
-                </div>
-                <div className="landing-3stocks">
-                  <h2 className="landing-gainer-loser-title">My Top Losers</h2>
-                  {stockElement(myTopLoserSymbols, marketSymbols.length + myTopGainers.length)}
-                </div>
-              </section>
-            </div>
+            {showMyStocks &&
+              <div className="landing-info-tabs">
+                <section className="landing-3stocks-container">
+                  <div className="landing-3stocks">
+                    <h2 className="landing-gainer-loser-title">My Top Gainers</h2>
+                    {stockElement(myTopGainerSymbols, marketSymbols.length)}
+                  </div>
+                  <div className="landing-3stocks">
+                    <h2 className="landing-gainer-loser-title">My Top Losers</h2>
+                    {stockElement(myTopLoserSymbols, marketSymbols.length + myTopGainers.length)}
+                  </div>
+                </section>
+              </div>}
 
+          </section>
+
+          <section className="landing-btn-container">
+            <button className={`stock-page-action-btn ${showMarket ? 'is-background-green' : ''}`}
+              onClick={handleMarket}
+              disabled={isDisableMarket}
+              >
+              Market
+            </button>
+            <button className={`stock-page-action-btn ${showMyStocks ? 'is-background-green' : ''}`}
+              onClick={handleMyStocks}
+              disabled={isDisableMyStock}
+              >
+              My Stocks
+            </button>
           </section>
 
         </section>
