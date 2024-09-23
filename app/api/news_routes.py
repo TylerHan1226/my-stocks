@@ -27,3 +27,4 @@ def all_news():
                 formatted_article["url"] = None
             response[article["uuid"]] = formatted_article
     return jsonify(list(response.values()))
+
