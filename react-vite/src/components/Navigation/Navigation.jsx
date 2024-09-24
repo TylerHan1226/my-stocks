@@ -23,6 +23,9 @@ export default function Navigation() {
           <GiReceiveMoney id='nav-site-icon' />
           <h1 id="nav-logo-text">MyStock</h1>
         </NavLink>
+        <NavLink className='nav-logo-container' to="/landingBeta">
+          <h1 id="nav-logo-text">landingBeta</h1>
+        </NavLink>
       </section>
 
       <div className="nav-icons-container">

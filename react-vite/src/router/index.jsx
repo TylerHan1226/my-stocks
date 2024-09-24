@@ -6,6 +6,7 @@ import Layout from './Layout';
 import SearchPage from '../components/Search/SearchPage';
 import AllLists from '../components/MyList/AllLists';
 import List from '../components/MyList/List';
+import LandingPageBeta from '../components/LandingPage/LandingPageBeta';
 
 
 export const router = createBrowserRouter([
@@ -15,6 +16,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <LandingPage />,
+      },
+      {
+        path: "/landingBeta",
+        element: <LandingPageBeta />,
       },
       {
         path: "login",

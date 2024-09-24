@@ -7,7 +7,7 @@ import { makeChartSmall } from "../Helper/Helper";
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 import Loading from "../Loading/Loading";
 import { NavLink } from "react-router-dom";
-import { getAllMyListsThunk } from "../../redux/list";
+import { getAllMyListsThunk, getAllMyStocksThunk } from "../../redux/list";
 import { getMultipleStocksThunk } from "../../redux/stock";
 import { getMarketNewsThunk, getMyNewsThunk } from "../../redux/news";
 
@@ -33,6 +33,7 @@ export default function LandingPage() {
   useEffect(() => {
     dispatch(getAllMyListsThunk())
     dispatch(getMarketNewsThunk())
+    dispatch(getAllMyStocksThunk())
   }, [dispatch, user])
 
   useEffect(() => {
@@ -116,7 +117,12 @@ export default function LandingPage() {
       const chartIndex = marketSymbols.length + myTopGainers.length + index
       createChart(symbol, index, chartIndex)
     })
-    if (landingStocks) setIsLoading(false)
+    // if (!lists && landingStocks) {
+    //   setIsLoading(false)
+    // } else if (allMyStocksSymbolArr) {
+    //   setIsLoading(false)
+    // }
+    setIsLoading(false)
     window.scrollTo(0, 0)
   }, [landingStocks, marketSymbols, myTopGainerSymbols, myTopLoserSymbols])
 
@@ -129,7 +135,10 @@ export default function LandingPage() {
       </section>
     )
   }
-
+  let hasMyStockData = false
+  if (landingStocks) {
+    hasMyStockData = Object.keys(landingStocks).length > 6 ? true : false
+  }
 
   if (isLoading) {
     return (
@@ -148,33 +157,10 @@ export default function LandingPage() {
 
           <section className="landing-news-content">
 
-
-              <div className="landing-info-tabs">
-                <h2>Market News</h2>
-                <section className="landing-news-container">
-                  {marketNews?.length > 0 && marketNews?.slice(0, 10)?.map((ele, index) => (
-                    <div className="landing-news-tab" key={index}>
-                      <div className="landing-news-info">
-                        <p>{ele.title}</p>
-                        <div className="landing-news-dtl-info">
-                          <p>{ele.publisher}</p>
-                          <p> | {ele.date?.split('T')[0]} | </p>
-                          <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
-                            Read More
-                          </NavLink>
-                        </div>
-                      </div>
-                      <img className="landing-news-img" src={ele.image_url} />
-                    </div>
-                  ))}
-                </section>
-              </div>
-              
-              {lists?.length > 0 &&
-              <div className="landing-info-tabs">
-              <h2>My News</h2>
+            <div className="landing-info-tabs">
+              <h2>Market News</h2>
               <section className="landing-news-container">
-                {myNews?.length > 0 && myNews?.slice(0, 10)?.map((ele, index) => (
+                {marketNews?.length > 0 && marketNews?.slice(0, 10)?.map((ele, index) => (
                   <div className="landing-news-tab" key={index}>
                     <div className="landing-news-info">
                       <p>{ele.title}</p>
@@ -190,25 +176,47 @@ export default function LandingPage() {
                   </div>
                 ))}
               </section>
-            </div>}
-              
+            </div>
+
+            {hasMyStockData &&
+              <div className="landing-info-tabs">
+                <h2>My News</h2>
+                <section className="landing-news-container">
+                  {myNews?.length > 0 && myNews?.slice(0, 10)?.map((ele, index) => (
+                    <div className="landing-news-tab" key={index}>
+                      <div className="landing-news-info">
+                        <p>{ele.title}</p>
+                        <div className="landing-news-dtl-info">
+                          <p>{ele.publisher}</p>
+                          <p> | {ele.date?.split('T')[0]} | </p>
+                          <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
+                            Read More
+                          </NavLink>
+                        </div>
+                      </div>
+                      <img className="landing-news-img" src={ele.image_url} />
+                    </div>
+                  ))}
+                </section>
+              </div>}
+
           </section>
 
           <section className="landing-stock-content">
 
-              <div className="landing-info-tabs">
-                <h2>Market</h2>
-                <section className="landing-3stocks-container">
-                  <div className="landing-3stocks">
-                    {stockElement(marketSymbols.slice(0, 3))}
-                  </div>
-                  <div className="landing-3stocks">
-                    {stockElement(marketSymbols.slice(3, 6), 3)}
-                  </div>
-                </section>
-              </div>
+            <div className="landing-info-tabs">
+              <h2>Market</h2>
+              <section className="landing-3stocks-container">
+                <div className="landing-3stocks">
+                  {stockElement(marketSymbols.slice(0, 3))}
+                </div>
+                <div className="landing-3stocks">
+                  {stockElement(marketSymbols.slice(3, 6), 3)}
+                </div>
+              </section>
+            </div>
 
-              {lists?.length > 0 &&
+            {hasMyStockData &&
               <div className="landing-info-tabs">
                 <section className="landing-3stocks-container">
                   <div className="landing-3stocks">
@@ -227,5 +235,5 @@ export default function LandingPage() {
         </section>
       </section>
     </section>
-  );
+  )
 }
