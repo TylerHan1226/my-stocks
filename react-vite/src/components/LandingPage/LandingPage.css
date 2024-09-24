@@ -66,7 +66,6 @@
 .landing-3stocks-container {
     display: flex;
     flex-direction: row;
-    align-items: center;
 }
 .landing-3stocks {
     width: 240px;
