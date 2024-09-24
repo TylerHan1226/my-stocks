@@ -67,9 +67,16 @@
     display: flex;
     flex-direction: row;
 }
+.landing-3stocks-market {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    /* gap: 12px; */
+}
 .landing-3stocks {
     width: 240px;
 }
+
 .landing-gainer-loser-title {
     margin: 20px 0 40px 0;
 }

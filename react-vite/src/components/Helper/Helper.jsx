@@ -1,7 +1,7 @@
-import Chart from 'chart.js/auto';
-import annotationPlugin from 'chartjs-plugin-annotation';
+import Chart from 'chart.js/auto'
+import annotationPlugin from 'chartjs-plugin-annotation'
 
-Chart.register(annotationPlugin);
+Chart.register(annotationPlugin)
 
 
 export const makeChart = (period, stocksData, chartInstance, chartRef, isGreen) => {
@@ -195,32 +195,24 @@ export const makeChartPercentage = (period, stocksData, chartInstance, chartRef,
 
 export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) => {
     if (chartInstance && chartInstance.current) {
-      chartInstance.current.destroy();
+      chartInstance.current.destroy()
     }
     // Set the canvas size to 50% of its original size
-    chartRef.width = chartRef.width / 2;
-    chartRef.height = chartRef.height / 2;
+    chartRef.width = chartRef.width / 2
+    chartRef.height = chartRef.height / 2
   
-    const ctx = chartRef.getContext('2d');
-    const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim();
-    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim();
-    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim();
-    const chartColor = isGreen ? themeGreen : themeRed;
-    let annotationValue;
+    const ctx = chartRef.getContext('2d')
+    const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
+    const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim()
+    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim()
+    const chartColor = isGreen ? themeGreen : themeRed
+    let annotationValue
   
-    if (period === 'historical_data_1d') {
-      annotationValue = stock?.info?.previousClose || 0; // Default value
-    } else if (['historical_data_1wk', 'historical_data_1mo', 'historical_data_3mo', 'historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr'].includes(period)) {
-      annotationValue = stock[period]?.[0] || 0; // Default value
-    }
-  
-    if (annotationValue === undefined || annotationValue === null) {
-      console.error('Annotation value is not defined');
-      return;
-    }
+    annotationValue = stock?.info?.previousClose || 0
+    console.log('stock?.info?.previousClose in small chart ==>', stock?.info?.previousClose)
     // Add currentPrice to the end of the stock[period] array
     if (stock[period] && stock.currentPrice !== undefined) {
-      stock[period].push(stock.currentPrice);
+      stock[period].push(stock.currentPrice)
     }
   
     chartInstance.current = new Chart(ctx, {
@@ -266,6 +258,6 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) 
           }
         }
       }
-    });
+    })
   }
 

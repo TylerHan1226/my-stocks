@@ -40,6 +40,7 @@ export default function LandingPage() {
     if (user && JSON.stringify(prevAllMyStocksSymbolArr.current) !== JSON.stringify(allMyStocksSymbolArr)) {
       dispatch(getMultipleStocksThunk(landingStocksSymbols))
       prevAllMyStocksSymbolArr.current = allMyStocksSymbolArr
+      console.log('allMyStocksSymbolArr on landing A==>', allMyStocksSymbolArr)
       dispatch(getMyNewsThunk(allMyStocksSymbolArr))
     }
   }, [dispatch, user, allMyStocksSymbolArr, landingStocksSymbols])
