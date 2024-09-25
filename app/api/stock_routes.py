@@ -93,7 +93,7 @@ def getOneStock(symbol):
 # get multiple stocks
 # /api/stocks/multiple
 @stock_routes.route('/multiple', methods=['POST'])
-@login_required
+# @login_required
 def getMultipleStocks():
     symbols = request.json.get('symbols', [])
     if not symbols:
