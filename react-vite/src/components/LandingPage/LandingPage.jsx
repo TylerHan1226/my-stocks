@@ -50,7 +50,7 @@ export default function LandingPageBeta() {
     const myTopGainerSymbols = myTopGainers?.map(ele => ele?.ticker)?.slice(0, 3)
     const myTopLoserSymbols = myTopLosers?.map(ele => ele?.ticker)?.slice(0, 3)
     // Create Charts
-    const smallChartPeriod = 'historical_data_1d'
+    
     const chartMaker = (symbols, stocks, chartRefs, chartInstances) => {
         return symbols?.forEach((symbol, index) => {
             const stock = stocks[symbol]
@@ -59,7 +59,7 @@ export default function LandingPageBeta() {
                 if (!chartInstances.current[index]) {
                     chartInstances.current[index] = { current: null }
                 }
-                makeChartSmall(smallChartPeriod, stock, chartInstances.current[index], chartRefs.current[index], isGreen)
+                makeChartSmall(stock, chartInstances.current[index], chartRefs.current[index], isGreen)
             }
 
         })

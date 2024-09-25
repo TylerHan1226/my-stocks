@@ -192,8 +192,8 @@ export const makeChartPercentage = (period, stocksData, chartInstance, chartRef,
 }
 
 
-
-export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) => {
+export const makeChartSmall = (stock, chartInstance, chartRef, isGreen) => {
+    const period = 'historical_data_1d'
     if (chartInstance && chartInstance.current) {
       chartInstance.current.destroy()
     }
