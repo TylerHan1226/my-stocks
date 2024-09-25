@@ -197,6 +197,7 @@ export const makeChartSmall = (stock, chartInstance, chartRef, isGreen) => {
     if (chartInstance && chartInstance.current) {
       chartInstance.current.destroy()
     }
+    if (!stock) return 
     // Set the canvas size to 50% of its original size
     chartRef.width = chartRef.width / 2
     chartRef.height = chartRef.height / 2

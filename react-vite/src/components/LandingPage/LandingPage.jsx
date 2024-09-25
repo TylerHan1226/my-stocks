@@ -85,8 +85,19 @@ export default function LandingPageBeta() {
                                 <GoTriangleDown className="landing-stock-arrow" />
                             </p>}
                     </div>
-                    <NavLink to={`/search/${eachSymbol}`}>
-                        <canvas ref={el => chartRefs.current[offset + index] = el} className="stock-sparkline-chart-small"></canvas>
+                    <NavLink
+                        to={user ? `/search/${eachSymbol}` : '#'}
+                        onClick={(e) => {
+                            if (!user) {
+                                e.preventDefault();
+                                alert('Please log in to see stock details');
+                            }
+                        }}
+                    >
+                        <canvas
+                            ref={el => chartRefs.current[offset + index] = el}
+                            className={'landing-small-chart'}
+                        ></canvas>
                     </NavLink>
                 </div>
             )

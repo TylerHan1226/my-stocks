@@ -84,15 +84,15 @@
     height: 180px;
     margin: 0 16px 0 0;
 }
-.stock-sparkline-chart-small {
+.landing-small-chart {
     padding: 16px;
     margin-top: 16px;
     max-height: 80px;
     min-height: 80px;
 }
-.stock-sparkline-chart-small:hover {
+.landing-small-chart:hover {
     /* background-color: var(--theme-green); */
-    padding: 4px;
+    padding: 8px;
     margin-top: 16px;
     max-height: 80px;
     min-height: 80px;
