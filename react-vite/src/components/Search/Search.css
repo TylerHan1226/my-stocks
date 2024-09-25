@@ -1,5 +1,4 @@
 .search-info-container {
-    /* border: blue 1px solid; */
     width: 1200px;
     margin: 0 auto 0 auto;
 }
@@ -9,12 +8,12 @@
     gap: 160px;
 }
 .search-info-boxes {
-    /* border: green 1px solid; */
+    border-top: var(--border-dark-grey) 0.25px solid;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 16px;
 }
-
 .search-info-texts-container {
     /* border: red 1px solid; */
     display: flex;
@@ -22,7 +21,8 @@
     flex-wrap: wrap;
 }
 .search-info-text {
-    font-size: 20px;
+    font-size: 18px;
+    height: 16px;
 }
 .stock-header-container {
     display: flex;
@@ -51,11 +51,9 @@
     border: 1px var(--theme-green) solid;
     color: white;
 }
-
 .stock-page-action-btn:hover,
 .list-page-action-btn {
     cursor: pointer;
-    
 }
 .stock-page-add-btn {
     list-style: none;

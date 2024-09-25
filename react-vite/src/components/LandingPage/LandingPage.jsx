@@ -1,6 +1,6 @@
 import "./LandingPage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import Chart from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { makeChartSmall } from "../Helper/Helper";
@@ -50,7 +50,7 @@ export default function LandingPageBeta() {
     const myTopGainerSymbols = myTopGainers?.map(ele => ele?.ticker)?.slice(0, 3)
     const myTopLoserSymbols = myTopLosers?.map(ele => ele?.ticker)?.slice(0, 3)
     // Create Charts
-    
+
     const chartMaker = (symbols, stocks, chartRefs, chartInstances) => {
         return symbols?.forEach((symbol, index) => {
             const stock = stocks[symbol]

@@ -11,7 +11,7 @@
     gap: 12px;
 }
 .landing-info-tabs {
-    border: solid 1px var(--border-grey);
+    border: solid 1px var(--border-light-grey);
     border-radius: 12px;
     margin: 0 0 12px 0;
     padding: 12px;

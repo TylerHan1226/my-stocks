@@ -6,7 +6,7 @@ import Loading from "../Loading/Loading";
 import { getOneStockThunk, getStocksToCompareThunk } from "../../redux/stock";
 import AddListModal from "../MyList/AddListModal";
 import Chart from 'chart.js/auto';
-// import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import News from "../News/News";
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 
@@ -53,7 +53,7 @@ export default function SearchPage() {
     const stock52WkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
     const stockPriceChange = stock?.currentPrice - stock?.info?.previousClose
     const stockPercentage = ((stockPriceChange / stock?.info?.previousClose) * 100).toFixed(2)
-    
+
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
     const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
     const isNoPeriod = !(Object.keys(stock).length && stock[chartPeriod])
@@ -83,7 +83,7 @@ export default function SearchPage() {
     const handleOpenModal = () => {
         setModalContent(<AddListModal stockSymbol={stockSymbol} />)
     }
-
+    // chart
     const handleChartPeriod = (period) => {
         setChartPeriod(period)
     }
@@ -92,8 +92,7 @@ export default function SearchPage() {
         const colorClass = chartPeriod == 'historical_data_1d' ? isGreen ? 'green' : 'red' : periodIsGreen ? 'green' : 'red'
         return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
-
-    
+    // compare
     const handleCompareBtn = () => {
         setModalContent(<CompareStocks stockToCompare={stockToCompare} setStockToCompare={setStockToCompare} />)
         if (stocksToCompareArr.length > 5) alert('Can only compare with 5 stocks')
@@ -144,7 +143,8 @@ export default function SearchPage() {
         <section className="page-container">
             {Object.keys(stock).length > 0 ? (
                 <section className="page-content-container">
-                    <div className="stock-header-container">
+
+                    <section className="stock-header-container">
                         <h1 className="page-title">{`${stockName} (${stockSymbol})`}</h1>
                         <h1 className="page-title stock-page-title-price">${stockCurrentPrice}</h1>
                         <div className="stock-page-action-btn-container">
@@ -164,7 +164,8 @@ export default function SearchPage() {
                                 Growth Percentage
                             </button>
                         </div>
-                    </div>
+                    </section>
+
                     <section className="search-info-container">
 
                         <div className="stock-chart-price-container">
@@ -239,6 +240,7 @@ export default function SearchPage() {
                                 }
                             </div>
                         </div>
+
                         <h2>Key Statistics</h2>
                         <div className="search-info-boxes">
                             <div className="search-info-texts-container">
@@ -336,7 +338,11 @@ export default function SearchPage() {
                             </div>
                         </div>
                     </section>
-                </section>) : (
+
+                    <News stockSymbol={stockSymbol} />
+
+                </section>
+            ) : (
                 <section className="page-content-container">
                     <h1 className="page-title">Stock Not Found</h1>
                 </section>
