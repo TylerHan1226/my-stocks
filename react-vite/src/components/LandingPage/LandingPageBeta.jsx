@@ -26,10 +26,13 @@ export default function LandingPageBeta() {
     const myNews = useSelector(state => state.news?.my_news)
     const [isLoading, setIsLoading] = useState(true)
 
-    const marketChartRefs = useRef([]);
-    const marketChartInstances = useRef([]);
-    const myStocksChartRefs = useRef([]);
-    const myStocksChartInstances = useRef([]);
+    const marketChartRefs = useRef([])
+    const marketChartInstances = useRef([])
+    const myTopGainerChartRefs = useRef([])
+    const myTopGainerChartInstances = useRef([])
+    const myTopLoserChartRefs = useRef([])
+    const myTopLoserChartInstances = useRef([])
+
 
     const myTopGainers = []
     const myTopLosers = []
@@ -38,9 +41,9 @@ export default function LandingPageBeta() {
             const stock = allMyStocks[ele]
             if (stock?.currentPrice > stock?.info?.previousClose) {
                 myTopGainers.push(stock)
-              } else {
+            } else {
                 myTopLosers.push(stock)
-              }
+            }
         })
     }
     myTopGainers.sort((a, b) => a.currentPrice / (a.currentPrice - a.info.previousClose) - b.currentPrice / (b.currentPrice - b.info.previousClose))
@@ -48,8 +51,22 @@ export default function LandingPageBeta() {
     const myTopGainerSymbols = myTopGainers?.map(ele => ele?.ticker)?.slice(0, 3)
     const myTopLoserSymbols = myTopLosers?.map(ele => ele?.ticker)?.slice(0, 3)
 
+    // Create Charts
+    // const createChart = (symbol, index, chartRefs, chartInstances, chartIndex) => {
+    //     if (chartRefs.current[chartIndex]) {
+    //         if (!chartInstances.current[chartIndex]) {
+    //             chartInstances.current[chartIndex] = { current: null }
+    //         }
+    //         const stockData = allMyStocks?.[symbol] || {}
+    //         const stockCurrentPrice = stockData.currentPrice || 0
+    //         const stockLastClosePrice = stockData.info?.previousClose || 0
+    //         const isGreen = stockCurrentPrice > stockLastClosePrice
+    //         makeChartSmall('historical_data_1d', stockData, chartInstances.current[chartIndex], chartRefs.current[chartIndex], isGreen)
+    //     }
+    // }
+
     // Stock tabs
-    const stockElement = (symbols, stocks, chartRefs, chartInstances) => {
+    const stockElement = (symbols, stocks, chartRefs, chartInstances, offset = 0) => {
         return symbols?.map((eachSymbol, index) => {
             const percentage = ((((stocks?.[eachSymbol]?.currentPrice - stocks?.[eachSymbol]?.info.previousClose)) / stocks?.[eachSymbol]?.info.previousClose) * 100).toFixed(2)
             return (
@@ -64,7 +81,7 @@ export default function LandingPageBeta() {
                         </p>
                     </div>
                     <NavLink to={`/search/${eachSymbol}`}>
-                        <canvas ref={el => chartRefs.current[index] = el} className="stock-sparkline-chart-small"></canvas>
+                        <canvas ref={el => chartRefs.current[offset + index] = el} className="stock-sparkline-chart-small"></canvas>
                     </NavLink>
                 </div>
             )
@@ -87,32 +104,44 @@ export default function LandingPageBeta() {
     useEffect(() => {
         if (marketStocks) {
             marketSymbols.forEach((symbol, index) => {
-                const stock = marketStocks[symbol];
-                const isGreen = stock?.currentPrice > stock?.info.previousClose;
+                const stock = marketStocks[symbol]
+                const isGreen = stock?.currentPrice > stock?.info.previousClose
                 if (marketChartRefs.current[index]) {
                     if (!marketChartInstances.current[index]) {
-                        marketChartInstances.current[index] = { current: null };
+                        marketChartInstances.current[index] = { current: null }
                     }
-                    makeChartSmall('historical_data_1d', stock, marketChartInstances.current[index], marketChartRefs.current[index], isGreen);
+                    makeChartSmall('historical_data_1d', stock, marketChartInstances.current[index], marketChartRefs.current[index], isGreen)
                 }
-            });
+            })
         }
     }, [marketStocks])
 
     useEffect(() => {
-        if (allMyStocks) {
-            allMyStocksSymbols.forEach((symbol, index) => {
-                const stock = allMyStocks[symbol];
-                const isGreen = stock?.currentPrice > stock?.info.previousClose;
-                if (myStocksChartRefs.current[index]) {
-                    if (!myStocksChartInstances.current[index]) {
-                        myStocksChartInstances.current[index] = { current: null };
+        if (myTopGainerSymbols.length > 0) {
+            myTopGainerSymbols.forEach((symbol, index) => {
+                const stock = allMyStocks[symbol]
+                const isGreen = stock?.currentPrice > stock?.info.previousClose
+                if (myTopGainerChartRefs.current[index]) {
+                    if (!myTopGainerChartInstances.current[index]) {
+                        myTopGainerChartInstances.current[index] = { current: null }
                     }
-                    makeChartSmall('historical_data_1d', stock, myStocksChartInstances.current[index], myStocksChartRefs.current[index], isGreen);
+                    makeChartSmall('historical_data_1d', stock, myTopGainerChartInstances.current[index], myTopGainerChartRefs.current[index], isGreen)
                 }
-            });
+            })
         }
-    }, [allMyStocks])
+        if (myTopLoserSymbols.length > 0) {
+            myTopLoserSymbols.forEach((symbol, index) => {
+                const stock = allMyStocks[symbol]
+                const isGreen = stock?.currentPrice > stock?.info.previousClose
+                if (myTopLoserChartRefs.current[index]) {
+                    if (!myTopLoserChartInstances.current[index]) {
+                        myTopLoserChartInstances.current[index] = { current: null }
+                    }
+                    makeChartSmall('historical_data_1d', stock, myTopLoserChartInstances.current[index], myTopLoserChartRefs.current[index], isGreen)
+                }
+            })
+        }
+    }, [allMyStocks, myTopGainerSymbols, myTopLoserSymbols])
 
     return (
         <section className="page-container">
@@ -125,14 +154,16 @@ export default function LandingPageBeta() {
                             <h2>Market News</h2>
                             <section className="landing-news-container">
                                 {marketNews?.map((ele, index) => (
-                                    <div className="landing-news-info" key={index}>
-                                        <p>{ele.title}</p>
-                                        <div className="landing-news-dtl-info">
-                                            <p>{ele.publisher}</p>
-                                            <p> | {ele.date?.split('T')[0]} | </p>
-                                            <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
-                                                Read More
-                                            </NavLink>
+                                    <div className="landing-news-tab" key={index}>
+                                        <div className="landing-news-info">
+                                            <p>{ele.title}</p>
+                                            <div className="landing-news-dtl-info">
+                                                <p>{ele.publisher}</p>
+                                                <p> | {ele.date?.split('T')[0]} | </p>
+                                                <NavLink to={ele.link} target='_blank' className='landing-news-read-more'>
+                                                    Read More
+                                                </NavLink>
+                                            </div>
                                         </div>
                                         <img className="landing-news-img" src={ele.image_url} />
                                     </div>
@@ -177,12 +208,12 @@ export default function LandingPageBeta() {
                             <h2>My Stocks</h2>
                             <section className="landing-3stocks-container">
                                 <div className="landing-3stocks">
-                                <h2 className="landing-gainer-loser-title">My Top Gainers</h2>
-                                    {stockElement(myTopGainerSymbols, allMyStocks, myStocksChartRefs, myStocksChartInstances)}
+                                    <h2 className="landing-gainer-loser-title">My Top Gainers</h2>
+                                    {stockElement(myTopGainerSymbols, allMyStocks, myTopGainerChartRefs, myTopGainerChartInstances)}
                                 </div>
                                 <div className="landing-3stocks">
-                                <h2 className="landing-gainer-loser-title">My Top Losers</h2>
-                                    {stockElement(myTopLoserSymbols, allMyStocks, myStocksChartRefs, myStocksChartInstances)}
+                                    <h2 className="landing-gainer-loser-title">My Top Losers</h2>
+                                    {stockElement(myTopLoserSymbols, allMyStocks, myTopLoserChartRefs, myTopLoserChartInstances)}
                                 </div>
                             </section>
                         </div>

@@ -209,7 +209,7 @@ export const makeChartSmall = (period, stock, chartInstance, chartRef, isGreen) 
     let annotationValue
   
     annotationValue = stock?.info?.previousClose || 0
-    console.log('stock?.info?.previousClose in small chart ==>', stock?.info?.previousClose)
+    console.log('stock in small chart ==>', [stock?.ticker, stock?.info?.previousClose])
     // Add currentPrice to the end of the stock[period] array
     if (stock[period] && stock.currentPrice !== undefined) {
       stock[period].push(stock.currentPrice)
