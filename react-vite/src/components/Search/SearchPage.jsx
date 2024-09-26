@@ -218,28 +218,31 @@ export default function SearchPage() {
                                 ))}
                             </div>
                         </div>
-
-                        <h2 className="search-info-title">About</h2>
-                        <div className="search-info-boxes">
-                            <p>{stockBusSum}</p>
-                            <div className="search-info-about-container">
-                                {stockComOfficers?.length > 0 &&
-                                    <p className="search-info-text">
-                                        CEO: {stockComOfficers?.filter(ele => ele.title.includes("CEO"))[0]?.name}
-                                    </p>
-                                }
-                                {stockEmployeeNum?.length > 0 &&
-                                    <p className="search-info-text">
-                                        Full-time Employees: {stockEmployeeNum}
-                                    </p>
-                                }
-                                {stockHeadquarter?.length > 0 &&
-                                    <p className="search-info-text">
-                                        Headquarters: {stockHeadquarter}
-                                    </p>
-                                }
-                            </div>
-                        </div>
+                        {stockBusSum && (
+                            <>
+                                <h2 className="search-info-title">About</h2>
+                                <div className="search-info-boxes">
+                                    <p>{stockBusSum}</p>
+                                    <div className="search-info-about-container">
+                                        {stockComOfficers?.some(ele => ele.title.includes("CEO")) && (
+                                            <p className="search-info-text">
+                                                CEO: {stockComOfficers.find(ele => ele.title.includes("CEO"))?.name}
+                                            </p>
+                                        )}
+                                        {stockEmployeeNum && (
+                                            <p className="search-info-text">
+                                                Full-time Employees: {stockEmployeeNum}
+                                            </p>
+                                        )}
+                                        {stockHeadquarter && !stockHeadquarter.includes('undefined') && (
+                                            <p className="search-info-text">
+                                                Headquarters: {stockHeadquarter}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            </>
+                        )}
 
                         <h2 className="search-info-title">Key Statistics</h2>
                         <div className="search-info-boxes">

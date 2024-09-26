@@ -24,7 +24,7 @@ export default function News({ stockSymbol }) {
             <div className="news-page-header">
                 <h2 className="search-info-title">News</h2>
                 <NavLink className="news-show-more" onClick={handleShowMore}>
-                    show more
+                    Show More
                 </NavLink>
             </div>
             <div className="news-container">
