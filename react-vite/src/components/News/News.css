@@ -10,14 +10,14 @@
 .news-page-header {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    /* align-items: center; */
 }
 .news-container {
     /* border: orange solid 1px; */
     border-top: var(--border-dark-grey) 0.25px solid;
 }
 .news-tabs {
-    border-top: var(--border-dark-grey) 0.25px solid;
+    border-bottom: var(--border-dark-grey) 0.25px solid;
     display: flex;
     flex-direction: row;
     text-decoration: none;
@@ -34,7 +34,7 @@
     font-weight: 500;
 }
 .news-show-more {
-    margin: 12px 12px 0 auto;
+    margin: 4px 12px auto auto;
     /* text-decoration: none; */
     color: var(--theme-green);
     font-size: 20px;

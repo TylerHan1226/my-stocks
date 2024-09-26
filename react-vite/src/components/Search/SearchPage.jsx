@@ -219,7 +219,7 @@ export default function SearchPage() {
                             </div>
                         </div>
 
-                        <h2>About</h2>
+                        <h2 className="search-info-title">About</h2>
                         <div className="search-info-boxes">
                             <p>{stockBusSum}</p>
                             <div className="search-info-about-container">
@@ -241,7 +241,7 @@ export default function SearchPage() {
                             </div>
                         </div>
 
-                        <h2>Key Statistics</h2>
+                        <h2 className="search-info-title">Key Statistics</h2>
                         <div className="search-info-boxes">
                             <div className="search-info-texts-container">
 
