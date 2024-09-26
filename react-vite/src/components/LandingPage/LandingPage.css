@@ -72,7 +72,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 20px;
+    gap: 28px;
 }
 .landing-3stocks {
     width: 240px;
