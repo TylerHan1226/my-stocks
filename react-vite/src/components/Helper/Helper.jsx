@@ -5,6 +5,7 @@ Chart.register(annotationPlugin)
 
 
 export const makeChart = (period, stocksData, chartInstance, chartRef, isGreen) => {
+
     if (chartInstance.current && typeof chartInstance.current.destroy === 'function') {
         chartInstance.current.destroy()
     }

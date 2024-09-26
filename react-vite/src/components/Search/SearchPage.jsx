@@ -55,7 +55,7 @@ export default function SearchPage() {
     const stockPercentage = ((stockPriceChange / stock?.info?.previousClose) * 100).toFixed(2)
 
     const [chartPeriod, setChartPeriod] = useState('historical_data_1d')
-    const isGreen = stockCurrentPrice > stockOpenPrice ? true : false
+    const isGreen = stockPriceChange > 0 ? true : false
     const isNoPeriod = !(Object.keys(stock).length && stock[chartPeriod])
 
     const [stockToCompare, setStockToCompare] = useState('')
@@ -124,7 +124,7 @@ export default function SearchPage() {
         if (Object.keys(stock).length > 0 && chartRef.current) {
             const stocksData = { [stockSymbol]: stock, ...stocksToCompareData }
             const makeChartFunction = isChartPercentage ? makeChartPercentage : makeChart
-            const isGreenValue = chartPeriod === 'historical_data_1d' ? isGreen : periodIsGreen
+            const isGreenValue = chartPeriod == 'historical_data_1d' ? isGreen : periodIsGreen
             makeChartFunction(chartPeriod, stocksData, chartInstance, chartRef, isGreenValue)
         }
     }, [chartPeriod, stock, stocksToCompareData, chartInstance, chartRef, isLoading, isChartPercentage])

@@ -43,6 +43,7 @@
     border-radius: 10px;
 }
 .landing-news-tab {
+    border-top: var(--border-dark-grey) 0.25px solid;
     display: flex;
     flex-direction: row;
 }
@@ -58,8 +59,8 @@
     height: 16px;
 }
 .landing-news-img {
-    height: 100px;
-    min-width: 200px;
+    height: 120px;
+    width: 240px;
     object-fit: cover;
     margin: 0 12px 0 auto;
 }
