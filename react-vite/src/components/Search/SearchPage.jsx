@@ -92,8 +92,8 @@ export default function SearchPage() {
         const colorClass = chartPeriod == 'historical_data_1d' ? isGreen ? 'green' : 'red' : periodIsGreen ? 'green' : 'red'
         return `stock-chart-btns ${isSelected ? `chart-btns-selected-${colorClass}` : `is-${colorClass}`}`
     }
-    // compare
-    const handleCompareBtn = () => {
+    // compare chart
+    const handleCompareChartBtn = () => {
         setModalContent(<CompareStocks stockToCompare={stockToCompare} setStockToCompare={setStockToCompare} />)
         if (stocksToCompareArr.length > 5) alert('Can only compare with 5 stocks')
     }
@@ -103,6 +103,10 @@ export default function SearchPage() {
     const handleShowPercentage = () => {
         setIsChartPercentage(prev => !prev)
     }
+    // compare stock
+    // const handleCompareStockBtn = () => {
+    //     console.log('handleCompareStockBtn clicked!')
+    // }
 
     useEffect(() => {
         if (stocksToCompareArr.length > 0) {
@@ -155,13 +159,18 @@ export default function SearchPage() {
                             </button>
                             <button
                                 className="stock-page-action-btn"
-                                onClick={handleCompareBtn}>
-                                COMPARE
+                                onClick={handleCompareChartBtn}>
+                                COMPARE CHART
                             </button>
+                            {/* <button
+                                className="stock-page-action-btn"
+                                onClick={handleCompareStockBtn}>
+                                COMPARE STOCK
+                            </button> */}
                             <button
                                 className={`stock-page-action-btn ${isChartPercentage ? 'is-background-green' : ''}`}
                                 onClick={handleShowPercentage}>
-                                Growth Percentage
+                                GROWTH %
                             </button>
                         </div>
                     </section>
@@ -281,12 +290,14 @@ export default function SearchPage() {
                                 <div className="stock-info-column">
 
                                     <p className="search-info-text">
-                                        Volume: {!isNaN(stockVolume)
+                                        Volume: {!isNaN(stockVolume) || stockVolume < 1
                                             ? (stockVolume > 1000000000000
                                                 ? `${(stockVolume / 1000000000000).toFixed(2)}T`
                                                 : stockVolume > 1000000000
                                                     ? `${(stockVolume / 1000000000).toFixed(2)}B`
-                                                    : `${(stockVolume / 1000000).toFixed(2)}M`)
+                                                    : stockVolume > 1000000
+                                                    ? `${(stockVolume / 1000000000).toFixed(2)}M`
+                                                    : `${(stockVolume / 1000).toFixed(2)}K`)
                                             : 'N/A'}
                                     </p>
                                     <p className="search-info-text">

@@ -35,31 +35,25 @@ body {
 .page-container {
     padding: 68px;
 }
-
 .page-title {
     font-size: 36px;
 }
-
 .page-content-container {
     margin-top: 120px;
     min-height: 500px;
 }
-
 .validation-error-text {
     color: var(--light-red);
     font-size: 18px;
 }
-
 .not-found-message {
     color: white;
     font-size: 32px;
     margin-top: 120px;
 }
-
 .delete-red-text {
     color: var(--light-red);
 }
-
 .font-size-20px {
     font-size: 20px;
 }

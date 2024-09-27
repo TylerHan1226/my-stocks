@@ -66,6 +66,7 @@ export default function LandingPageBeta() {
     }
     // Stock tabs
     const stockElement = (symbols, stocks, chartRefs, chartInstances, offset = 0) => {
+        if (!stocks) return
         return symbols?.map((eachSymbol, index) => {
             const percentage = ((((stocks?.[eachSymbol]?.currentPrice - stocks?.[eachSymbol]?.info.previousClose)) / stocks?.[eachSymbol]?.info.previousClose) * 100).toFixed(2)
             return (
@@ -123,7 +124,7 @@ export default function LandingPageBeta() {
             chartMaker(marketSymbols, marketStocks, marketChartRefs, marketChartInstances)
             setIsLoading(false)
         }
-    }, [marketStocks, user])
+    }, [marketStocks, user, marketChartRefs, marketChartInstances])
     // make my stocks charts
     useEffect(() => {
         if (myTopGainerSymbols.length > 0) {

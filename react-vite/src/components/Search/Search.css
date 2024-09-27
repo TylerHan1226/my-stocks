@@ -44,14 +44,14 @@
     margin: 0 36px 0 auto;
 }
 .stock-page-action-btn {
-    width: 180px;
+    width: 160px;
     height: 42px;
     font-size: 16px;
     background-color: black;
     border: 1px var(--theme-green) solid;
     color: white;
 }
-.stock-page-action-btn:hover,
+
 .list-page-action-btn {
     cursor: pointer;
 }
@@ -70,11 +70,9 @@
     flex-direction: column;
 }
 .stock-chart-container {
-    /* border: 1px solid orange; */
     margin: 4px 0 36px 0;
 }
 .stock-sparkline-chart {
-    /* border: 1px solid blue; */
     margin: 20px auto 0 auto;
     max-width: 900px;
     min-width: 900px;
@@ -137,4 +135,15 @@
 }
 .is-background-green {
     background-color: var(--dark-green);
+}
+
+@media (max-width: 1500px) {
+    .stock-header-container {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+    }
+    .stock-page-action-btn-container {
+        margin: 24px auto 36px auto;
+    }
 }

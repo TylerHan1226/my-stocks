@@ -38,7 +38,7 @@
     font-weight: 500;
 }
 .news-show-more {
-    margin: 4px 12px auto auto;
+    margin: 24px 12px auto auto;
     color: var(--theme-green);
     font-size: 20px;
 }
