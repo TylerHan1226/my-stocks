@@ -104,7 +104,6 @@ export const makeChartPercentage = (period, stocksData, chartInstance, chartRef,
     const ctx = chartRef.current.getContext('2d')
     const themeGreen = getComputedStyle(document.documentElement).getPropertyValue('--theme-green').trim()
     const themeRed = getComputedStyle(document.documentElement).getPropertyValue('--theme-red').trim()
-    const lightGrey = getComputedStyle(document.documentElement).getPropertyValue('--text-field-grey').trim()
     const chartOrange = getComputedStyle(document.documentElement).getPropertyValue('--chart-orange').trim()
     const chartBlue = getComputedStyle(document.documentElement).getPropertyValue('--chart-blue').trim()
     const chartPink = getComputedStyle(document.documentElement).getPropertyValue('--chart-pink').trim()
