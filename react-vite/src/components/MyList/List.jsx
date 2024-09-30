@@ -18,6 +18,8 @@ export default function List() {
     const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
     const [isLoading, setIsLoading] = useState(true)
 
+    console.log('listStockData ==>', listStockData)
+
     useEffect(() => {
         dispatch(getAllMyListsThunk())
         dispatch(getAllStocksInListThunk(list?.listName))
@@ -44,46 +46,53 @@ export default function List() {
             <section className="page-content-container">
                 <h1 className="page-title">{list.listName}</h1>
                 <section className="list-tabs-container">
-                    {stockSymbols?.map((eachSymbol, index) => (
-                        <section className="list-three-dots-container" key={index}>
-                            <NavLink to={`/search/${eachSymbol}`} className={`stock-tab ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'green-border' : 'red-border'}`}>
-                                <h2 className={`stock-tab-title ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
-                                    {listStockData[eachSymbol]?.ticker}
-                                </h2>
-                                <div className="stock-tab-title">
-                                    <h2 className={`stock-tab-price ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
-                                        {listStockData[eachSymbol]?.current_price?.toFixed(2)}
+                    {stockSymbols?.map((eachSymbol, index) => {
+                        
+                        const stockCurrentPrice = listStockData[eachSymbol]?.currentPrice?.toFixed(2)
+                        const stockPreviousClosing = listStockData[eachSymbol]?.info?.previousClose
+                        const isStockGreen = stockCurrentPrice > stockPreviousClosing
+
+                        return (   
+                            <section className="list-three-dots-container" key={index}>
+                                <NavLink to={`/search/${eachSymbol}`} className={`stock-tab ${isStockGreen ? 'green-border' : 'red-border'}`}>
+                                    <h2 className={`stock-tab-title ${isStockGreen ? 'is-green' : 'is-red'}`}>
+                                        {eachSymbol}
                                     </h2>
-                                    {listStockData[eachSymbol]?.current_price && listStockData[eachSymbol]?.info?.previousClose ?
-                                        (listStockData[eachSymbol].current_price > listStockData[eachSymbol].info.previousClose ?
-                                            (<div className="stock-tab-title stock-tab-up-arrow">
-                                                <GoTriangleUp />
-                                            </div>) :
-                                            (<div className="stock-tab-title stock-tab-down-arrow">
-                                                <GoTriangleDown />
-                                            </div>)
-                                        ) : null
-                                    }
-                                    <p className={`stock-tab-percentage ${listStockData[eachSymbol]?.current_price > listStockData[eachSymbol]?.info?.previousClose ? 'is-green' : 'is-red'}`}>
-                                        {listStockData[eachSymbol]?.current_price && listStockData[eachSymbol]?.info?.previousClose ?
-                                            `${(((listStockData[eachSymbol].current_price - listStockData[eachSymbol].info.previousClose) / listStockData[eachSymbol].info.previousClose) * 100).toFixed(2)}%`
-                                            : null
+                                    <div className="stock-tab-title">
+                                        <h2 className={`stock-tab-price ${isStockGreen ? 'is-green' : 'is-red'}`}>
+                                            {stockCurrentPrice}
+                                        </h2>
+                                        {stockCurrentPrice && stockPreviousClosing ?
+                                            (isStockGreen ?
+                                                (<div className="stock-tab-title stock-tab-up-arrow">
+                                                    <GoTriangleUp />
+                                                </div>) :
+                                                (<div className="stock-tab-title stock-tab-down-arrow">
+                                                    <GoTriangleDown />
+                                                </div>)
+                                            ) : null
                                         }
-                                    </p>
+                                        <p className={`stock-tab-percentage ${isStockGreen ? 'is-green' : 'is-red'}`}>
+                                            {stockCurrentPrice && stockPreviousClosing ?
+                                                `${(((stockCurrentPrice - stockPreviousClosing) / stockPreviousClosing) * 100).toFixed(2)}%`
+                                                : null
+                                            }
+                                        </p>
+                                    </div>
+                                </NavLink>
+                                <div className="three-dot-btn">
+                                    <OpenModalMenuItem
+                                        itemText={<BsThreeDotsVertical />}
+                                        className="three-dots"
+                                        modalComponent={
+                                        <StockOptionModal
+                                            stockSymbol={eachSymbol}
+                                        />}
+                                    />
                                 </div>
-                            </NavLink>
-                            <div className="three-dot-btn">
-                                <OpenModalMenuItem
-                                    itemText={<BsThreeDotsVertical />}
-                                    className="three-dots"
-                                    modalComponent={
-                                    <StockOptionModal
-                                        stockSymbol={eachSymbol}
-                                    />}
-                                />
-                            </div>
-                        </section>
-                    ))}
+                            </section>
+                        )
+                    })}
                 </section>
             </section>
         </section>

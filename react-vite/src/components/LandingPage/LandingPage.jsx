@@ -50,7 +50,6 @@ export default function LandingPageBeta() {
     const myTopGainerSymbols = myTopGainers?.map(ele => ele?.ticker)?.slice(0, 3)
     const myTopLoserSymbols = myTopLosers?.map(ele => ele?.ticker)?.slice(0, 3)
     // Create Charts
-
     const chartMaker = (symbols, stocks, chartRefs, chartInstances) => {
         return symbols?.forEach((symbol, index) => {
             const stock = stocks[symbol]
@@ -61,7 +60,6 @@ export default function LandingPageBeta() {
                 }
                 makeChartSmall(stock, chartInstances.current[index], chartRefs.current[index], isGreen)
             }
-
         })
     }
     // Stock tabs

@@ -50,18 +50,58 @@ def seed_my_lists():
     )
     my_lists_10 = MyList(
         user_id = "1",
-        list_name = "Industrial",
-        stock_symbol = "WM"
-    )
-    my_lists_11 = MyList(
-        user_id = "1",
         list_name = "Tech",
         stock_symbol = "U"
     )
+    my_lists_11 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "LMT"
+    )
     my_lists_12 = MyList(
         user_id = "1",
-        list_name = "Industrial",
-        stock_symbol = "LMT"
+        list_name = "Dividend",
+        stock_symbol = "SPY"
+    )
+    my_lists_13 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "QQQ"
+    )
+    my_lists_14 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "UNH"
+    )
+    my_lists_15 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "SBUX"
+    )
+    my_lists_16 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "RIO"
+    )
+    my_lists_17 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "NKE"
+    )
+    my_lists_18 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "WEN"
+    )
+    my_lists_19 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "MCD"
+    )
+    my_lists_20 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "ABR"
     )
 
     db.session.add_all([my_lists_1,
@@ -76,6 +116,14 @@ def seed_my_lists():
                         my_lists_10,
                         my_lists_11,
                         my_lists_12,
+                        my_lists_13,
+                        my_lists_14,
+                        my_lists_15,
+                        my_lists_16,
+                        my_lists_17,
+                        my_lists_18,
+                        my_lists_19,
+                        my_lists_20,
                         ])
     db.session.commit()
 

@@ -4,9 +4,15 @@ from app.forms import ListForm
 from app.models import db, MyList
 import yfinance as yf
 import numpy as np
+import pandas as pd
+import logging
 
 
 list_routes = Blueprint('lists', __name__)
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # get all user lists
 # /api/lists
@@ -22,7 +28,6 @@ def get_all_my_lists():
 # Get all stocks in a specific list
 # /api/lists/<int:list_name>/stocks
 @list_routes.route('/<string:list_name>/stocks', methods=['GET'])
-# @list_routes.route('/stocks', methods=['GET'])
 @login_required
 def get_all_stocks_for_user(list_name):
     # Fetch all lists for the current user
@@ -39,8 +44,30 @@ def get_all_stocks_for_user(list_name):
         stock_info = stock.info
             
         if not stock_info:
-            stocks_data[eachSymbol] = {"error": "Stock not found"}
-            continue
+            print(f"Error: Stock info not found for {eachSymbol}")
+            return jsonify({"error": "Stock not found"}), 404
+        
+        # Fetch stock history
+        periods = ["max", "30y", "20y", "10y", "5y", "1y"]
+        history = pd.DataFrame()
+        years_of_history = 0
+
+        for period in periods:
+            try:
+                history = stock.history(period=period)
+                if isinstance(history, pd.DataFrame) and not history.empty:
+                    years_of_history = (history.index[-1] - history.index[0]).days / 365.25
+                    break
+            except Exception as e:
+                logger.error(f"Error fetching {period} history for {eachSymbol}: {str(e)}")
+
+        if isinstance(history, pd.DataFrame) and not history.empty:
+            history = history.reset_index()
+            history["Date"] = history["Date"].dt.strftime("%Y-%m-%d")
+            history = history.replace({np.nan: None})
+            history_dict = history.to_dict(orient="records")
+        else:
+            history_dict = []
         
         # Get the current price
         try:
@@ -48,15 +75,37 @@ def get_all_stocks_for_user(list_name):
         except AttributeError:
             # If fast_info is not available, use the last closing price from info
             current_price = stock_info.get('regularMarketPrice', None)
-        # Fetch historical data for 1 day
+        
+        if current_price is None and history_dict:
+            # If still no price, use the last closing price from history
+            current_price = history_dict[-1].get('Close', None)
+        
+        # Fetch data with appropriate intervals
         historical_data_1d = stock.history(period="1d", interval="5m")['Close'].dropna().tolist()  # Hourly data for 1 day
+        historical_data_1wk = stock.history(period="5d", interval="1h")['Close'].dropna().tolist()  # Daily data for 1 week
+        historical_data_1mo = stock.history(period="1mo", interval="1h")['Close'].dropna().tolist()  # Daily data for 1 month
+        historical_data_3mo = stock.history(period="3mo", interval="1h")['Close'].dropna().tolist()  # Daily data for 3 months
+        historical_data_6mo = stock.history(period="6mo", interval="1d")['Close'].dropna().tolist()  # Daily data for 3 months
+        historical_data_1yr = stock.history(period="1y", interval="1d")['Close'].dropna().tolist()  # Monthly data for 1 year
+        historical_data_5yr = stock.history(period="5y", interval="5d")['Close'].dropna().tolist()  # Monthly data for 5 years
+        historical_data_10yr = stock.history(period="10y", interval="5d")['Close'].dropna().tolist()  # Monthly data for 10 years
 
+        # Create a dictionary to return
         stock_data = {
             "ticker": eachSymbol,
             "name": stock_info.get("shortName", "N/A"),
             "info": stock_info,
-            "current_price": current_price,
-            "historical_data_1d": historical_data_1d
+            "history": history_dict,
+            "currentPrice": current_price,
+            "years_of_history": round(years_of_history, 2),
+            "historical_data_1d": historical_data_1d,
+            "historical_data_1wk": historical_data_1wk,
+            "historical_data_1mo": historical_data_1mo,
+            "historical_data_3mo": historical_data_3mo,
+            "historical_data_6mo": historical_data_6mo,
+            "historical_data_1yr": historical_data_1yr,
+            "historical_data_5yr": historical_data_5yr,
+            "historical_data_10yr": historical_data_10yr,
         }
         stocks_data[eachSymbol] = stock_data
 
