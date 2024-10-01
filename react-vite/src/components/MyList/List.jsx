@@ -14,12 +14,11 @@ export default function List() {
     const user = useSelector(state => state.session.user)
     const list = useParams()
     const lists = useSelector(state => state.lists?.My_Lists)
+    const selectedLists = lists?.filter(ele => ele.list_name == list?.listName)
     const listStockData = useSelector(state => state.lists?.stocks_data)
     const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
     const [isLoading, setIsLoading] = useState(true)
     const [isScreenerOn, setIsScreenerOn] = useState(false)
-
-    console.log('listStockData ==>', listStockData)
 
     const handleShowScreener = () => {
         console.log('handleShowScreener clicked !!')
@@ -67,7 +66,8 @@ export default function List() {
                             <p className="text-w-screener">Current Price</p>
                             <p className="text-w-screener">Dividend Yield</p>
                             <p className="text-w-screener">Period</p>
-                            <p className="text-w-screener">Current Dividend Rate</p>
+                            <p className="text-w-screener">Current Dividend</p>
+                            <p className="text-w-screener">Historical Dividend</p>
                         </div>}
                     {stockSymbols?.map((eachSymbol, index) => {
 
@@ -75,8 +75,14 @@ export default function List() {
                         const stockPreviousClosing = listStockData[eachSymbol]?.info?.previousClose
                         const isStockGreen = stockCurrentPrice > stockPreviousClosing
                         const quoteType = listStockData[eachSymbol]?.info?.sector || listStockData[eachSymbol]?.info?.quoteType
-                        const stockDividendYield = typeof((listStockData[eachSymbol]?.info?.dividendYield * 100)?.toFixed(2)) == 'number' ? (listStockData[eachSymbol]?.info?.dividendYield * 100)?.toFixed(2) : (listStockData[eachSymbol]?.info?.yield * 100)?.toFixed(2)
-                        const stockDividendRate  = listStockData[eachSymbol]?.info?.dividendRate?.toFixed(2) || 'N/A'
+                        const stockDividendYield = (listStockData[eachSymbol]?.info?.dividendYield * 100)?.toFixed(2)
+                        console.log('type of ',eachSymbol, typeof(stockDividendYield) == 'string')
+                        const stockYield = (listStockData[eachSymbol]?.info?.yield * 100)?.toFixed(2)
+                        const stockDividendRate  = listStockData[eachSymbol]?.info?.dividendRate?.toFixed(2)
+                        const stockHistoricalDividendRate = selectedLists?.filter(ele => ele.stock_symbol == eachSymbol)[0]?.historical_dividend
+                        
+                        console.log('stockYield ==>', eachSymbol, stockYield)
+
 
                         return (
                             <section className="list-three-dots-container" key={index}>
@@ -84,8 +90,9 @@ export default function List() {
                                     onClick={handleScreenerPeriod}>
                                     Years
                                 </button>
-                                <NavLink to={`${isScreenerOn ? '' : '/search/${eachSymbol}'}`} className={`${isScreenerOn ? 'stock-tab-w-screener' : 'stock-tab'}  ${isStockGreen ? 'green-border' : 'red-border'}`}>
-                                    <h2 className={`${isScreenerOn ? 'text-w-screener' : 'stock-tab-title'} ${isStockGreen ? 'is-green' : 'is-red'}`}>
+                                <NavLink to={`${isScreenerOn ? '' : '/search/${eachSymbol}'}`}
+                                className={`${isScreenerOn ? 'stock-tab-w-screener' : 'stock-tab'} ${isScreenerOn ? '' : isStockGreen ? 'green-border' : 'red-border'}`}>
+                                    <h2 className={`${isScreenerOn ? 'text-w-screener' : 'stock-tab-title'} ${isScreenerOn ? '' : isStockGreen ? 'is-green' : 'is-red'}`}>
                                         {eachSymbol}
                                     </h2>
                                     {isScreenerOn &&
@@ -97,13 +104,16 @@ export default function List() {
                                                 {stockCurrentPrice}
                                             </p>
                                             <p className={`text-w-screener`}>
-                                                {stockDividendYield}
+                                                {stockDividendYield == 'NaN' ? `${stockYield} %` : `${stockDividendYield} %`}
                                             </p>
                                             <p className={`text-w-screener`}>
                                                 period
                                             </p>
                                             <p className={`text-w-screener`}>
-                                                {stockDividendRate}
+                                                {stockDividendRate > 0 ? `$${stockDividendRate}` : 'N/A'}
+                                            </p>
+                                            <p className={`text-w-screener`}>
+                                                {stockHistoricalDividendRate > 0 ? `$${stockHistoricalDividendRate}` : 'N/A'}
                                             </p>
                                         </div>
                                     }

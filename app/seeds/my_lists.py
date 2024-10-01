@@ -71,38 +71,39 @@ def seed_my_lists():
     my_lists_14 = MyList(
         user_id = "1",
         list_name = "Dividend",
-        stock_symbol = "UNH"
+        stock_symbol = "UNH",
+        historical_dividend = 1.41
     )
-    my_lists_15 = MyList(
-        user_id = "1",
-        list_name = "Dividend",
-        stock_symbol = "SBUX"
-    )
-    my_lists_16 = MyList(
-        user_id = "1",
-        list_name = "Dividend",
-        stock_symbol = "RIO"
-    )
-    my_lists_17 = MyList(
-        user_id = "1",
-        list_name = "Dividend",
-        stock_symbol = "NKE"
-    )
-    my_lists_18 = MyList(
-        user_id = "1",
-        list_name = "Dividend",
-        stock_symbol = "WEN"
-    )
-    my_lists_19 = MyList(
-        user_id = "1",
-        list_name = "Dividend",
-        stock_symbol = "MCD"
-    )
-    my_lists_20 = MyList(
-        user_id = "1",
-        list_name = "Dividend",
-        stock_symbol = "ABR"
-    )
+    # my_lists_15 = MyList(
+    #     user_id = "1",
+    #     list_name = "Dividend",
+    #     stock_symbol = "SBUX"
+    # )
+    # my_lists_16 = MyList(
+    #     user_id = "1",
+    #     list_name = "Dividend",
+    #     stock_symbol = "RIO"
+    # )
+    # my_lists_17 = MyList(
+    #     user_id = "1",
+    #     list_name = "Dividend",
+    #     stock_symbol = "NKE"
+    # )
+    # my_lists_18 = MyList(
+    #     user_id = "1",
+    #     list_name = "Dividend",
+    #     stock_symbol = "WEN"
+    # )
+    # my_lists_19 = MyList(
+    #     user_id = "1",
+    #     list_name = "Dividend",
+    #     stock_symbol = "MCD"
+    # )
+    # my_lists_20 = MyList(
+    #     user_id = "1",
+    #     list_name = "Dividend",
+    #     stock_symbol = "ABR"
+    # )
 
     db.session.add_all([my_lists_1,
                         my_lists_2,
@@ -118,12 +119,12 @@ def seed_my_lists():
                         my_lists_12,
                         my_lists_13,
                         my_lists_14,
-                        my_lists_15,
-                        my_lists_16,
-                        my_lists_17,
-                        my_lists_18,
-                        my_lists_19,
-                        my_lists_20,
+                        # my_lists_15,
+                        # my_lists_16,
+                        # my_lists_17,
+                        # my_lists_18,
+                        # my_lists_19,
+                        # my_lists_20,
                         ])
     db.session.commit()
 
