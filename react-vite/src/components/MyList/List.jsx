@@ -17,8 +17,18 @@ export default function List() {
     const listStockData = useSelector(state => state.lists?.stocks_data)
     const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
     const [isLoading, setIsLoading] = useState(true)
+    const [isScreenerOn, setIsScreenerOn] = useState(false)
 
     console.log('listStockData ==>', listStockData)
+
+    const handleShowScreener = () => {
+        console.log('handleShowScreener clicked !!')
+        setIsScreenerOn(prev => !prev)
+        console.log('isScreenerOn ==>', isScreenerOn)
+    }
+    const handleScreenerPeriod = () => {
+        console.log('handleScreenerPeriod clicked !!')
+    }
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())
@@ -45,24 +55,71 @@ export default function List() {
         <section className="page-container">
             <section className="page-content-container">
                 <h1 className="page-title">{list.listName}</h1>
-                <section className="list-tabs-container">
+
+                <section className={`${isScreenerOn ? 'list-tabs-container-w-screener' : 'list-tabs-container'}`}>
+                    <button className="list-screener-btn"
+                        onClick={handleShowScreener}>
+                        Show Screeners
+                    </button>
+                    {isScreenerOn &&
+                        <div className="screener-headers">
+                            <p className="text-w-screener">Symbol</p>
+                            <p className="text-w-screener">Type</p>
+                            <p className="text-w-screener">P/E Ratio</p>
+                            <p className="text-w-screener">Dividend Yield</p>
+                            <p className="text-w-screener">Period</p>
+                            <p className="text-w-screener">Current Dividend Rate</p>
+                            <p className="text-w-screener">Symbol</p>
+                            <p className="text-w-screener">Symbol</p>
+                        </div>}
                     {stockSymbols?.map((eachSymbol, index) => {
-                        
+
                         const stockCurrentPrice = listStockData[eachSymbol]?.currentPrice?.toFixed(2)
                         const stockPreviousClosing = listStockData[eachSymbol]?.info?.previousClose
                         const isStockGreen = stockCurrentPrice > stockPreviousClosing
-
-                        return (   
+                        const quoteType = listStockData[eachSymbol]?.info?.sector || listStockData[eachSymbol]?.info?.quoteType
+                        const stockDividendYield = (listStockData[eachSymbol]?.info?.dividendYield * 100)?.toFixed(2)
+                        const stockDividendRate  = listStockData[eachSymbol]?.info?.dividendRate?.toFixed(2)
+                        const stockDividend10yrsAgo = listStockData[eachSymbol]?.history?.at(-2520)?.Dividends
+                        
+                        return (
                             <section className="list-three-dots-container" key={index}>
-                                <NavLink to={`/search/${eachSymbol}`} className={`stock-tab ${isStockGreen ? 'green-border' : 'red-border'}`}>
-                                    <h2 className={`stock-tab-title ${isStockGreen ? 'is-green' : 'is-red'}`}>
+                                <button className="list-screener-period-btn"
+                                    onClick={handleScreenerPeriod}>
+                                    Years
+                                </button>
+                                <NavLink to={`${isScreenerOn ? '' : '/search/${eachSymbol}'}`} className={`${isScreenerOn ? 'stock-tab-w-screener' : 'stock-tab'}  ${isStockGreen ? 'green-border' : 'red-border'}`}>
+                                    <h2 className={`${isScreenerOn ? 'text-w-screener' : 'stock-tab-title'} ${isStockGreen ? 'is-green' : 'is-red'}`}>
                                         {eachSymbol}
                                     </h2>
+                                    {isScreenerOn &&
+                                        <div className="screener-texts-container">
+                                            <p className={`text-w-screener`}>
+                                                {quoteType}
+                                            </p>
+                                            <p className={`text-w-screener`}>
+                                                {stockCurrentPrice}
+                                            </p>
+                                            <p className={`text-w-screener`}>
+                                                {stockDividendYield}
+                                            </p>
+                                            <p className={`text-w-screener`}>
+                                                period
+                                            </p>
+                                            <p className={`text-w-screener`}>
+                                                {stockDividendRate}
+                                            </p>
+                                            <p className={`text-w-screener`}>
+                                                {stockDividend10yrsAgo}
+                                            </p>
+                                        </div>
+                                    }
                                     <div className="stock-tab-title">
-                                        <h2 className={`stock-tab-price ${isStockGreen ? 'is-green' : 'is-red'}`}>
-                                            {stockCurrentPrice}
-                                        </h2>
-                                        {stockCurrentPrice && stockPreviousClosing ?
+                                        {!isScreenerOn &&
+                                            <h2 className={`${isScreenerOn ? 'text-w-screener' : 'stock-tab-price'} ${isStockGreen ? 'is-green' : 'is-red'}`}>
+                                                {stockCurrentPrice}
+                                            </h2>}
+                                        {stockCurrentPrice && stockPreviousClosing && !isScreenerOn ?
                                             (isStockGreen ?
                                                 (<div className="stock-tab-title stock-tab-up-arrow">
                                                     <GoTriangleUp />
@@ -73,23 +130,24 @@ export default function List() {
                                             ) : null
                                         }
                                         <p className={`stock-tab-percentage ${isStockGreen ? 'is-green' : 'is-red'}`}>
-                                            {stockCurrentPrice && stockPreviousClosing ?
+                                            {stockCurrentPrice && stockPreviousClosing && !isScreenerOn ?
                                                 `${(((stockCurrentPrice - stockPreviousClosing) / stockPreviousClosing) * 100).toFixed(2)}%`
                                                 : null
                                             }
                                         </p>
                                     </div>
                                 </NavLink>
-                                <div className="three-dot-btn">
-                                    <OpenModalMenuItem
-                                        itemText={<BsThreeDotsVertical />}
-                                        className="three-dots"
-                                        modalComponent={
-                                        <StockOptionModal
-                                            stockSymbol={eachSymbol}
-                                        />}
-                                    />
-                                </div>
+                                {!isScreenerOn &&
+                                    <div className="three-dot-btn">
+                                        <OpenModalMenuItem
+                                            itemText={<BsThreeDotsVertical />}
+                                            className="three-dots"
+                                            modalComponent={
+                                                <StockOptionModal
+                                                    stockSymbol={eachSymbol}
+                                                />}
+                                        />
+                                    </div>}
                             </section>
                         )
                     })}

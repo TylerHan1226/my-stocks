@@ -110,7 +110,6 @@ def get_all_stocks_for_user(list_name):
         stocks_data[eachSymbol] = stock_data
 
     return jsonify({
-        "user_id": current_user.id,
         "stocks_data": stocks_data
     })
 
