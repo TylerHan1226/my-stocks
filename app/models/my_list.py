@@ -13,6 +13,7 @@ class MyList(db.Model):
     user_id = Column(Integer, ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     list_name = Column(String(50), nullable=False)
     stock_symbol = Column(String(10), nullable=False)
+    historical_dividend = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
 
@@ -24,6 +25,7 @@ class MyList(db.Model):
             'user_id': self.user_id,
             'list_name': self.list_name,
             'stock_symbol': self.stock_symbol,
+            'historical_dividend': self.historical_dividend,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
         }
