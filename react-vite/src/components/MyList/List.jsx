@@ -50,7 +50,6 @@ export default function List() {
         )
     }
 
-
     return (
         <section className="page-container">
             <section className="page-content-container">
@@ -65,12 +64,10 @@ export default function List() {
                         <div className="screener-headers">
                             <p className="text-w-screener">Symbol</p>
                             <p className="text-w-screener">Type</p>
-                            <p className="text-w-screener">P/E Ratio</p>
+                            <p className="text-w-screener">Current Price</p>
                             <p className="text-w-screener">Dividend Yield</p>
                             <p className="text-w-screener">Period</p>
                             <p className="text-w-screener">Current Dividend Rate</p>
-                            <p className="text-w-screener">Symbol</p>
-                            <p className="text-w-screener">Symbol</p>
                         </div>}
                     {stockSymbols?.map((eachSymbol, index) => {
 
@@ -78,10 +75,9 @@ export default function List() {
                         const stockPreviousClosing = listStockData[eachSymbol]?.info?.previousClose
                         const isStockGreen = stockCurrentPrice > stockPreviousClosing
                         const quoteType = listStockData[eachSymbol]?.info?.sector || listStockData[eachSymbol]?.info?.quoteType
-                        const stockDividendYield = (listStockData[eachSymbol]?.info?.dividendYield * 100)?.toFixed(2)
-                        const stockDividendRate  = listStockData[eachSymbol]?.info?.dividendRate?.toFixed(2)
-                        const stockDividend10yrsAgo = listStockData[eachSymbol]?.history?.at(-2520)?.Dividends
-                        
+                        const stockDividendYield = typeof((listStockData[eachSymbol]?.info?.dividendYield * 100)?.toFixed(2)) == 'number' ? (listStockData[eachSymbol]?.info?.dividendYield * 100)?.toFixed(2) : (listStockData[eachSymbol]?.info?.yield * 100)?.toFixed(2)
+                        const stockDividendRate  = listStockData[eachSymbol]?.info?.dividendRate?.toFixed(2) || 'N/A'
+
                         return (
                             <section className="list-three-dots-container" key={index}>
                                 <button className="list-screener-period-btn"
@@ -108,9 +104,6 @@ export default function List() {
                                             </p>
                                             <p className={`text-w-screener`}>
                                                 {stockDividendRate}
-                                            </p>
-                                            <p className={`text-w-screener`}>
-                                                {stockDividend10yrsAgo}
                                             </p>
                                         </div>
                                     }
