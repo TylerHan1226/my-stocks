@@ -117,49 +117,6 @@
     list-style: none;
 }
 
-.list-tabs-container-w-screener {
-    display: flex;
-    flex-direction: column;
-    width: 1500px;
-    /* gap: 12px; */
-    margin: 0 auto 0 auto;
-    overflow-x: auto;
-}
-/* Custom scrollbar styles */
-.list-tabs-container-w-screener::-webkit-scrollbar {
-    height: 12px;
-}
-.list-tabs-container-w-screener::-webkit-scrollbar-track {
-    background: black;
-}
-.list-tabs-container-w-screener::-webkit-scrollbar-thumb {
-    background: var(--theme-green);
-    border-radius: 12px;
-}
-
-.screener-headers {
-    display: flex;
-    flex-direction: row;
-    margin: 0 0 0 70px;
-    width: 100%;
-    border-bottom: 1px solid var(--border-light-grey);
-}
-.stock-tab-w-screener {
-    height: 60px;
-    width: 100%;
-    /* border-bottom: 1px solid var(--border-light-grey); */
-    text-decoration: none;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    pointer-events: none;
-    margin: 0 0 12px 0;
-}
-.screener-texts-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
 .list-screener-btn-container {
     display: flex;
     flex-direction: row;
@@ -183,15 +140,122 @@
 .narrow-btn {
     width: 52px
 }
+
+.list-content-container {
+    display: flex;
+    flex-direction: row;
+    border: solid 1px pink;
+    margin: 0 auto 0 auto;
+    width: 1280px;
+    padding: 4px;
+}
+.list-tabs-container-w-screener::-webkit-scrollbar {
+    height: 12px;
+}
+.list-tabs-container-w-screener::-webkit-scrollbar-track {
+    background: black;
+}
+.list-tabs-container-w-screener::-webkit-scrollbar-thumb {
+    background: var(--theme-green);
+    border-radius: 12px;
+}
+/* .screener-container {
+    border: solid 1px red;
+} */
+.screener-header-container {
+    border: solid 1px yellow;
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto 0 auto;
+    width: 1280px;
+    padding: 4px;
+}
+.screener-header-text {
+    border: solid 1px purple;
+}
+.list-tabs-container-w-screener {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px red;
+    gap: 12px;
+    padding: 4px;
+    overflow-x: auto;
+}
+.screener-action-container {
+    border: solid 1px blue;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 4px;
+}
+.screener-stock-tabs {
+    border: solid 1px orange;
+    display: flex;
+    flex-direction: row;
+    padding: 4px;
+}
+.screener-action-tabs {
+    border: solid 1px green;
+    display: flex;
+    flex-direction: row;
+    height: 24px;
+    width: 120px;
+    padding: 4px;
+}
 .text-w-screener {
-    /* border: 1px solid orange; */
+    border-right: 1px solid var(--border-light-grey);
+    width: 100px;
+    margin: 0 0 0 12px;
+    font-size: 18px;
+}
+
+/* .screener-headers {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 0 70px;
+    width: 100%;
+    border-bottom: 1px solid var(--border-light-grey);
+} */
+/* .stock-tab-w-screener {
+    height: 60px;
+    width: 100%;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    pointer-events: none;
+    margin: 0 0 12px 0;
+} */
+/* .screener-texts-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+} */
+
+/* .list-screener-btn {
+    margin: 0 0 48px 0;
+    border: 1px solid var(--theme-green);
+    background-color: black;
+    color: var(--theme-green);
+    height: 36px;
+    font-size: 20px;
+} */
+/* .wide-btn {
+    width: 320px;
+}
+.md-btn {
+    width: 256px
+}
+.narrow-btn {
+    width: 52px
+} */
+/* .text-w-screener {
     border-right: 1px solid var(--border-light-grey);
     width: 100px;
     margin: 0 0 0 12px;
     font-size: 18px;
 }
 .screener-header-text {
-    /* border: 1px solid pink; */
     border-right: 1px solid var(--border-light-grey);
     font-weight: 500;
     width: 100px;
@@ -201,7 +265,7 @@
     border-right: 1px solid var(--border-light-grey);
     font-weight: 500;
     width: 100px;
-    margin: 0 0 12px 156px;
+    margin: 0 0 12px 246px;
 }
 .text-w-screener-type {
     width: 100px;
@@ -237,3 +301,11 @@
     height: 36px;
     margin: 0 0 0 160px;
 }
+.list-screener-set-data-btn {
+    border: 1px solid var(--theme-green);
+    background-color: black;
+    color: var(--theme-green);
+    width: 80px;
+    height: 36px;
+    margin: 0 0 0 12px;
+} */
