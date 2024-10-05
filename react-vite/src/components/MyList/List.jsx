@@ -26,6 +26,9 @@ export default function List() {
         setIsScreenerOn(prev => !prev)
         console.log('isScreenerOn ==>', isScreenerOn)
     }
+    const handleScreenerSettings = () => {
+        console.log('handleScreenerSettings clicked !!')
+    }
     const handleScreenerPeriod = () => {
         console.log('handleScreenerPeriod clicked !!')
     }
@@ -54,12 +57,19 @@ export default function List() {
         <section className="page-container">
             <section className="page-content-container">
                 <h1 className="page-title">{list.listName}</h1>
+                <div className="list-screener-btn-container">
+                    <button className={`list-screener-btn ${isScreenerOn ? 'md-btn' : 'wide-btn'}`}
+                        onClick={handleShowScreener}>
+                        {isScreenerOn ? 'Hide Screeners' : 'Show Screeners'}
+                    </button>
+                    {isScreenerOn &&
+                        <button className="list-screener-btn narrow-btn"
+                            onClick={handleScreenerSettings}>
+                            + / -
+                        </button>}
+                </div>
 
                 <section className={`${isScreenerOn ? 'list-tabs-container-w-screener' : 'list-tabs-container'}`}>
-                    <button className="list-screener-btn"
-                        onClick={handleShowScreener}>
-                        Show Screeners
-                    </button>
 
                     {stockSymbols?.map((eachSymbol, index) => {
                         const stock = listStockData[eachSymbol]
@@ -117,10 +127,10 @@ export default function List() {
                                                     {quoteType}
                                                 </p>
                                                 <p className={`text-w-screener`}>
-                                                    {stockTrPE ? stockTrPE : 'N/A'}
+                                                    {stockTrPE ? stockTrPE : '-'}
                                                 </p>
                                                 <p className={`text-w-screener`}>
-                                                    {stockFwPE ? stockFwPE : 'N/A'}
+                                                    {stockFwPE ? stockFwPE : '-'}
                                                 </p>
                                                 <p className={`text-w-screener`}>
                                                     {`$${stockCurrentPrice}`}
@@ -129,19 +139,19 @@ export default function List() {
                                                     {`$${stockHistoricalPrice}`}
                                                 </p>
                                                 <p className={`text-w-screener`}>
-                                                    {stockDividendYield != 'NaN' ? `${stockDividendYield}%` : stockYield != 'NaN' ? `${stockYield} %` : 'N/A'}
+                                                    {stockDividendYield != 'NaN' ? `${stockDividendYield}%` : stockYield != 'NaN' ? `${stockYield} %` : '-'}
                                                 </p>
                                                 <p className={`text-w-screener`}>
-                                                    {stockDividendRate > 0 ? `$${stockDividendRate}` : 'N/A'}
+                                                    {stockDividendRate > 0 ? `$${stockDividendRate}` : '-'}
                                                 </p>
                                                 <p className={`text-w-screener`}>
-                                                    {stockHistoricalDividendRate > 0 ? `$${stockHistoricalDividendRate}` : 'N/A'}
+                                                    {stockHistoricalDividendRate > 0 ? `$${stockHistoricalDividendRate}` : '-'}
                                                 </p>
                                                 <p className={`text-w-screener`}>
-                                                    {stockEps > 0 ? stockEps : 'N/A'}
+                                                    {stockEps > 0 ? `$${stockEps}` : '-'}
                                                 </p>
                                                 <p className={`text-w-screener`}>
-                                                    {stockPayoutRatio > 0 ? `${stockPayoutRatio}%` : 'N/A'}
+                                                    {stockPayoutRatio > 0 ? `${stockPayoutRatio}%` : '-'}
                                                 </p>
                                             </div>
                                         </section> :
