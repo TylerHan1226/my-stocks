@@ -81,8 +81,8 @@
 .not-added:hover,
 .stock-page-action-btn:hover,
 .list-screener-btn:hover,
-.list-screener-period-btn:hover,
-.list-screener-set-data-btn:hover {
+.screener-period-btn:hover,
+.screener-plus-btn:hover {
     cursor: pointer;
     background-color: var(--dark-green);
     box-shadow: 0 0 24px 4px var(--dark-green);

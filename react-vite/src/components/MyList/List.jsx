@@ -73,17 +73,17 @@ export default function List() {
                 </div>
                 {isScreenerOn &&
                     <section className="screener-header-container">
-                        <p className="screener-header-text">Type</p>
-                        <p className="screener-header-text">Trailing P/E</p>
-                        <p className="screener-header-text">Forward P/E</p>
-                        <p className="screener-header-text">Current Price</p>
-                        <p className="screener-header-text">Historical Price</p>
-                        <p className="screener-header-text">Dividend Yield</p>
-                        <p className="screener-header-text">Current Dividend</p>
-                        <p className="screener-header-text">Historical Dividend</p>
-                        <p className="screener-header-text">Yearly Dividend Growth</p>
-                        <p className="screener-header-text">Earning Per Share</p>
-                        <p className="screener-header-text">Payout Ratio</p>
+                        <p className="screener-header-texts-type">Type</p>
+                        <p className="screener-header-texts">Trailing P/E</p>
+                        <p className="screener-header-texts">Forward P/E</p>
+                        <p className="screener-header-texts">Current Price</p>
+                        <p className="screener-header-texts">Historical Price</p>
+                        <p className="screener-header-texts">Dividend Yield</p>
+                        <p className="screener-header-texts">Current Dividend</p>
+                        <p className="screener-header-texts">Historical Dividend</p>
+                        <p className="screener-header-texts">Yearly Dividend Growth</p>
+                        <p className="screener-header-texts">Earning Per Share</p>
+                        <p className="screener-header-texts">Payout Ratio</p>
                     </section>}
                 <section className="list-content-container">
                     {isScreenerOn &&
@@ -95,8 +95,8 @@ export default function List() {
                                 const stockPeriodText = stockPeriod?.split('_')[2]
                                 return (
                                     <div className="screener-action-tabs" key={index}>
-                                        <p className="text-w-screener">{eachSymbol}</p>
-                                        <button className="list-screener-period-btn"
+                                        <p className="screener-texts-symbol">{eachSymbol}</p>
+                                        <button className="screener-period-btn"
                                             onClick={handleScreenerPeriod}>
                                             {stockPeriodText}
                                         </button>
@@ -133,123 +133,54 @@ export default function List() {
                             }
                             const stockYearlyDividendGrowth = getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod)
 
-                            console.log('stockYearlyDividendGrowth ==>', stockYearlyDividendGrowth)
-
                             return (
                                 <section key={index}>
                                     {isScreenerOn ?
                                         <section className="screener-container">
 
                                             <div className="screener-stock-tabs">
-                                                <p className={`text-w-screener`}>
+                                                <p className={`screener-texts`}>
                                                     {quoteType}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <p className={`screener-texts`}>
                                                     {stockTrPE ? stockTrPE : '-'}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <p className={`screener-texts`}>
                                                     {stockFwPE ? stockFwPE : '-'}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <p className={`screener-texts`}>
                                                     {`$${stockCurrentPrice}`}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <p className={`screener-texts`}>
                                                     {`$${stockHistoricalPrice}`}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <p className={`screener-texts`}>
                                                     {stockDividendYield != 'NaN' ? `${stockDividendYield}%` : stockYield != 'NaN' ? `${stockYield} %` : '-'}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <p className={`screener-texts`}>
                                                     {stockDividendRate > 0 ? `$${stockDividendRate}` : '-'}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <div className="screener-label-historical-dividend">
+                                                <p className={`screener-texts-historical-dividend`}>
                                                     {stockHistoricalDividendRate > 0 ? `$${stockHistoricalDividendRate}` : '-'}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <button className="screener-plus-btn"
+                                                    onClick={handleHistoricalDividend}>
+                                                    +
+                                                </button>
+                                                </div>
+                                                <p className={`screener-texts`}>
                                                     {stockYearlyDividendGrowth ? `$${stockYearlyDividendGrowth}` : '-'}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <p className={`screener-texts`}>
                                                     {stockEps > 0 ? `$${stockEps}` : '-'}
                                                 </p>
-                                                <p className={`text-w-screener`}>
+                                                <p className={`screener-texts`}>
                                                     {stockPayoutRatio > 0 ? `${stockPayoutRatio}%` : '-'}
                                                 </p>
 
                                             </div>
-                                            {/* {isScreenerOn && index == 0 &&
-                                    <div className="screener-headers">
-                                        <p className="screener-header-text-type">Type</p>
-                                        <p className="screener-header-text">Trailing P/E</p>
-                                        <p className="screener-header-text">Forward P/E</p>
-                                        <p className="screener-header-text">Current Price</p>
-                                        <p className="screener-header-text">Historical Price</p>
-                                        <p className="screener-header-text">Dividend Yield</p>
-                                        <p className="screener-header-text">Current Dividend</p>
-                                        <p className="screener-header-text">Historical Dividend</p>
-                                        <p className="screener-header-text">Yearly Dividend Growth</p>
-                                        <p className="screener-header-text">Earning Per Share</p>
-                                        <p className="screener-header-text">Payout Ratio</p>
-                                    </div>} */}
-
-                                            {/* <section className="list-three-dots-container">
-                                    {isScreenerOn &&
-                                        <div className="screener-symbol-period-container">
-                                            <div className="screener-absolute-container">
-                                                <p className="text-w-screener-symbol">{`${eachSymbol} (${stockPeriodText})`}</p>
-                                            </div>
-                                            <button className="list-screener-period-btn"
-                                                onClick={handleScreenerPeriod}>
-                                                {stockPeriodText}
-                                            </button>
-                                            <button className="list-screener-set-data-btn"
-                                                onClick={handleHistoricalDividend}>
-                                                {stockHistoricalDividendRate > 0 ? `$${stockHistoricalDividendRate}` : '-'}
-                                            </button>
-                                        </div>}
-
-                                    {isScreenerOn ?
-                                        <section className="stock-tab-w-screener">
-                                            <div className="screener-texts-container">
-
-                                                <p className={`text-w-screener-type`}>
-                                                    {quoteType}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {stockTrPE ? stockTrPE : '-'}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {stockFwPE ? stockFwPE : '-'}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {`$${stockCurrentPrice}`}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {`$${stockHistoricalPrice}`}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {stockDividendYield != 'NaN' ? `${stockDividendYield}%` : stockYield != 'NaN' ? `${stockYield} %` : '-'}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {stockDividendRate > 0 ? `$${stockDividendRate}` : '-'}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {stockHistoricalDividendRate > 0 ? `$${stockHistoricalDividendRate}` : '-'}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {stockYearlyDividendGrowth ? `$${stockYearlyDividendGrowth}` : '-'}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {stockEps > 0 ? `$${stockEps}` : '-'}
-                                                </p>
-                                                <p className={`text-w-screener`}>
-                                                    {stockPayoutRatio > 0 ? `${stockPayoutRatio}%` : '-'}
-                                                </p>
-                                            </div>
-                                        </section> :
-                                        <></>
-                                    }
-                                </section> */}
-
+                                            
                                         </section> :
 
                                         <section className="list-three-dots-container">
