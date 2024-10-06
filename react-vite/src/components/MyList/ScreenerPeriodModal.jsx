@@ -1,10 +1,11 @@
 
 
-export default function ScreenerPeriodModal({ symbol, currentPeriod}) {
+export default function ScreenerPeriodModal({ symbol, currentPeriod, listId}) {
 
     console.log('symbol ==>', symbol)
     console.log('currentPeriod ==>', currentPeriod)
-
+    console.log('listId ==>', listId)
+    
     const handleSetPeriod = (selectedPeriod) => {
         console.log('handleSetPeriod clicked!')
         console.log('selectedPeriod ==>', selectedPeriod)

@@ -23,7 +23,7 @@ export default function List() {
     const [isScreenerOn, setIsScreenerOn] = useState(false)
     const {setModalContent} = useModal()
 
-    console.log('listStockData ==>', listStockData)
+    // console.log('list ==>', list)
 
     const handleShowScreener = () => {
         console.log('handleShowScreener clicked !!')
@@ -34,7 +34,8 @@ export default function List() {
         console.log('handleScreenerSettings clicked !!')
     }
     const handleScreenerPeriod = (symbol, currentPeriod) => {
-        setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod}/>)
+        const listId = lists?.filter(ele => ele.stock_symbol == symbol && ele.list_name == list?.listName)[0].id
+        setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod} listId={listId}/>)
     }
     const handleHistoricalDividend = () => {
         console.log('handleHistoricalDividend clicked !!')

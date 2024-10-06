@@ -76,9 +76,9 @@ def get_all_stocks_for_user(list_name):
             # If fast_info is not available, use the last closing price from info
             current_price = stock_info.get('regularMarketPrice', None)
         
-        if current_price is None and history_dict:
-            # If still no price, use the last closing price from history
-            current_price = history_dict[-1].get('Close', None)
+        # if current_price is None and history_dict:
+        #     # If still no price, use the last closing price from history
+        #     current_price = history_dict[-1].get('Close', None)
         
         # Fetch data with appropriate intervals
         historical_data_1d = stock.history(period="1d", interval="5m")['Close'].dropna().tolist()  # Hourly data for 1 day
@@ -191,7 +191,7 @@ def add_new_list():
         return new_list.to_dict(), 201
     return form.errors, 400
 
-# update a list
+# update a list name
 # /api/lists/<int:id>/update
 @list_routes.route('/<int:id>/update', methods=['PUT'])
 @login_required
@@ -205,11 +205,19 @@ def update_list(id):
             return {'message': 'List not found'}, 404
         if list.user_id != current_user.id:
             return redirect('api/auth/unauthorized')
-        list.list_name = form.list_name.data
-        list.stock_symbol = form.stock_symbol.data
+        if form.list_name:
+            list.list_name = form.list_name.data
+        if form.stock_symbol:
+            list.stock_symbol = form.stock_symbol.data
+        if form.historical_dividend:
+            list.historical_dividend = form.historical_dividend.data
+        if form.screener_period:
+            list.screener_period = form.screener_period.data
         db.session.commit()
         return list.to_dict(), 200
     return form.errors, 400
+
+
 
 # update all lists under list name
 # /api/lists/<string:list_name>/edit-name
