@@ -24,8 +24,7 @@ export default function AllLists() {
 
     const { setModalContent } = useModal()
     const handleOpenModal = () => {
-        setModalContent(
-            <CreateListModal/>)
+        setModalContent(<CreateListModal/>)
     }
 
     useEffect(() => {

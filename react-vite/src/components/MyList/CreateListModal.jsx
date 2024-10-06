@@ -75,7 +75,7 @@ export default function CreateListModal({ stockSymbol }) {
 
     return (
         <section className="list-modal-container">
-            <h2 className="add-list-modal-title">{stockSymbol ? `Create a new list for ${stockSymbol}!` : 'Create a new list!'}</h2>
+            <h2 className="modal-title">{stockSymbol ? `Create a new list for ${stockSymbol}!` : 'Create a new list!'}</h2>
             <form className="add-list-form" onSubmit={handleSubmit}>
                 <label className="add-list-label">
                     <input

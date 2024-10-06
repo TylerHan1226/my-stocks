@@ -43,7 +43,7 @@ export default function StockOptionModal({ stockSymbol }) {
 
     return (
         <section className="list-modal-container">
-            <h2 className="add-list-modal-title">Options</h2>
+            <h2 className="modal-title">Options</h2>
             <div className="option-modal-btn-container">
                 <button
                     className="add-to-list-btn not-added"

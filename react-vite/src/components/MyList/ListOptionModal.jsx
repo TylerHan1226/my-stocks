@@ -76,7 +76,7 @@ export default function ListOptionModal({ listNameSelected }) {
 
     return (
         <section className="list-modal-container">
-            <h2 className="add-list-modal-title">Options</h2>
+            <h2 className="modal-title">Options</h2>
             <div className="option-modal-btn-container">
                 {isEditing ? (
                     <form className="edit-listName-form" onSubmit={handleSubmit}>

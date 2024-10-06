@@ -7,6 +7,8 @@ import StockOptionModal from "./StockOptionModal";
 import Loading from "../Loading/Loading";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
+import { useModal } from "../../context/Modal";
+import ScreenerPeriodModal from "./ScreenerPeriodModal";
 
 export default function List() {
     const dispatch = useDispatch();
@@ -19,7 +21,9 @@ export default function List() {
     const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
     const [isLoading, setIsLoading] = useState(true)
     const [isScreenerOn, setIsScreenerOn] = useState(false)
+    const {setModalContent} = useModal()
 
+    console.log('listStockData ==>', listStockData)
 
     const handleShowScreener = () => {
         console.log('handleShowScreener clicked !!')
@@ -29,8 +33,8 @@ export default function List() {
     const handleScreenerSettings = () => {
         console.log('handleScreenerSettings clicked !!')
     }
-    const handleScreenerPeriod = () => {
-        console.log('handleScreenerPeriod clicked !!')
+    const handleScreenerPeriod = (symbol, currentPeriod) => {
+        setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod}/>)
     }
     const handleHistoricalDividend = () => {
         console.log('handleHistoricalDividend clicked !!')
@@ -79,11 +83,12 @@ export default function List() {
                                 const stock = listStockData[eachSymbol]
                                 let stockPeriod = stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
                                 const stockPeriodText = stockPeriod?.split('_')[2]
+
                                 return (
                                     <div className="screener-action-tabs" key={index}>
                                         <p className="screener-texts-symbol">{eachSymbol}</p>
                                         <button className="screener-period-btn"
-                                            onClick={handleScreenerPeriod}>
+                                            onClick={() => handleScreenerPeriod(eachSymbol, stockPeriod)}>
                                             {stockPeriodText}
                                         </button>
                                     </div>

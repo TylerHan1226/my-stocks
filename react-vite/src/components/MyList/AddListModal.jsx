@@ -40,7 +40,7 @@ export default function AddListModal({stockSymbol}) {
 
     return (
         <section className="list-modal-container">
-            <h2 className="add-list-modal-title">My Lists</h2>
+            <h2 className="modal-title">My Lists</h2>
             <div className="add-list-btn-container">
                 {listNames && (Array.from(listNames).map((listName) => {
                     const isStockInList = listItems
