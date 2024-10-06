@@ -56,12 +56,14 @@ def seed_my_lists():
     my_lists_11 = MyList(
         user_id = "1",
         list_name = "Dividend",
-        stock_symbol = "LMT"
+        stock_symbol = "LMT",
+        historical_dividend = 5.5
     )
     my_lists_12 = MyList(
         user_id = "1",
         list_name = "Dividend",
-        stock_symbol = "SPY"
+        stock_symbol = "SPY",
+        historical_dividend = 1.23
     )
     my_lists_13 = MyList(
         user_id = "1",

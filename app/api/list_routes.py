@@ -47,27 +47,27 @@ def get_all_stocks_for_user(list_name):
             print(f"Error: Stock info not found for {eachSymbol}")
             return jsonify({"error": "Stock not found"}), 404
         
-        # Fetch stock history
-        periods = ["max", "30y", "20y", "10y", "5y", "1y"]
-        history = pd.DataFrame()
-        years_of_history = 0
+        # # Fetch stock history
+        # periods = ["max", "30y", "20y", "10y", "5y", "1y"]
+        # history = pd.DataFrame()
+        # years_of_history = 0
 
-        for period in periods:
-            try:
-                history = stock.history(period=period)
-                if isinstance(history, pd.DataFrame) and not history.empty:
-                    years_of_history = (history.index[-1] - history.index[0]).days / 365.25
-                    break
-            except Exception as e:
-                logger.error(f"Error fetching {period} history for {eachSymbol}: {str(e)}")
+        # for period in periods:
+        #     try:
+        #         history = stock.history(period=period)
+        #         if isinstance(history, pd.DataFrame) and not history.empty:
+        #             years_of_history = (history.index[-1] - history.index[0]).days / 365.25
+        #             break
+        #     except Exception as e:
+        #         logger.error(f"Error fetching {period} history for {eachSymbol}: {str(e)}")
 
-        if isinstance(history, pd.DataFrame) and not history.empty:
-            history = history.reset_index()
-            history["Date"] = history["Date"].dt.strftime("%Y-%m-%d")
-            history = history.replace({np.nan: None})
-            history_dict = history.to_dict(orient="records")
-        else:
-            history_dict = []
+        # if isinstance(history, pd.DataFrame) and not history.empty:
+        #     history = history.reset_index()
+        #     history["Date"] = history["Date"].dt.strftime("%Y-%m-%d")
+        #     history = history.replace({np.nan: None})
+        #     history_dict = history.to_dict(orient="records")
+        # else:
+        #     history_dict = []
         
         # Get the current price
         try:
@@ -95,9 +95,9 @@ def get_all_stocks_for_user(list_name):
             "ticker": eachSymbol,
             "name": stock_info.get("shortName", "N/A"),
             "info": stock_info,
-            "history": history_dict,
             "currentPrice": current_price,
-            "years_of_history": round(years_of_history, 2),
+            # "history": history_dict,
+            # "years_of_history": round(years_of_history, 2),
             "historical_data_1d": historical_data_1d,
             "historical_data_1wk": historical_data_1wk,
             "historical_data_1mo": historical_data_1mo,
