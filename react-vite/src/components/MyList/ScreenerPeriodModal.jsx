@@ -1,14 +1,18 @@
+import { useDispatch } from "react-redux"
+import { updateListThunk } from "../../redux/list"
 
 
 export default function ScreenerPeriodModal({ symbol, currentPeriod, listId}) {
+    const dispatch = useDispatch()
 
-    console.log('symbol ==>', symbol)
     console.log('currentPeriod ==>', currentPeriod)
     console.log('listId ==>', listId)
-    
+
     const handleSetPeriod = (selectedPeriod) => {
-        console.log('handleSetPeriod clicked!')
         console.log('selectedPeriod ==>', selectedPeriod)
+        const updatedListData = { "screener_period": selectedPeriod }
+        console.log('updatedListData ==>', updatedListData)
+        dispatch(updateListThunk(updatedListData, listId))
     }
 
     return (

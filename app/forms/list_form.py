@@ -4,22 +4,9 @@ from wtforms import StringField, DecimalField
 from wtforms.validators import DataRequired, ValidationError
 from ..models import MyList
 
-# helper validators
-def check_under_50(field_name):
-    def _check(form, field):
-        if len(field.data) >= 50:
-            raise ValidationError(f"{field_name} must be under 50 characters")
-    return _check
-
-# def check_under_10(field_name):
-#     def _check(form, field):
-#         if len(field.data) >= 10:
-#             raise ValidationError(f"{field_name} must be under 50 characters")
-#     return _check
-
 # form class
 class ListForm(FlaskForm):
-    list_name = StringField('List_name', validators=[DataRequired(), check_under_50('List_name')])
+    list_name = StringField('List_name')
     stock_symbol = StringField('Stock_symbol')
     historical_dividend = DecimalField('Historical_dividend')
     screener_period = StringField('Screener_period')

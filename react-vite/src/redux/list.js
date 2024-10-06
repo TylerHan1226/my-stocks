@@ -41,14 +41,6 @@ export const removeList = (removedList) => ({
 })
 
 
-
-// // Helper function to get CSRF token from cookies
-// function getCookie(name) {
-//     const value = `; ${document.cookie}`
-//     const parts = value.split(`; ${name}=`)
-//     if (parts.length === 2) return parts.pop().split(';').shift()
-// }
-
 export const getAllMyListsThunk = () => async (dispatch) => {
     const res = await fetch('/api/lists/')
     if (!res.ok) {
@@ -102,17 +94,28 @@ export const addListThunk = (newListData) => async (dispatch) => {
     return newList
 }
 export const updateListThunk = (updatedListData, listId) => async (dispatch) => {
+    const formData = new FormData()
+    for (const key in updatedListData) {
+        formData.append(key, updatedListData[key])
+    }
     const res = await fetch(`/api/lists/${listId}/update`, {
         method: 'PUT',
-        body: updatedListData
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
     })
     if (!res.ok) {
+        const errorData = await res.json()
+        console.error('Server responded with an error:', errorData)
         throw new Error('Failed to update list')
     }
+
     const updatedList = await res.json()
     dispatch(updateList(updatedList))
     return updatedList
 }
+
 export const updateListNamesThunk = (updatedListNameData, selectedListName) => async (dispatch) => {
     const formData = new FormData();
     for (const key in updatedListNameData) {

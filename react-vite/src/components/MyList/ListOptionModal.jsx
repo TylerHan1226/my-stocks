@@ -34,7 +34,6 @@ export default function ListOptionModal({ listNameSelected }) {
     const handleEditName = async () => {
         setIsEditing(true)
     }
-    console.log('listItems ==>', listItems)
     const validateForm = () => {
         const validationErrors = {}
         if (listNames?.has(newListName)) {
@@ -47,14 +46,8 @@ export default function ListOptionModal({ listNameSelected }) {
         setIsSubmitted(true)
         const currentValidations = validateForm()
         setValidations(currentValidations)
-        console.log('currentValidations ==>', currentValidations)
         if (Object.keys(currentValidations).length > 0) return
-
         const updatedListNameData = { "list_name": newListName }
-        console.log('newListName ==>', newListName)
-        console.log('listNameSelected ==>', listNameSelected)
-        console.log('updatedListNameData ==>', updatedListNameData)
-
         const res = await dispatch(updateListNamesThunk(updatedListNameData, listNameSelected))
         if (res) {
             setIsEditing(false)

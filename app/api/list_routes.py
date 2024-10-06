@@ -205,13 +205,13 @@ def update_list(id):
             return {'message': 'List not found'}, 404
         if list.user_id != current_user.id:
             return redirect('api/auth/unauthorized')
-        if form.list_name:
+        if form.list_name.data:
             list.list_name = form.list_name.data
-        if form.stock_symbol:
+        if form.stock_symbol.data:
             list.stock_symbol = form.stock_symbol.data
-        if form.historical_dividend:
+        if form.historical_dividend.data:
             list.historical_dividend = form.historical_dividend.data
-        if form.screener_period:
+        if form.screener_period.data:
             list.screener_period = form.screener_period.data
         db.session.commit()
         return list.to_dict(), 200
