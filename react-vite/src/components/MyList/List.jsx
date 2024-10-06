@@ -23,18 +23,15 @@ export default function List() {
     const [isScreenerOn, setIsScreenerOn] = useState(false)
     const {setModalContent} = useModal()
 
-    // console.log('list ==>', list)
+    console.log('lists ==>', lists)
 
     const handleShowScreener = () => {
-        console.log('handleShowScreener clicked !!')
         setIsScreenerOn(prev => !prev)
-        console.log('isScreenerOn ==>', isScreenerOn)
     }
     const handleScreenerSettings = () => {
         console.log('handleScreenerSettings clicked !!')
     }
-    const handleScreenerPeriod = (symbol, currentPeriod) => {
-        const listId = lists?.filter(ele => ele.stock_symbol == symbol && ele.list_name == list?.listName)[0].id
+    const handleScreenerPeriod = (symbol, currentPeriod, listId) => {
         setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod} listId={listId}/>)
     }
     const handleHistoricalDividend = () => {
@@ -82,14 +79,16 @@ export default function List() {
                         <section className="screener-action-container">
                             {stockSymbols?.map((eachSymbol, index) => {
                                 const stock = listStockData[eachSymbol]
-                                let stockPeriod = stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
+                                const listId = lists?.filter(ele => ele.stock_symbol == eachSymbol && ele.list_name == list?.listName)[0].id
+                                const stockScreenerPeriod = lists?.filter(ele => ele.id == listId)[0]?.screener_period
+                                let stockPeriod = stockScreenerPeriod ? stockScreenerPeriod : stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
                                 const stockPeriodText = stockPeriod?.split('_')[2]
 
                                 return (
                                     <div className="screener-action-tabs" key={index}>
                                         <p className="screener-texts-symbol">{eachSymbol}</p>
                                         <button className="screener-period-btn"
-                                            onClick={() => handleScreenerPeriod(eachSymbol, stockPeriod)}>
+                                            onClick={() => handleScreenerPeriod(eachSymbol, stockPeriod, listId)}>
                                             {stockPeriodText}
                                         </button>
                                     </div>
@@ -104,7 +103,6 @@ export default function List() {
                             const stock = listStockData[eachSymbol]
                             const stockCurrentPrice = stock?.currentPrice?.toFixed(2)
                             const stockPreviousClosing = stock?.info?.previousClose
-
                             const stockTrPE = stock?.info?.trailingPE?.toFixed(2)
                             const stockFwPE = stock?.info?.forwardPE?.toFixed(2)
                             const isStockGreen = stockCurrentPrice > stockPreviousClosing
@@ -116,8 +114,9 @@ export default function List() {
                             const stockHistoricalDividendRate = selectedLists?.filter(ele => ele.stock_symbol == eachSymbol)[0]?.historical_dividend
                             const stockDividendGrowth = stockHistoricalDividendRate ? stockDividendRate - stockHistoricalDividendRate : null
                             const stockEps = stock?.info?.trailingEps?.toFixed(2)
-
-                            let stockPeriod = stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
+                            const listId = lists?.filter(ele => ele.stock_symbol == eachSymbol && ele.list_name == list?.listName)[0].id
+                            const stockScreenerPeriod = lists?.filter(ele => ele.id == listId)[0]?.screener_period
+                            const stockPeriod = stockScreenerPeriod ? stockScreenerPeriod : stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
                             const stockPeriodText = stockPeriod?.split('_')[2]
                             const stockHistoricalPrice = stock[stockPeriod][0]?.toFixed(2)
                             const yearlyPriceChange = (stockCurrentPrice / stockHistoricalPrice).toFixed(2)
@@ -260,7 +259,9 @@ export default function List() {
                                         const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
                                         const stockDividendRate = parseFloat(stock?.info?.dividendRate?.toFixed(2))
                                         const stockHistoricalDividendRate = selectedLists?.filter(ele => ele.stock_symbol == eachSymbol)[0]?.historical_dividend
-                                        let stockPeriod = stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
+                                        const listId = lists?.filter(ele => ele.stock_symbol == eachSymbol && ele.list_name == list?.listName)[0].id
+                                        const stockScreenerPeriod = lists?.filter(ele => ele.id == listId)[0]?.screener_period
+                                        const stockPeriod = stockScreenerPeriod ? stockScreenerPeriod : stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
                                         const stockPeriodText = stockPeriod?.split('_')[2]
                                         const stockHistoricalPrice = stock[stockPeriod][0]?.toFixed(2)
 
