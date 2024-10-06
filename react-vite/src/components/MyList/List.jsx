@@ -196,7 +196,7 @@ export default function List() {
                                         </section> :
 
                                         <section className="list-three-dots-container">
-                                            <NavLink className={`stock-tab ${isStockGreen ? 'green-border' : 'red-border'}`}>
+                                            <NavLink className={`stock-tab ${isStockGreen ? 'green-border' : 'red-border'}`} to={`/search/${eachSymbol}`}>
                                                 <h2 className={`stock-tab-title ${isStockGreen ? 'is-green' : 'is-red'}`}>
                                                     {eachSymbol}
                                                 </h2>

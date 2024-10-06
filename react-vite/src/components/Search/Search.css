@@ -43,6 +43,19 @@
     gap: 24px;
     margin: 0 36px 0 auto;
 }
+.stock-page-refresh-btn {
+    display: flex;
+    font-size: 36px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--theme-green);
+}
+.stock-page-refresh-logo {
+    color: var(--theme-green);
+}
+.stock-page-refresh-logo:hover {
+    box-shadow: 0 0 24px 4px ;
+}
 .stock-page-action-btn {
     width: 160px;
     height: 42px;

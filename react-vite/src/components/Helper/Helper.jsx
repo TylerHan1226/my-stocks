@@ -73,7 +73,12 @@ export const makeChart = (period, stocksData, chartInstance, chartRef, isGreen) 
                 point: { radius: 0 },
             },
             plugins: {
-                legend: { display: Object.keys(stocksData).length == 1 ? false : true },
+                legend: {
+                    display: Object.keys(stocksData).length == 1 ? false : true,
+                    labels: {
+                        color: 'white', // Set the legend text color to white
+                    },
+                },
                 tooltip: { enabled: Object.keys(stocksData).length == 1 ? false : true },
                 annotation: {
                     annotations: {
@@ -81,7 +86,7 @@ export const makeChart = (period, stocksData, chartInstance, chartRef, isGreen) 
                             type: 'line',
                             yMin: annotationValue,
                             yMax: annotationValue,
-                            borderColor: lightGrey,
+                            borderColor: "black",
                             borderWidth: 2,
                             borderDash: [6, 6],
                             label: {
@@ -148,7 +153,15 @@ export const makeChartPercentage = (period, stocksData, chartInstance, chartRef,
                 point: { radius: 0 },
             },
             plugins: {
-                legend: { display: Object.keys(stocksData).length == 1 ? false : true },
+                legend: {
+                    display: Object.keys(stocksData).length === 1 ? false : true,
+                    labels: {
+                        color: 'white',
+                        font: {
+                            size: 16
+                        },
+                    },
+                },    
                 tooltip: { enabled: Object.keys(stocksData).length == 1 ? false : true },
             },
         },

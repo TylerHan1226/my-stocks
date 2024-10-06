@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { useModal } from "../../context/Modal";
@@ -9,7 +9,7 @@ import Chart from 'chart.js/auto';
 import News from "../News/News";
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
-
+import { IoMdRefresh } from "react-icons/io";
 Chart.register(annotationPlugin);
 import { makeChart, makeChartPercentage } from "../Helper/Helper";
 import CompareStocks from "./CompareStocks";
@@ -103,10 +103,9 @@ export default function SearchPage() {
     const handleShowPercentage = () => {
         setIsChartPercentage(prev => !prev)
     }
-    // compare stock
-    // const handleCompareStockBtn = () => {
-    //     console.log('handleCompareStockBtn clicked!')
-    // }
+    const handleResetPage = () => {
+        window.location.reload()
+    }
 
     useEffect(() => {
         if (stocksToCompareArr.length > 0) {
@@ -152,6 +151,9 @@ export default function SearchPage() {
                         <h1 className="page-title">{`${stockName} (${stockSymbol})`}</h1>
                         <h1 className="page-title stock-page-title-price">${stockCurrentPrice}</h1>
                         <div className="stock-page-action-btn-container">
+                        <NavLink className="stock-page-refresh-btn" onClick={handleResetPage}>
+                                <IoMdRefresh className="stock-page-refresh-logo" />
+                            </NavLink>
                             <button
                                 className="stock-page-action-btn"
                                 onClick={handleOpenModal}>
@@ -162,16 +164,12 @@ export default function SearchPage() {
                                 onClick={handleCompareChartBtn}>
                                 COMPARE CHART
                             </button>
-                            {/* <button
-                                className="stock-page-action-btn"
-                                onClick={handleCompareStockBtn}>
-                                COMPARE STOCK
-                            </button> */}
                             <button
                                 className={`stock-page-action-btn ${isChartPercentage ? 'is-background-green' : ''}`}
                                 onClick={handleShowPercentage}>
                                 GROWTH %
                             </button>
+
                         </div>
                     </section>
 
