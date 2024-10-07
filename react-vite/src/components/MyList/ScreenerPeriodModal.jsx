@@ -1,18 +1,16 @@
 import { useDispatch } from "react-redux"
 import { updateListThunk } from "../../redux/list"
 import { useModal } from "../../context/Modal"
+import { useState } from "react"
 
-
-export default function ScreenerPeriodModal({ symbol, currentPeriod, listId}) {
+export default function ScreenerPeriodModal({ symbol, currentPeriod, listId, stock}) {
     const dispatch = useDispatch()
     const {closeModal} = useModal()
-    console.log('currentPeriod ==>', currentPeriod)
-    console.log('listId ==>', listId)
+    const stockPeriods = ['historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr']
+    const existingKeys = stockPeriods.filter(key => key in stock && stock[key]?.length > 0);
 
     const handleSetPeriod = (selectedPeriod) => {
-        console.log('selectedPeriod ==>', selectedPeriod)
         const updatedListData = { "screener_period": selectedPeriod }
-        console.log('updatedListData ==>', updatedListData)
         dispatch(updateListThunk(updatedListData, listId))
         closeModal()
         window.location.reload()
@@ -22,7 +20,7 @@ export default function ScreenerPeriodModal({ symbol, currentPeriod, listId}) {
         <section className="screener-modal-container">
             <h2 className="modal-title">Set Period for {symbol}</h2>
             <div className="screener-modal-btn-container">
-            {['historical_data_6mo', 'historical_data_1yr', 'historical_data_5yr', 'historical_data_10yr'].map((ele, index) => (
+            {existingKeys.map((ele, index) => (
                 <button
                     key={index}
                     className={`screener-period-map-btn ${ele != currentPeriod ? 'not-added' : 'is-added '}`}

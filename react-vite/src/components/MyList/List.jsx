@@ -9,6 +9,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 import { useModal } from "../../context/Modal";
 import ScreenerPeriodModal from "./ScreenerPeriodModal";
+import ScreenerHistDivModal from "./ScreenerHistDivModal";
 
 export default function List() {
     const dispatch = useDispatch();
@@ -23,7 +24,58 @@ export default function List() {
     const [isScreenerOn, setIsScreenerOn] = useState(false)
     const {setModalContent} = useModal()
 
-    console.log('lists ==>', lists)
+    const getStockData = (symbol) => {
+        const stock = listStockData[symbol]
+        const stockCurrentPrice = stock?.currentPrice?.toFixed(2)
+        const stockPreviousClosing = stock?.info?.previousClose
+        const stockTrPE = stock?.info?.trailingPE?.toFixed(2)
+        const stockFwPE = stock?.info?.forwardPE?.toFixed(2)
+        const isStockGreen = stockCurrentPrice > stockPreviousClosing
+        const quoteType = stock?.info?.sector || stock?.info?.quoteType
+        const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
+        const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
+        const stockDividendRate = parseFloat(stock?.info?.dividendRate?.toFixed(2))
+        const stockHistoricalDividendRate = selectedLists?.filter(ele => ele.stock_symbol == symbol)[0]?.historical_dividend
+        const stockDividendGrowth = stockHistoricalDividendRate ? stockDividendRate - stockHistoricalDividendRate : null
+        const stockEps = stock?.info?.trailingEps?.toFixed(2)
+        const listId = lists?.filter(ele => ele.stock_symbol == symbol && ele.list_name == list?.listName)[0].id
+        const stockScreenerPeriod = lists?.filter(ele => ele.id == listId)[0]?.screener_period
+        const stockPeriod = stockScreenerPeriod ? stockScreenerPeriod : stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
+        const stockPeriodText = stockPeriod?.split('_')[2]
+        const stockHistoricalPrice = stock[stockPeriod][0]?.toFixed(2)
+        const yearlyPriceChange = (stockCurrentPrice / stockHistoricalPrice).toFixed(2)
+        const stockPayoutRatio = (stock?.info?.payoutRatio * 100)?.toFixed(2)
+        const inputPeriod = stockPeriodText == '10yr' ? 10 : stockPeriodText == '5yr' ? 5 : stockPeriodText == '1yr' ? 1 : stockPeriodText == '6mo' ? 0.5 : null
+        function getYearlyDividendGrowth(startDividend, endDividend, periods) {
+            if (startDividend) return (Math.pow((endDividend / startDividend), 1 / periods) - 1)?.toFixed(2)
+        }
+        const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
+
+        return {
+            stock,
+            stockCurrentPrice,
+            stockPreviousClosing,
+            stockTrPE,
+            stockFwPE,
+            isStockGreen,
+            quoteType,
+            stockDividendYield,
+            stockYield,
+            stockDividendRate,
+            stockHistoricalDividendRate,
+            stockDividendGrowth,
+            stockEps,
+            listId,
+            stockScreenerPeriod,
+            stockPeriod,
+            stockPeriodText,
+            stockHistoricalPrice,
+            yearlyPriceChange,
+            stockPayoutRatio,
+            inputPeriod,
+            stockYearlyDividendGrowth
+        }
+    }
 
     const handleShowScreener = () => {
         setIsScreenerOn(prev => !prev)
@@ -31,19 +83,21 @@ export default function List() {
     const handleScreenerSettings = () => {
         console.log('handleScreenerSettings clicked !!')
     }
-    const handleScreenerPeriod = (symbol, currentPeriod, listId) => {
-        setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod} listId={listId}/>)
+    const handleScreenerPeriod = (symbol, currentPeriod, listId, stock) => {
+        setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod} listId={listId} stock={stock}/>)
     }
-    const handleHistoricalDividend = () => {
+    const handleHistoricalDividend = (symbol, listId) => {
         console.log('handleHistoricalDividend clicked !!')
+        setModalContent(<ScreenerHistDivModal symbol={symbol} listId={listId}/>)
     }
+
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())
         dispatch(getAllStocksInListThunk(list?.listName))
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
-    }, [dispatch]);
+    }, [dispatch])
 
     if (!user) {
         return nav('/')
@@ -88,7 +142,7 @@ export default function List() {
                                     <div className="screener-action-tabs" key={index}>
                                         <p className="screener-texts-symbol">{eachSymbol}</p>
                                         <button className="screener-period-btn"
-                                            onClick={() => handleScreenerPeriod(eachSymbol, stockPeriod, listId)}>
+                                            onClick={() => handleScreenerPeriod(eachSymbol, stockPeriod, listId, stock)}>
                                             {stockPeriodText}
                                         </button>
                                     </div>
@@ -100,34 +154,8 @@ export default function List() {
                     <section className={`${isScreenerOn ? 'list-tabs-container-w-screener' : 'list-tabs-container'}`}>
 
                         {stockSymbols?.map((eachSymbol, index) => {
-                            const stock = listStockData[eachSymbol]
-                            const stockCurrentPrice = stock?.currentPrice?.toFixed(2)
-                            const stockPreviousClosing = stock?.info?.previousClose
-                            const stockTrPE = stock?.info?.trailingPE?.toFixed(2)
-                            const stockFwPE = stock?.info?.forwardPE?.toFixed(2)
-                            const isStockGreen = stockCurrentPrice > stockPreviousClosing
-                            const quoteType = stock?.info?.sector || stock?.info?.quoteType
-                            const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
-                            const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
 
-                            const stockDividendRate = parseFloat(stock?.info?.dividendRate?.toFixed(2))
-                            const stockHistoricalDividendRate = selectedLists?.filter(ele => ele.stock_symbol == eachSymbol)[0]?.historical_dividend
-                            const stockDividendGrowth = stockHistoricalDividendRate ? stockDividendRate - stockHistoricalDividendRate : null
-                            const stockEps = stock?.info?.trailingEps?.toFixed(2)
-                            const listId = lists?.filter(ele => ele.stock_symbol == eachSymbol && ele.list_name == list?.listName)[0].id
-                            const stockScreenerPeriod = lists?.filter(ele => ele.id == listId)[0]?.screener_period
-                            const stockPeriod = stockScreenerPeriod ? stockScreenerPeriod : stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
-                            const stockPeriodText = stockPeriod?.split('_')[2]
-                            const stockHistoricalPrice = stock[stockPeriod][0]?.toFixed(2)
-                            const yearlyPriceChange = (stockCurrentPrice / stockHistoricalPrice).toFixed(2)
-                            const stockPayoutRatio = (stock?.info?.payoutRatio * 100)?.toFixed(2)
-
-                            const inputPeriod = stockPeriodText == '10yr' ? 10 : stockPeriodText == '5yr' ? 5 : stockPeriodText == '1yr' ? 1 : stockPeriodText == '6mo' ? 0.5 : null
-                            function getYearlyDividendGrowth(startDividend, endDividend, periods) {
-                                if (startDividend) return (Math.pow((endDividend / startDividend), 1 / periods) - 1)?.toFixed(2)
-                            }
-                            const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
-
+                            const stockData = getStockData(eachSymbol)
 
                             return (
                                 <section key={index}>
@@ -146,71 +174,70 @@ export default function List() {
                                             <p className="screener-header-texts">Yearly Dividend Growth</p>
                                             <p className="screener-header-texts">Earning Per Share</p>
                                             <p className="screener-header-texts">Payout Ratio</p>
-
                                         </section>}
                                     {isScreenerOn ?
                                         <section className="screener-container">
 
                                             <div className="screener-stock-tabs">
                                                 <p className={`screener-texts-type`}>
-                                                    {quoteType}
+                                                    {stockData?.quoteType}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {stockTrPE ? stockTrPE : '-'}
+                                                    {stockData?.stockTrPE ? stockData?.stockTrPE : '-'}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {stockFwPE ? stockFwPE : '-'}
+                                                    {stockData?.stockFwPE ? stockData?.stockFwPE : '-'}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {`$${stockCurrentPrice}`}
+                                                    {`$${stockData?.stockCurrentPrice}`}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {`$${stockHistoricalPrice}`}
+                                                    {`$${stockData?.stockHistoricalPrice}`}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {yearlyPriceChange}
+                                                    {stockData?.yearlyPriceChange}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {!isNaN(stockDividendYield) ? `${stockDividendYield}%` : stockYield != 'NaN' ? `${stockYield} %` : '-'}
+                                                    {!isNaN(stockData?.stockDividendYield) ? `${stockData?.stockDividendYield}%` : stockData?.stockYield != 'NaN' ? `${stockData?.stockYield} %` : '-'}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {stockDividendRate > 0 ? `$${stockDividendRate}` : '-'}
+                                                    {stockData?.stockDividendRate > 0 ? `$${stockData?.stockDividendRate}` : '-'}
                                                 </p>
                                                 <div className="screener-label-historical-dividend">
                                                     <p className={`screener-texts-historical-dividend`}>
-                                                        {stockHistoricalDividendRate > 0 ? `$${stockHistoricalDividendRate}` : '-'}
+                                                        {stockData?.stockHistoricalDividendRate > 0 ? `$${stockData?.stockHistoricalDividendRate}` : '-'}
                                                     </p>
                                                     <button className="screener-plus-btn"
-                                                        onClick={handleHistoricalDividend}>
+                                                        onClick={() => handleHistoricalDividend(eachSymbol, stockData?.listId)}>
                                                         +
                                                     </button>
                                                 </div>
                                                 <p className={`screener-texts`}>
-                                                    {stockDividendGrowth ? `$${stockDividendGrowth.toFixed(2)}` : '-'}
+                                                    {stockData?.stockDividendGrowth ? `$${stockData?.stockDividendGrowth.toFixed(2)}` : '-'}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {stockYearlyDividendGrowth && stockYearlyDividendGrowth != 0 ? `$${stockYearlyDividendGrowth}` : stockYearlyDividendGrowth == 0 ? 0 : '-'}
+                                                    {stockData?.stockYearlyDividendGrowth && stockData?.stockYearlyDividendGrowth != 0 ? `$${stockData?.stockYearlyDividendGrowth}` : stockData?.stockYearlyDividendGrowth == 0 ? 0 : '-'}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {stockEps > 0 ? `$${stockEps}` : '-'}
+                                                    {stockData?.stockEps > 0 ? `$${stockData?.stockEps}` : '-'}
                                                 </p>
                                                 <p className={`screener-texts`}>
-                                                    {stockPayoutRatio > 0 ? `${stockPayoutRatio}%` : '-'}
+                                                    {stockData?.stockPayoutRatio > 0 ? `${stockData?.stockPayoutRatio}%` : '-'}
                                                 </p>
                                             </div>
                                         </section> :
 
                                         <section className="list-three-dots-container">
-                                            <NavLink className={`stock-tab ${isStockGreen ? 'green-border' : 'red-border'}`} to={`/search/${eachSymbol}`}>
-                                                <h2 className={`stock-tab-title ${isStockGreen ? 'is-green' : 'is-red'}`}>
+                                            <NavLink className={`stock-tab ${stockData?.isStockGreen ? 'green-border' : 'red-border'}`} to={`/search/${eachSymbol}`}>
+                                                <h2 className={`stock-tab-title ${stockData?.isStockGreen ? 'is-green' : 'is-red'}`}>
                                                     {eachSymbol}
                                                 </h2>
                                                 <div className="stock-tab-title">
-                                                    <h2 className={`${isScreenerOn ? 'text-w-screener' : 'stock-tab-price'} ${isStockGreen ? 'is-green' : 'is-red'}`}>
-                                                        {stockCurrentPrice}
+                                                    <h2 className={`${isScreenerOn ? 'text-w-screener' : 'stock-tab-price'} ${stockData?.isStockGreen ? 'is-green' : 'is-red'}`}>
+                                                        {stockData?.stockCurrentPrice}
                                                     </h2>
-                                                    {stockCurrentPrice && stockPreviousClosing ?
-                                                        (isStockGreen ?
+                                                    {stockData?.stockCurrentPrice && stockData?.stockPreviousClosing ?
+                                                        (stockData?.isStockGreen ?
                                                             (<div className="stock-tab-title stock-tab-up-arrow">
                                                                 <GoTriangleUp />
                                                             </div>) :
@@ -219,9 +246,9 @@ export default function List() {
                                                             </div>)
                                                         ) : null
                                                     }
-                                                    <p className={`stock-tab-percentage ${isStockGreen ? 'is-green' : 'is-red'}`}>
-                                                        {stockCurrentPrice && stockPreviousClosing ?
-                                                            `${(((stockCurrentPrice - stockPreviousClosing) / stockPreviousClosing) * 100).toFixed(2)}%`
+                                                    <p className={`stock-tab-percentage ${stockData?.isStockGreen ? 'is-green' : 'is-red'}`}>
+                                                        {stockData?.stockCurrentPrice && stockData?.stockPreviousClosing ?
+                                                            `${(((stockData?.stockCurrentPrice - stockData?.stockPreviousClosing) / stockData?.stockPreviousClosing) * 100).toFixed(2)}%`
                                                             : null
                                                         }
                                                     </p>
@@ -253,19 +280,15 @@ export default function List() {
                                 </div>
                                 <section className="screener-total-tab-container">
                                     {stockSymbols?.map((eachSymbol, index) => {
-                                        const stock = listStockData[eachSymbol]
-                                        const stockCurrentPrice = stock?.currentPrice?.toFixed(2)
-                                        const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
-                                        const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
-                                        const stockDividendRate = parseFloat(stock?.info?.dividendRate?.toFixed(2))
-                                        const stockHistoricalDividendRate = selectedLists?.filter(ele => ele.stock_symbol == eachSymbol)[0]?.historical_dividend
-                                        const listId = lists?.filter(ele => ele.stock_symbol == eachSymbol && ele.list_name == list?.listName)[0].id
-                                        const stockScreenerPeriod = lists?.filter(ele => ele.id == listId)[0]?.screener_period
-                                        const stockPeriod = stockScreenerPeriod ? stockScreenerPeriod : stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
-                                        const stockPeriodText = stockPeriod?.split('_')[2]
-                                        const stockHistoricalPrice = stock[stockPeriod][0]?.toFixed(2)
 
-                                        const inputPeriod = stockPeriodText == '10yr' ? 10 : stockPeriodText == '5yr' ? 5 : stockPeriodText == '1yr' ? 1 : stockPeriodText == '6mo' ? 0.5 : null
+                                        const stockData = getStockData(eachSymbol)
+                                        const stockDividendRate = stockData?.stockDividendRate
+                                        const stockDividendYield = stockData?.stockDividendYield
+                                        const stockHistoricalDividendRate = stockData?.stockHistoricalDividendRate
+                                        const stockHistoricalPrice = stockData?.stockHistoricalPrice
+                                        const stockCurrentPrice = stockData?.stockCurrentPrice
+                                        const inputPeriod = stockData?.inputPeriod
+                                        const stockYield = stockData?.stockYield
                                         function getYearlyGrowth(historicalData, currentData, periods) {
                                             if (historicalData) return (Math.pow((currentData / historicalData), 1 / periods) - 1)
                                         }

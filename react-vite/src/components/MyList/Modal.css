@@ -132,7 +132,7 @@
     flex-direction: column;
     align-items: center;
     height: 180px;
-    width: 360px;
+    width: 420px;
     padding: 24px;
 }
 .screener-modal-title {
@@ -141,13 +141,13 @@
 .screener-modal-btn-container{
     display: flex;
     flex-direction: row;
-    gap: 12px;
+    gap: 20px;
     margin: 32px auto 0 auto;
 }
 .screener-period-map-btn {
     color: var(--theme-green);
     border: 1px solid var(--theme-green);
-    height: 36px;
-    width: 68px;
-    font-size: 20px;
+    height: 48px;
+    width: 80px;
+    font-size: 24px;
 }
