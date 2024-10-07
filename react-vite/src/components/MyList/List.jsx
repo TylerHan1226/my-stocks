@@ -51,30 +51,8 @@ export default function List() {
         }
         const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
 
-        return {
-            stock,
-            stockCurrentPrice,
-            stockPreviousClosing,
-            stockTrPE,
-            stockFwPE,
-            isStockGreen,
-            quoteType,
-            stockDividendYield,
-            stockYield,
-            stockDividendRate,
-            stockHistoricalDividendRate,
-            stockDividendGrowth,
-            stockEps,
-            listId,
-            stockScreenerPeriod,
-            stockPeriod,
-            stockPeriodText,
-            stockHistoricalPrice,
-            yearlyPriceChange,
-            stockPayoutRatio,
-            inputPeriod,
-            stockYearlyDividendGrowth
-        }
+        return { stock, stockCurrentPrice, stockPreviousClosing, stockTrPE, stockFwPE, isStockGreen, quoteType, stockDividendYield, stockYield, stockDividendRate, stockHistoricalDividendRate, stockDividendGrowth, stockEps, listId, stockScreenerPeriod, stockPeriod, stockPeriodText, stockHistoricalPrice, yearlyPriceChange, stockPayoutRatio, inputPeriod, stockYearlyDividendGrowth }
+
     }
 
     const handleShowScreener = () => {
@@ -258,10 +236,7 @@ export default function List() {
                                                 <OpenModalMenuItem
                                                     itemText={<BsThreeDotsVertical />}
                                                     className="three-dots"
-                                                    modalComponent={
-                                                        <StockOptionModal
-                                                            stockSymbol={eachSymbol}
-                                                        />}
+                                                    modalComponent={<StockOptionModal stockSymbol={eachSymbol} />}
                                                 />
                                             </div>
                                         </section>}
@@ -308,7 +283,7 @@ export default function List() {
                                                     {stockDividendYield != 'NaN' ? stockDividendYield : stockYield != 'NaN' ? stockYield : '-'}
                                                 </p>
                                                 <p className="screener-texts">
-                                                    {!isNaN(stockYearlyDividendGrowthRate) ? `${stockYearlyDividendGrowthRate.toFixed(2)}` : '-'}
+                                                    {isNaN(stockYearlyDividendGrowthRate) ? '-' : stockYearlyDividendGrowthRate < 0.02 ? 0 : stockYearlyDividendGrowthRate.toFixed(2)}
                                                 </p>
                                                 <p className="screener-texts">
                                                     {!isNaN(yearlyPriceGrowth) ? `${(yearlyPriceGrowth * 100).toFixed(2)}` : '-'}
