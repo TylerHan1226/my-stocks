@@ -10,6 +10,7 @@ import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 import { useModal } from "../../context/Modal";
 import ScreenerPeriodModal from "./ScreenerPeriodModal";
 import ScreenerHistDivModal from "./ScreenerHistDivModal";
+import ScreenerSettingsModal from "./ScreenerSettingsModal";
 
 export default function List() {
     const dispatch = useDispatch();
@@ -32,6 +33,8 @@ export default function List() {
         const stockFwPE = stock?.info?.forwardPE?.toFixed(2)
         const isStockGreen = stockCurrentPrice > stockPreviousClosing
         const quoteType = stock?.info?.sector || stock?.info?.quoteType
+        const stock52wkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
+        const stock52wkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
         const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
         const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
         const stockDividendRate = parseFloat(stock?.info?.dividendRate?.toFixed(2))
@@ -51,21 +54,69 @@ export default function List() {
         }
         const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
 
-        return { stock, stockCurrentPrice, stockPreviousClosing, stockTrPE, stockFwPE, isStockGreen, quoteType, stockDividendYield, stockYield, stockDividendRate, stockHistoricalDividendRate, stockDividendGrowth, stockEps, listId, stockScreenerPeriod, stockPeriod, stockPeriodText, stockHistoricalPrice, yearlyPriceChange, stockPayoutRatio, inputPeriod, stockYearlyDividendGrowth }
+        return { stock, stockCurrentPrice, stockPreviousClosing, stockTrPE, stockFwPE, isStockGreen, quoteType, stock52wkHigh, stock52wkLow, stockDividendYield, stockYield, stockDividendRate, stockHistoricalDividendRate, stockDividendGrowth, stockEps, listId, stockScreenerPeriod, stockPeriod, stockPeriodText, stockHistoricalPrice, yearlyPriceChange, stockPayoutRatio, inputPeriod, stockYearlyDividendGrowth }
 
     }
 
     const handleShowScreener = () => {
         setIsScreenerOn(prev => !prev)
     }
+
+    const [showType, setShowType] = useState(true)
+    const [showTrPE, setShowTrPE] = useState(true)
+    const [showFwPE, setShowFwPE] = useState(true)
+    const [showCurrentPrice, setShowCurrentPrice] = useState(true)
+    const [showHistoricalPrice, setShowHistoricalPrice] = useState(true)
+    const [showYPC, setShowYPC] = useState(true)
+    const [show52wkHigh, setShow52wkHigh] = useState(false)
+    const [show52wkLow, setShow52wkLow] = useState(false)
+    const [showDivYield, setShowDivYield] = useState(true)
+    const [showCurrDiv, setShowCurrDiv] = useState(true)
+    const [showHistDiv, setShowHistDiv] = useState(true)
+    const [showTotalDivGrowth, setShowTotalDivGrowth] = useState(true)
+    const [showYearlyDivGrowth, setShowYearlyDivGrowth] = useState(true)
+    const [showEPS, setShowEPS] = useState(true)
+    const [showPR, setShowPR] = useState(true)
+    const [showTotal, setShowTotal] = useState(true)
+
     const handleScreenerSettings = () => {
-        console.log('handleScreenerSettings clicked !!')
+        setModalContent(<ScreenerSettingsModal
+            showType={showType}
+            setShowType={setShowType}
+            showTrPE={showTrPE}
+            setShowTrPE={setShowTrPE}
+            showFwPE={showFwPE}
+            setShowFwPE={setShowFwPE}
+            showCurrentPrice={showCurrentPrice}
+            setShowCurrentPrice={setShowCurrentPrice}
+            showHistoricalPrice={showHistoricalPrice}
+            setShowHistoricalPrice={setShowHistoricalPrice}
+            showYPC={showYPC}
+            setShowYPC={setShowYPC}
+            show52wkHigh={show52wkHigh}
+            setShow52wkHigh={setShow52wkHigh}
+            show52wkLow={show52wkLow}
+            setShow52wkLow={setShow52wkLow}
+            showDivYield={showDivYield}
+            setShowDivYield={setShowDivYield}
+            showCurrDiv={showCurrDiv}
+            setShowCurrDiv={setShowCurrDiv}
+            showHistDiv={showHistDiv}
+            setShowHistDiv={setShowHistDiv}
+            showTotalDivGrowth={showTotalDivGrowth}
+            setShowTotalDivGrowth={setShowTotalDivGrowth}
+            showYearlyDivGrowth={showYearlyDivGrowth}
+            setShowYearlyDivGrowth={setShowYearlyDivGrowth}
+            showEPS={showEPS}
+            setShowEPS={setShowEPS}
+            showPR={showPR}
+            setShowPR={setShowPR}
+                        />)
     }
     const handleScreenerPeriod = (symbol, currentPeriod, listId, stock) => {
         setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod} listId={listId} stock={stock}/>)
     }
     const handleHistoricalDividend = (symbol, listId) => {
-        console.log('handleHistoricalDividend clicked !!')
         setModalContent(<ScreenerHistDivModal symbol={symbol} listId={listId}/>)
     }
 
@@ -101,7 +152,7 @@ export default function List() {
                     </button>
                     {isScreenerOn &&
                         <button className="list-screener-btn narrow-btn"
-                            onClick={handleScreenerSettings}>
+                            onClick={() => handleScreenerSettings()}>
                             + / -
                         </button>}
                 </div>
@@ -139,48 +190,63 @@ export default function List() {
                                 <section key={index}>
                                     {isScreenerOn && index == 0 &&
                                         <section className="screener-header-container">
-                                            <p className="screener-header-texts-type">Type</p>
-                                            <p className="screener-header-texts">Trailing P/E</p>
-                                            <p className="screener-header-texts">Forward P/E</p>
-                                            <p className="screener-header-texts">Current Price</p>
-                                            <p className="screener-header-texts">Historical Price</p>
-                                            <p className="screener-header-texts">Yearly Price Change</p>
-                                            <p className="screener-header-texts">Dividend Yield</p>
-                                            <p className="screener-header-texts">Current Dividend</p>
-                                            <p className="screener-header-texts-historical-dividend">Historical Dividend</p>
-                                            <p className="screener-header-texts">Total Dividend Growth</p>
-                                            <p className="screener-header-texts">Yearly Dividend Growth</p>
-                                            <p className="screener-header-texts">Earning Per Share</p>
-                                            <p className="screener-header-texts">Payout Ratio</p>
+                                            {showType && <p className="screener-header-texts-type">Type</p>}
+                                            {showTrPE && <p className="screener-header-texts">Trailing P/E</p>}
+                                            {showFwPE && <p className="screener-header-texts">Forward P/E</p>}
+                                            {showCurrentPrice && <p className="screener-header-texts">Current Price</p>}
+                                            {showHistoricalPrice && <p className="screener-header-texts">Historical Price</p>}
+                                            {showYPC && <p className="screener-header-texts">Yearly Price Change</p>}
+
+                                            {show52wkHigh && <p className="screener-header-texts">52wk High</p>}
+                                            {show52wkLow && <p className="screener-header-texts">52wk Low</p>}
+
+                                            {showDivYield && <p className="screener-header-texts">Dividend Yield</p>}
+                                            {showCurrDiv && <p className="screener-header-texts">Current Dividend</p>}
+                                            {showHistDiv && <p className="screener-header-texts-historical-dividend">Historical Dividend</p>}
+                                            {showTotalDivGrowth && <p className="screener-header-texts">Total Dividend Growth</p>}
+                                            {showYearlyDivGrowth && <p className="screener-header-texts">Yearly Dividend Growth</p>}
+                                            {showEPS && <p className="screener-header-texts">Earning Per Share</p>}
+                                            {showPR && <p className="screener-header-texts">Payout Ratio</p>}
                                         </section>}
                                     {isScreenerOn ?
                                         <section className="screener-container">
 
                                             <div className="screener-stock-tabs">
+                                                
+                                                {showType &&
                                                 <p className={`screener-texts-type`}>
                                                     {stockData?.quoteType}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+                                                {showTrPE && <p className={`screener-texts`}>
                                                     {stockData?.stockTrPE ? stockData?.stockTrPE : '-'}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+                                                {showFwPE && <p className={`screener-texts`}>
                                                     {stockData?.stockFwPE ? stockData?.stockFwPE : '-'}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+                                                {showCurrentPrice && <p className={`screener-texts`}>
                                                     {`$${stockData?.stockCurrentPrice}`}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+                                                {showHistoricalPrice && <p className={`screener-texts`}>
                                                     {`$${stockData?.stockHistoricalPrice}`}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+                                                {showYPC && <p className={`screener-texts`}>
                                                     {stockData?.yearlyPriceChange}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+
+                                                {show52wkHigh && <p className={`screener-texts`}>
+                                                {`$${stockData?.stock52wkHigh}`}
+                                                </p>}
+                                                {show52wkLow && <p className={`screener-texts`}>
+                                                {`$${stockData?.stock52wkLow}`}
+                                                </p>}
+
+                                                {showDivYield && <p className={`screener-texts`}>
                                                     {!isNaN(stockData?.stockDividendYield) ? `${stockData?.stockDividendYield}%` : stockData?.stockYield != 'NaN' ? `${stockData?.stockYield} %` : '-'}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+                                                {showCurrDiv && <p className={`screener-texts`}>
                                                     {stockData?.stockDividendRate > 0 ? `$${stockData?.stockDividendRate}` : '-'}
-                                                </p>
+                                                </p>}
+                                                {showHistDiv &&
                                                 <div className="screener-label-historical-dividend">
                                                     <p className={`screener-texts-historical-dividend`}>
                                                         {stockData?.stockHistoricalDividendRate > 0 ? `$${stockData?.stockHistoricalDividendRate}` : '-'}
@@ -189,19 +255,19 @@ export default function List() {
                                                         onClick={() => handleHistoricalDividend(eachSymbol, stockData?.listId)}>
                                                         +
                                                     </button>
-                                                </div>
-                                                <p className={`screener-texts`}>
+                                                </div>}
+                                                {showTotalDivGrowth && <p className={`screener-texts`}>
                                                     {stockData?.stockDividendGrowth ? `$${stockData?.stockDividendGrowth.toFixed(2)}` : '-'}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+                                                {showYearlyDivGrowth && <p className={`screener-texts`}>
                                                     {stockData?.stockYearlyDividendGrowth && stockData?.stockYearlyDividendGrowth != 0 ? `$${stockData?.stockYearlyDividendGrowth}` : stockData?.stockYearlyDividendGrowth == 0 ? 0 : '-'}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+                                                {showEPS && <p className={`screener-texts`}>
                                                     {stockData?.stockEps > 0 ? `$${stockData?.stockEps}` : '-'}
-                                                </p>
-                                                <p className={`screener-texts`}>
+                                                </p>}
+                                                {showPR && <p className={`screener-texts`}>
                                                     {stockData?.stockPayoutRatio > 0 ? `${stockData?.stockPayoutRatio}%` : '-'}
-                                                </p>
+                                                </p>}
                                             </div>
                                         </section> :
 
@@ -279,13 +345,13 @@ export default function List() {
 
                                         return (
                                             <div className="screener-total-tabs" key={index}>
-                                                <p className="screener-texts">
+                                                <p className="screener-texts-yearly-t-growth">
                                                     {stockDividendYield != 'NaN' ? stockDividendYield : stockYield != 'NaN' ? stockYield : '-'}
                                                 </p>
-                                                <p className="screener-texts">
+                                                <p className="screener-texts-yearly-t-growth">
                                                     {isNaN(stockYearlyDividendGrowthRate) ? '-' : stockYearlyDividendGrowthRate < 0.02 ? 0 : stockYearlyDividendGrowthRate.toFixed(2)}
                                                 </p>
-                                                <p className="screener-texts">
+                                                <p className="screener-texts-yearly-t-growth">
                                                     {!isNaN(yearlyPriceGrowth) ? `${(yearlyPriceGrowth * 100).toFixed(2)}` : '-'}
                                                 </p>
                                                 <p className="screener-texts-sum">

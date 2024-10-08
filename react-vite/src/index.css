@@ -1,9 +1,10 @@
 
 :root {
     --theme-green: rgb(50, 200, 50);
-    --them-green-dim: rgb(20, 80, 20, 0.8);
+    --theme-green-dim: rgb(20, 80, 20, 0.8);
     --theme-red: rgb(220, 20, 20);
     --dark-green: rgb(20, 80, 20);
+    --dark-green-dim: rgb(20, 80, 20, 0.5);
     --dark-red: rgb(150, 25, 25);
     --light-red: rgb(250, 35, 35);
     --text-field-grey: rgb(180, 180, 180, 0.8);

@@ -73,22 +73,25 @@
     color: white;
     padding: 12px;
 }
+.is-added {
+    background-color: var(--dark-green);
+    color: var(--theme-green);
+}
 .not-added {
     background-color: black;
 }
+
 .not-added:hover,
+.label-not-shown:hover,
 .stock-page-action-btn:hover,
 .list-screener-btn:hover,
 .screener-period-btn:hover,
-.screener-plus-btn:hover {
+.screener-plus-btn:hover,
+.screener-settings-modal-btn:hover {
     cursor: pointer;
     background-color: var(--dark-green);
     box-shadow: 0 0 24px 4px var(--dark-green);
     color: white;
-}
-.is-added {
-    background-color: var(--dark-green);
-    color: var(--theme-green);
 }
 
 .add-list-form {
@@ -150,4 +153,39 @@
     height: 48px;
     width: 80px;
     font-size: 24px;
+}
+
+.screener-settings-modal-container {
+    background-color: black;
+    border: 1px solid var(--theme-green);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 600px;
+    width: 600px;
+    padding: 24px;
+}
+.screener-settings-btn-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.screener-settings-btn-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.screener-settings-modal-btn {
+    border: 1px solid var(--theme-green);
+    height: 36px;
+    font-size: 18px;
+    width: 240px;
+}
+.label-shown {
+    background-color: var(--dark-green-dim);
+    color: white;
+}
+.label-not-shown {
+    background-color: black;
+    color: var(--theme-green);
 }

@@ -158,23 +158,24 @@
     border-radius: 12px;
 }
 .screener-container {
-    /* border: solid 1px red; */
-    width: 1280px;
+    /* border: 1px solid red; */
+    width: 100%;
 }
 .screener-header-container {
     /* border: solid 1px yellow; */
-    border-bottom: 1px solid var(--border-light-grey);
+    /* border-bottom: 1px solid var(--border-light-grey); */
     display: flex;
     flex-direction: row;
     gap: 12px;
     height: 100px;
     margin: 0 auto 12px auto;
-    width: 1280px;
+    width: 100%;
 }
 .screener-total-container {
     border: 1px solid var(--border-light-grey);
     border-radius: 8px;
     padding: 0 12px 0 12px;
+    width: 320px;
 }
 .screener-header-total-container {
     /* border: 1px solid orange; */
@@ -192,7 +193,8 @@
 .screener-header-texts {
     /* border: solid 1px purple; */
     border-right: 1px solid var(--border-light-grey);
-    width: 60%;
+    min-width: 120px;
+    max-width: 120px;
 }
 .screener-header-texts-total {
     border-bottom: 1px solid var(--border-light-grey);
@@ -209,11 +211,13 @@
 }
 .screener-header-texts-historical-dividend {
     border-right: 1px solid var(--border-light-grey);
-    width: 70%;
+    min-width: 120px;
+    max-width: 120px;
 }
 .screener-header-texts-type {
     border-right: 1px solid var(--border-light-grey);
-    width: 100%;
+    min-width: 120px;
+    max-width: 120px;
 }
 .list-tabs-container-w-screener {
     /* border: solid 1px green; */
@@ -278,18 +282,27 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 70%;
+    min-width: 120px;
+    max-width: 120px;
 }
 .screener-texts {
     /* border: solid 1px cyan; */
     border-right: 1px solid var(--border-light-grey);
-    width: 60%;
+    min-width: 120px;
+    max-width: 120px;
+    margin: 0 0 0 0;
+    height: 32px;
+    font-size: 18px;
+}
+.screener-texts-yearly-t-growth {
+    border-right: 1px solid var(--border-light-grey);
+    width: 68px;
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
 }
 .screener-texts-sum {
-    width: 60%;
+    width: 68px;
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
@@ -309,7 +322,8 @@
 }
 .screener-texts-type {
     border-right: 1px solid var(--border-light-grey);
-    width: 100%;
+    min-width: 120px;
+    max-width: 120px;
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
