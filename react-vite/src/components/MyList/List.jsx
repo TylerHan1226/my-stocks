@@ -37,7 +37,9 @@ export default function List() {
         const stock52wkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
 
         const stock52wkDiff = stock52wkHigh - stock52wkLow
-        const stockPriceRating = stockCurrentPrice < stock52wkLow + stock52wkDiff * 0.33 ? 'Low' : stockCurrentPrice < stock52wkLow + stock52wkDiff * 0.66 ? 'Mid' : 'High'
+        const low = stock52wkLow + stock52wkDiff * 0.33
+        const mid = stock52wkLow + stock52wkDiff * 0.66
+        const stockPriceRating = parseFloat(stockCurrentPrice) < parseFloat(low) ? 'Low' : parseFloat(stockCurrentPrice) < parseFloat(mid) ? 'Mid' : 'High'
 
         const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
         const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
