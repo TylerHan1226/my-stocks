@@ -125,8 +125,8 @@ export default function List() {
     const handleScreenerPeriod = (symbol, currentPeriod, listId, stock) => {
         setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod} listId={listId} stock={stock} />)
     }
-    const handleHistoricalDividend = (symbol, listId) => {
-        setModalContent(<ScreenerHistDivModal symbol={symbol} listId={listId} />)
+    const handleHistoricalDividend = (symbol, listId, currHistDiv) => {
+        setModalContent(<ScreenerHistDivModal symbol={symbol} listId={listId} currHistDiv={currHistDiv}/>)
     }
     const handleShowTotalGrowth = () => {
         console.log('handleShowTotalGrowth clicked!')
@@ -270,7 +270,7 @@ export default function List() {
                                                             {stockData?.stockHistoricalDividendRate > 0 ? `$${stockData?.stockHistoricalDividendRate}` : '-'}
                                                         </p>
                                                         <button className="screener-plus-btn"
-                                                            onClick={() => handleHistoricalDividend(eachSymbol, stockData?.listId)}>
+                                                            onClick={() => handleHistoricalDividend(eachSymbol, stockData?.listId, stockData?.stockHistoricalDividendRate)}>
                                                             +
                                                         </button>
                                                     </div>}

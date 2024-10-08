@@ -34,6 +34,7 @@ export default function Search() {
                         placeholder="Find Your Stock by Symbol"
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value.toUpperCase())}
+                        autoFocus
                     />
                     <button className="search-modal-btn" type="submit">
                         <p className="search-modal-btn-text"><FaSearch /></p>
