@@ -23,7 +23,7 @@ export default function List() {
     const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
     const [isLoading, setIsLoading] = useState(true)
     const [isScreenerOn, setIsScreenerOn] = useState(false)
-    const {setModalContent} = useModal()
+    const { setModalContent } = useModal()
 
     const getStockData = (symbol) => {
         const stock = listStockData[symbol]
@@ -35,6 +35,10 @@ export default function List() {
         const quoteType = stock?.info?.sector || stock?.info?.quoteType
         const stock52wkHigh = stock?.info?.fiftyTwoWeekHigh?.toFixed(2)
         const stock52wkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
+
+        const stock52wkDiff = stock52wkHigh - stock52wkLow
+        const stockPriceRating = stockCurrentPrice < stock52wkLow + stock52wkDiff * 0.33 ? 'Low' : stockCurrentPrice < stock52wkLow + stock52wkDiff * 0.66 ? 'Mid' : 'High'
+
         const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
         const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
         const stockDividendRate = parseFloat(stock?.info?.dividendRate?.toFixed(2))
@@ -54,7 +58,7 @@ export default function List() {
         }
         const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
 
-        return { stock, stockCurrentPrice, stockPreviousClosing, stockTrPE, stockFwPE, isStockGreen, quoteType, stock52wkHigh, stock52wkLow, stockDividendYield, stockYield, stockDividendRate, stockHistoricalDividendRate, stockDividendGrowth, stockEps, listId, stockScreenerPeriod, stockPeriod, stockPeriodText, stockHistoricalPrice, yearlyPriceChange, stockPayoutRatio, inputPeriod, stockYearlyDividendGrowth }
+        return { stock, stockCurrentPrice, stockPreviousClosing, stockTrPE, stockFwPE, isStockGreen, quoteType, stock52wkHigh, stock52wkLow, stockPriceRating, stockDividendYield, stockYield, stockDividendRate, stockHistoricalDividendRate, stockDividendGrowth, stockEps, listId, stockScreenerPeriod, stockPeriod, stockPeriodText, stockHistoricalPrice, yearlyPriceChange, stockPayoutRatio, inputPeriod, stockYearlyDividendGrowth }
 
     }
 
@@ -70,6 +74,7 @@ export default function List() {
     const [showYPC, setShowYPC] = useState(true)
     const [show52wkHigh, setShow52wkHigh] = useState(false)
     const [show52wkLow, setShow52wkLow] = useState(false)
+    const [showCurrPr52kwk, setShowCurrPr52kwk] = useState(true)
     const [showDivYield, setShowDivYield] = useState(true)
     const [showCurrDiv, setShowCurrDiv] = useState(true)
     const [showHistDiv, setShowHistDiv] = useState(true)
@@ -97,6 +102,8 @@ export default function List() {
             setShow52wkHigh={setShow52wkHigh}
             show52wkLow={show52wkLow}
             setShow52wkLow={setShow52wkLow}
+            showCurrPr52kwk={showCurrPr52kwk}
+            setShowCurrPr52kwk={setShowCurrPr52kwk}
             showDivYield={showDivYield}
             setShowDivYield={setShowDivYield}
             showCurrDiv={showCurrDiv}
@@ -111,13 +118,18 @@ export default function List() {
             setShowEPS={setShowEPS}
             showPR={showPR}
             setShowPR={setShowPR}
-                        />)
+        />)
     }
     const handleScreenerPeriod = (symbol, currentPeriod, listId, stock) => {
-        setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod} listId={listId} stock={stock}/>)
+        setModalContent(<ScreenerPeriodModal symbol={symbol} currentPeriod={currentPeriod} listId={listId} stock={stock} />)
     }
     const handleHistoricalDividend = (symbol, listId) => {
-        setModalContent(<ScreenerHistDivModal symbol={symbol} listId={listId}/>)
+        setModalContent(<ScreenerHistDivModal symbol={symbol} listId={listId} />)
+    }
+    const handleShowTotalGrowth = () => {
+        console.log('handleShowTotalGrowth clicked!')
+        setShowTotal(prev => !prev)
+        console.log('showTotal =>', showTotal)
     }
 
 
@@ -199,6 +211,7 @@ export default function List() {
 
                                             {show52wkHigh && <p className="screener-header-texts">52wk High</p>}
                                             {show52wkLow && <p className="screener-header-texts">52wk Low</p>}
+                                            {showCurrPr52kwk && <p className="screener-header-texts">Current Price in 52wk Rating</p>}
 
                                             {showDivYield && <p className="screener-header-texts">Dividend Yield</p>}
                                             {showCurrDiv && <p className="screener-header-texts">Current Dividend</p>}
@@ -212,11 +225,11 @@ export default function List() {
                                         <section className="screener-container">
 
                                             <div className="screener-stock-tabs">
-                                                
+
                                                 {showType &&
-                                                <p className={`screener-texts-type`}>
-                                                    {stockData?.quoteType}
-                                                </p>}
+                                                    <p className={`screener-texts-type`}>
+                                                        {stockData?.quoteType}
+                                                    </p>}
                                                 {showTrPE && <p className={`screener-texts`}>
                                                     {stockData?.stockTrPE ? stockData?.stockTrPE : '-'}
                                                 </p>}
@@ -234,10 +247,13 @@ export default function List() {
                                                 </p>}
 
                                                 {show52wkHigh && <p className={`screener-texts`}>
-                                                {`$${stockData?.stock52wkHigh}`}
+                                                    {`$${stockData?.stock52wkHigh}`}
                                                 </p>}
                                                 {show52wkLow && <p className={`screener-texts`}>
-                                                {`$${stockData?.stock52wkLow}`}
+                                                    {`$${stockData?.stock52wkLow}`}
+                                                </p>}
+                                                {showCurrPr52kwk && <p className={`screener-texts`}>
+                                                    {stockData?.stockPriceRating}
                                                 </p>}
 
                                                 {showDivYield && <p className={`screener-texts`}>
@@ -247,15 +263,15 @@ export default function List() {
                                                     {stockData?.stockDividendRate > 0 ? `$${stockData?.stockDividendRate}` : '-'}
                                                 </p>}
                                                 {showHistDiv &&
-                                                <div className="screener-label-historical-dividend">
-                                                    <p className={`screener-texts-historical-dividend`}>
-                                                        {stockData?.stockHistoricalDividendRate > 0 ? `$${stockData?.stockHistoricalDividendRate}` : '-'}
-                                                    </p>
-                                                    <button className="screener-plus-btn"
-                                                        onClick={() => handleHistoricalDividend(eachSymbol, stockData?.listId)}>
-                                                        +
-                                                    </button>
-                                                </div>}
+                                                    <div className="screener-label-historical-dividend">
+                                                        <p className={`screener-texts-historical-dividend`}>
+                                                            {stockData?.stockHistoricalDividendRate > 0 ? `$${stockData?.stockHistoricalDividendRate}` : '-'}
+                                                        </p>
+                                                        <button className="screener-plus-btn"
+                                                            onClick={() => handleHistoricalDividend(eachSymbol, stockData?.listId)}>
+                                                            +
+                                                        </button>
+                                                    </div>}
                                                 {showTotalDivGrowth && <p className={`screener-texts`}>
                                                     {stockData?.stockDividendGrowth ? `$${stockData?.stockDividendGrowth.toFixed(2)}` : '-'}
                                                 </p>}
@@ -309,10 +325,16 @@ export default function List() {
                                 </section>)
                         })}
                     </section>
-                    {isScreenerOn &&
-                        <section className="screener-total-container">
+                    {isScreenerOn && showTotal ?
+                        (<section className="screener-total-container">
                             <div className="screener-header-total-container">
-                                <p className="screener-header-texts-total">{`Yearly Total Growth (%)`}</p>
+                                <div className="screener-header-total">
+                                    <p className="screener-header-texts-total">{`Yearly Total Growth (%)`}</p>
+                                    <NavLink className="screener-total-show-btn" onClick={handleShowTotalGrowth}>
+                                        Hide
+                                    </NavLink>
+                                </div>
+                                {/* <p className="screener-header-texts-total">{`Yearly Total Growth (%)`}</p> */}
                                 <div className="screener-header-total-item-container">
                                     <p className="screener-header-texts-total-item">Current Dividend</p>
                                     <p className="screener-header-texts-total-item">Dividend Growth</p>
@@ -338,7 +360,7 @@ export default function List() {
                                         const stockYearlyDividendGrowthRate = stockDividendYield != 'NaN' ? stockDividendYield * stockYearlyDividendGrowth : stockYield != 'NaN' ? stockYield * stockYearlyDividendGrowth : '-'
                                         let sum = '-'
                                         if (!isNaN(stockDividendYield) && !isNaN(stockYearlyDividendGrowthRate) && !isNaN(yearlyPriceGrowth)) {
-                                            sum = (parseFloat(stockDividendYield) + parseFloat(stockYearlyDividendGrowthRate) + yearlyPriceGrowth* 100).toFixed(2)
+                                            sum = (parseFloat(stockDividendYield) + parseFloat(stockYearlyDividendGrowthRate) + yearlyPriceGrowth * 100).toFixed(2)
                                         } else if (!isNaN(stockYield) && !isNaN(stockYearlyDividendGrowthRate) && !isNaN(yearlyPriceGrowth)) {
                                             sum = (parseFloat(stockYield) + parseFloat(stockYearlyDividendGrowthRate) + yearlyPriceGrowth * 100).toFixed(2)
                                         }
@@ -361,8 +383,14 @@ export default function List() {
                                         )
                                     })}
                                 </section>
-                            </div></section>
-
+                            </div>
+                        </section>) : isScreenerOn && !showTotal ? (
+                                <section className="hidden-screener-total-container">
+                                    <NavLink className="screener-total-show-btn" onClick={handleShowTotalGrowth}>
+                                        Show
+                                    </NavLink>
+                                </section>
+                            ) : null
                     }
                 </section>
 

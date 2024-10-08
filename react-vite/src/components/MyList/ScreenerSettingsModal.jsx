@@ -19,6 +19,8 @@ export default function ScreenerSettingsModal({
     setShow52wkHigh,
     show52wkLow,
     setShow52wkLow,
+    showCurrPr52kwk,
+    setShowCurrPr52kwk,
     setShowYPC,
     showDivYield,
     setShowDivYield,
@@ -78,7 +80,11 @@ export default function ScreenerSettingsModal({
         setShow52wkLow(prev => !prev)
         setShow52wkLowBtn(prev => !prev)
     }
-    
+    const [showCurrPr52kwkBtn, setShowCurrPr52kwkBtn] = useState(showCurrPr52kwk)
+    const handleShowCurrPr52kwk = () => {
+        setShowCurrPr52kwk(prev => !prev)
+        setShowCurrPr52kwkBtn(prev => !prev)
+    }
     const [showDivYieldBtn, setShowDivYieldBtn] = useState(showDivYield)
     const handleShowDivYield = () => {
         setShowDivYield(prev => !prev)
@@ -163,7 +169,8 @@ export default function ScreenerSettingsModal({
                         52Wk Low
                     </button>
                     <button
-                        className={`screener-settings-modal-btn ${true ? 'label-shown' : 'label-not-shown'}`}
+                        className={`screener-settings-modal-btn ${showCurrPr52kwkBtn ? 'label-shown' : 'label-not-shown'}`}
+                        onClick={() => handleShowCurrPr52kwk()}
                     >
                         Current Price in 52Wk
                     </button>
