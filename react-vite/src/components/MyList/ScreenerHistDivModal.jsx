@@ -44,7 +44,7 @@ export default function ScreenerHistDivModal({ symbol, listId, currHistDiv }) {
                             className="add-list-input-field"
                             type="text"
                             name="screener-historical-dividend"
-                            value={isNaN(newHistDiv) ? '' : newHistDiv}
+                            value={newHistDiv}
                             onChange={e => setNewHistDiv(e.target.value)}
                             autoFocus
                         />

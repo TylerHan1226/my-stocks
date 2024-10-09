@@ -37,9 +37,9 @@ export default function List() {
         const stock52wkLow = stock?.info?.fiftyTwoWeekLow?.toFixed(2)
 
         const stock52wkDiff = stock52wkHigh - stock52wkLow
-        const low = stock52wkLow + stock52wkDiff * 0.33
-        const mid = stock52wkLow + stock52wkDiff * 0.66
-        const stockPriceRating = parseFloat(stockCurrentPrice) < parseFloat(low) ? 'Low' : parseFloat(stockCurrentPrice) < parseFloat(mid) ? 'Mid' : 'High'
+        const low = stock52wkDiff * 0.33
+        const mid = stock52wkDiff * 0.66
+        const stockPriceRating = parseFloat(stockCurrentPrice) - stock52wkLow < low ? 'Low' : parseFloat(stockCurrentPrice) - stock52wkLow < mid ? 'Mid' : 'High'
 
         const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
         const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
@@ -132,7 +132,6 @@ export default function List() {
         console.log('showTotal =>', showTotal)
     }
 
-
     useEffect(() => {
         dispatch(getAllMyListsThunk())
         dispatch(getAllStocksInListThunk(list?.listName))
@@ -187,7 +186,6 @@ export default function List() {
                                             {stockPeriodText}
                                         </button>
                                     </div>
-
                                 )
                             })}
                         </section>}
@@ -272,7 +270,7 @@ export default function List() {
                                                     {stockData?.stockDividendGrowth ? `$${stockData?.stockDividendGrowth.toFixed(2)}` : '-'}
                                                 </p>}
                                                 {showYearlyDivGrowth && <p className={`screener-texts`}>
-                                                    {stockData?.stockYearlyDividendGrowth && stockData?.stockYearlyDividendGrowth != 0 ? `$${stockData?.stockYearlyDividendGrowth}` : stockData?.stockYearlyDividendGrowth == 0 ? 0 : '-'}
+                                                    {!isNaN(stockData?.stockYearlyDividendGrowth) && stockData?.stockYearlyDividendGrowth != 0 ? `${stockData?.stockYearlyDividendGrowth * 100}%` : stockData?.stockYearlyDividendGrowth == 0 ? 0 : '-'}
                                                 </p>}
                                                 {showEPS && <p className={`screener-texts`}>
                                                     {stockData?.stockEps > 0 ? `$${stockData?.stockEps}` : '-'}
@@ -354,10 +352,6 @@ export default function List() {
                                         const yearlyPriceGrowth = getYearlyGrowth(stockHistoricalPrice, stockCurrentPrice, inputPeriod)
                                         const stockYearlyDividendGrowthRate = stockDividendYield != 'NaN' ? stockDividendYield * stockYearlyDividendGrowth : stockYield != 'NaN' ? stockYield * stockYearlyDividendGrowth : '-'
                                         let sum = '-'
-                                        // console.log('stockDividendYield ==>', eachSymbol, stockDividendYield)
-                                        // console.log('stockYield ==>', eachSymbol, stockYield)
-                                        // console.log('stockYearlyDividendGrowthRate ==>', eachSymbol, stockYearlyDividendGrowthRate)
-                                        // console.log('yearlyPriceGrowth ==>', eachSymbol, yearlyPriceGrowth)
                                         if (!isNaN(stockDividendYield) && !isNaN(stockYearlyDividendGrowthRate) && !isNaN(yearlyPriceGrowth)) {
                                             sum = (parseFloat(stockDividendYield) + parseFloat(stockYearlyDividendGrowthRate) + yearlyPriceGrowth * 100).toFixed(2)
                                         } else if (!isNaN(stockYield) && !isNaN(stockYearlyDividendGrowthRate) && !isNaN(yearlyPriceGrowth)) {
