@@ -266,6 +266,9 @@
     justify-content: center;
     align-items: center;
 }
+.screener-edit-btn:hover {
+    font-size: 24px;
+}
 .screener-stock-tabs {
     display: flex;
     flex-direction: row;
@@ -357,5 +360,5 @@
     font-size: 18px;
 }
 .screener-performance-arrow {
-    font-size: 24px;
+    font-size: 28px;
 }

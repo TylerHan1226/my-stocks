@@ -78,21 +78,27 @@ def seed_my_lists():
         historical_dividend = 1.41,
         performance_change = 2
     )
-    # my_lists_15 = MyList(
-    #     user_id = "1",
-    #     list_name = "Dividend",
-    #     stock_symbol = "SBUX"
-    # )
-    # my_lists_16 = MyList(
-    #     user_id = "1",
-    #     list_name = "Dividend",
-    #     stock_symbol = "RIO"
-    # )
-    # my_lists_17 = MyList(
-    #     user_id = "1",
-    #     list_name = "Dividend",
-    #     stock_symbol = "NKE"
-    # )
+    my_lists_15 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "RIO",
+        historical_dividend = 1.76,
+        performance_change = 5
+    )
+    my_lists_16 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "VLO",
+        historical_dividend = 1.05,
+        performance_change = 4
+    )
+    my_lists_17 = MyList(
+        user_id = "1",
+        list_name = "Dividend",
+        stock_symbol = "GPRK",
+        historical_dividend = 0.11,
+        performance_change = 4
+    )
     # my_lists_18 = MyList(
     #     user_id = "1",
     #     list_name = "Dividend",
@@ -123,9 +129,9 @@ def seed_my_lists():
                         my_lists_12,
                         my_lists_13,
                         my_lists_14,
-                        # my_lists_15,
-                        # my_lists_16,
-                        # my_lists_17,
+                        my_lists_15,
+                        my_lists_16,
+                        my_lists_17,
                         # my_lists_18,
                         # my_lists_19,
                         # my_lists_20,
