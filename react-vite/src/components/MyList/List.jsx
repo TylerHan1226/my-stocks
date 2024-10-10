@@ -275,7 +275,7 @@ export default function List() {
                                             {showYearlyDivGrowth && <p className="screener-header-texts">Yearly Dividend Growth</p>}
                                             {showEPS && <p className="screener-header-texts">Earning Per Share</p>}
                                             {showPR && <p className="screener-header-texts">Payout Ratio</p>}
-                                            {showPerformance && <p className="screener-header-texts">Performance in 5 years</p>}
+                                            {showPerformance && <p className="screener-header-texts-performance">Performance in 5 years</p>}
                                         </section>}
                                     {isScreenerOn ?
                                         <section className="screener-container">
@@ -403,7 +403,7 @@ export default function List() {
                                     <p className="screener-header-texts-total-item">Current Dividend</p>
                                     <p className="screener-header-texts-total-item">Dividend Growth</p>
                                     <p className="screener-header-texts-total-item">Price</p>
-                                    <p className="screener-header-texts-total-item-sum">Sum</p>
+                                    <p className="screener-header-texts-total-item">Sum</p>
                                 </div>
                                 <section className="screener-total-tab-container">
                                     {stockSymbols?.map((eachSymbol, index) => {

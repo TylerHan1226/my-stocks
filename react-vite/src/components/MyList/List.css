@@ -147,6 +147,13 @@
     margin: 0 auto 0 auto;
     width: 1280px;
 }
+.list-tabs-container-w-screener {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    overflow-x: auto;
+    padding-bottom: 36px;
+}
 .list-tabs-container-w-screener::-webkit-scrollbar {
     height: 8px;
 }
@@ -202,9 +209,19 @@
 }
 .screener-header-texts {
     /* border: solid 1px purple; */
-    border-right: 1px solid var(--border-light-grey);
-    min-width: 120px;
-    max-width: 120px;
+    border-left: 1px solid var(--border-light-grey);
+    min-width: 108px;
+    max-width: 108px;
+    padding-left: 12px;
+    /* margin-right: 12px; */
+
+}
+.screener-header-texts-performance{
+    border-left: 1px solid var(--border-light-grey);
+    min-width: 108px;
+    max-width: 108px;
+    padding-left: 12px;
+    padding-right: 24px;
 }
 .screener-header-total {
     display: flex;
@@ -213,35 +230,24 @@
     height: 52px;
 }
 .screener-header-texts-total-item {
-    /* border: 1px solid blue; */
-    border-right: 1px solid var(--border-light-grey);
+    border-left: 1px solid var(--border-light-grey);
     height: 48px;
-    width: 68px;
-}
-.screener-header-texts-total-item-sum {
-    height: 48px;
-    width: 68px;
+    width: 56px;
+    padding-left: 12px;
 }
 .screener-header-texts-historical-dividend {
-    border-right: 1px solid var(--border-light-grey);
-    min-width: 120px;
-    max-width: 120px;
+    border-left: 1px solid var(--border-light-grey);
+    min-width: 108px;
+    max-width: 108px;
+    padding-left: 12px;
 }
 .screener-header-texts-type {
-    border-right: 1px solid var(--border-light-grey);
-    min-width: 120px;
-    max-width: 120px;
+    min-width: 108px;
+    max-width: 108px;
+    padding-left: 12px;
 }
-.list-tabs-container-w-screener {
-    /* border: solid 1px green; */
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    overflow-x: auto;
-    padding-bottom: 36px;
-}
+
 .screener-action-container {
-    /* border: solid 1px blue; */
     margin: 0 12px 0 0;
     border: 1px solid var(--border-light-grey);
     border-radius: 8px;
@@ -281,20 +287,19 @@
     gap: 32px;
 }
 .screener-total-tabs{
-    /* border: solid 1px blue; */
     height: 32px;
     display: flex;
     flex-direction: row;
     gap: 12px;
 }
 .screener-action-tabs {
-    /* border: solid 1px green; */
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 32px;
 }
 .screener-label-historical-dividend {
+    border-left: 1px solid var(--border-light-grey);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -302,32 +307,34 @@
     max-width: 120px;
 }
 .screener-texts {
-    /* border: solid 1px cyan; */
-    border-right: 1px solid var(--border-light-grey);
-    min-width: 120px;
-    max-width: 120px;
+    border-left: 1px solid var(--border-light-grey);
+    min-width: 108px;
+    max-width: 108px;
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
     display: flex;
     align-items: center;
+    padding-left: 12px;
 }
 .screener-texts-yearly-t-growth {
-    border-right: 1px solid var(--border-light-grey);
-    width: 68px;
+    border-left: 1px solid var(--border-light-grey);
+    width: 56px;
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
     display: flex;
     align-items: center;
+    padding-left: 12px;
 }
 .screener-texts-sum {
-    width: 68px;
+    width: 56px;
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
     display: flex;
     align-items: center;
+    padding-left: 12px;
 }
 .screener-texts-historical-dividend {
     width: 70%;
@@ -345,19 +352,17 @@
     align-items: center;
 }
 .screener-texts-symbol {
-    /* border: solid 1px cyan; */
-    font-weight: 400;
-    border-right: 1px solid var(--border-light-grey);
+    font-weight: 500;
     width: 80px;
     font-size: 18px;
 }
 .screener-texts-type {
-    border-right: 1px solid var(--border-light-grey);
-    min-width: 120px;
-    max-width: 120px;
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
+    min-width: 108px;
+    max-width: 108px;
+    padding-left: 12px;
 }
 .screener-performance-arrow {
     font-size: 28px;
