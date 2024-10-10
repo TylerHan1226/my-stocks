@@ -11,6 +11,8 @@ import { useModal } from "../../context/Modal";
 import ScreenerPeriodModal from "./ScreenerPeriodModal";
 import ScreenerHistDivModal from "./ScreenerHistDivModal";
 import ScreenerSettingsModal from "./ScreenerSettingsModal";
+import ScreenerPerformanceModal from "./ScreenerPerformanceModal";
+import { FiArrowDown, FiArrowUp, FiArrowDownRight, FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 
 export default function List() {
     const dispatch = useDispatch();
@@ -135,8 +137,9 @@ export default function List() {
     const handleHistoricalDividend = (symbol, listId, currHistDiv) => {
         setModalContent(<ScreenerHistDivModal symbol={symbol} listId={listId} currHistDiv={currHistDiv} />)
     }
-    const handlePerformance = () => {
+    const handlePerformance = (symbol, listId, currPerformance) => {
         console.log('handlePerformance clicked!')
+        setModalContent(<ScreenerPerformanceModal symbol={symbol} listId={listId} currPerformance={currPerformance} />)
     }
     const handleShowTotalGrowth = () => {
         setShowTotal(prev => !prev)
@@ -293,7 +296,7 @@ export default function List() {
                                                 {showPerformance &&
                                                     <div className="screener-label-historical-dividend">
                                                         <p className={`screener-texts-historical-dividend`}>
-                                                            {stockData?.stockPerformance ? `${stockData?.stockPerformance}` : '-'}
+                                                            {!stockData?.stockPerformance ? '-' : stockData?.stockPerformance == 1 ? <FiArrowUp className="screener-performance-arrow" /> : stockData?.stockPerformance == 2 ? <FiArrowUpRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 3 ? <FiArrowRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 4 ? <FiArrowDownRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 5 ? <FiArrowDown className="screener-performance-arrow" /> : '-'}
                                                         </p>
                                                         <button className="screener-plus-btn"
                                                             onClick={() => handlePerformance()}>

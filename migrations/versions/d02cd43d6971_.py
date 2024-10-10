@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 0fcceab17472
+Revision ID: d02cd43d6971
 Revises: 
-Create Date: 2024-10-10 10:03:25.643112
+Create Date: 2024-10-10 12:20:55.056289
 
 """
 from alembic import op
@@ -13,7 +13,7 @@ SCHEMA = os.environ.get("SCHEMA")
 
 
 # revision identifiers, used by Alembic.
-revision = '0fcceab17472'
+revision = 'd02cd43d6971'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,7 +36,7 @@ def upgrade():
     sa.Column('list_name', sa.String(length=50), nullable=False),
     sa.Column('stock_symbol', sa.String(length=10), nullable=False),
     sa.Column('historical_dividend', sa.Integer(), nullable=True),
-    sa.Column('performance_change', sa.String(length=25), nullable=True),
+    sa.Column('performance_change', sa.Integer(), nullable=True),
     sa.Column('screener_period', sa.String(length=25), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),

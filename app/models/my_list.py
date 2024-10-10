@@ -14,7 +14,7 @@ class MyList(db.Model):
     list_name = Column(String(50), nullable=False)
     stock_symbol = Column(String(10), nullable=False)
     historical_dividend = Column(Integer, nullable=True)
-    performance_change = Column(String(25), nullable=True)
+    performance_change = Column(Integer, nullable=True)
     screener_period = Column(String(25), nullable=True)
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now)
