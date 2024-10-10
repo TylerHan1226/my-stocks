@@ -154,6 +154,17 @@
     width: 80px;
     font-size: 24px;
 }
+.screener-performance-map-btn {
+    color: var(--theme-green);
+    border: 1px solid var(--theme-green);
+    height: 48px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 4px;
+    font-size: 24px;
+}
 
 .screener-settings-modal-container {
     background-color: black;

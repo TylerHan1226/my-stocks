@@ -306,6 +306,8 @@
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
+    display: flex;
+    align-items: center;
 }
 .screener-texts-yearly-t-growth {
     border-right: 1px solid var(--border-light-grey);
@@ -313,18 +315,31 @@
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
+    display: flex;
+    align-items: center;
 }
 .screener-texts-sum {
     width: 68px;
     margin: 0 0 0 0;
     height: 32px;
     font-size: 18px;
+    display: flex;
+    align-items: center;
 }
 .screener-texts-historical-dividend {
     width: 70%;
     margin: 0 0 0 12px;
     height: 32px;
     font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+.screener-texts-performance {
+    width: 70%;
+    margin: 0 0 0 12px;
+    height: 32px;
+    display: flex;
+    align-items: center;
 }
 .screener-texts-symbol {
     /* border: solid 1px cyan; */
@@ -342,5 +357,5 @@
     font-size: 18px;
 }
 .screener-performance-arrow {
-    font-size: 28px;
+    font-size: 24px;
 }

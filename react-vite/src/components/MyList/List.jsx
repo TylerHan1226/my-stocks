@@ -27,8 +27,6 @@ export default function List() {
     const [isScreenerOn, setIsScreenerOn] = useState(false)
     const { setModalContent } = useModal()
 
-    console.log('selectedLists ==>', selectedLists)
-
     const getStockData = (symbol) => {
         const stock = listStockData[symbol]
         const stockCurrentPrice = stock?.currentPrice?.toFixed(2)
@@ -63,9 +61,7 @@ export default function List() {
             if (startDividend) return (Math.pow((endDividend / startDividend), 1 / periods) - 1)?.toFixed(2)
         }
         const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
-        
         const stockPerformance = selectedLists?.filter(ele => ele.stock_symbol == symbol)[0]?.performance_change
-        console.log('stockPerformance ==>', symbol, stockPerformance)
 
         return { stock, stockCurrentPrice, stockPreviousClosing, stockTrPE, stockFwPE, isStockGreen, quoteType, stock52wkHigh, stock52wkLow, stockPriceRating, stockDividendYield, stockYield, stockDividendRate, stockHistoricalDividendRate, stockDividendGrowth, stockEps, listId, stockScreenerPeriod, stockPeriod, stockPeriodText, stockHistoricalPrice, yearlyPriceChange, stockPayoutRatio, inputPeriod, stockYearlyDividendGrowth, stockPerformance }
     }
@@ -138,7 +134,6 @@ export default function List() {
         setModalContent(<ScreenerHistDivModal symbol={symbol} listId={listId} currHistDiv={currHistDiv} />)
     }
     const handlePerformance = (symbol, listId, currPerformance) => {
-        console.log('handlePerformance clicked!')
         setModalContent(<ScreenerPerformanceModal symbol={symbol} listId={listId} currPerformance={currPerformance} />)
     }
     const handleShowTotalGrowth = () => {
@@ -295,11 +290,11 @@ export default function List() {
                                                 </p>}
                                                 {showPerformance &&
                                                     <div className="screener-label-historical-dividend">
-                                                        <p className={`screener-texts-historical-dividend`}>
+                                                        <p className={`screener-texts-performance`}>
                                                             {!stockData?.stockPerformance ? '-' : stockData?.stockPerformance == 1 ? <FiArrowUp className="screener-performance-arrow" /> : stockData?.stockPerformance == 2 ? <FiArrowUpRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 3 ? <FiArrowRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 4 ? <FiArrowDownRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 5 ? <FiArrowDown className="screener-performance-arrow" /> : '-'}
                                                         </p>
                                                         <button className="screener-plus-btn"
-                                                            onClick={() => handlePerformance()}>
+                                                            onClick={() => handlePerformance(eachSymbol, stockData?.listId, stockData?.stockPerformance )}>
                                                             +
                                                         </button>
                                                     </div>}
