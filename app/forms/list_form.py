@@ -9,4 +9,5 @@ class ListForm(FlaskForm):
     list_name = StringField('List_name')
     stock_symbol = StringField('Stock_symbol')
     historical_dividend = DecimalField('Historical_dividend')
+    performance_change = StringField('Performance_change')
     screener_period = StringField('Screener_period')

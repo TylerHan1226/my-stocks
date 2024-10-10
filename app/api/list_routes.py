@@ -211,6 +211,8 @@ def update_list(id):
             list.stock_symbol = form.stock_symbol.data
         if form.historical_dividend.data:
             list.historical_dividend = form.historical_dividend.data
+        if form.performance_change.data:
+            list.performance_change = form.performance_change.data
         if form.screener_period.data:
             list.screener_period = form.screener_period.data
         db.session.commit()
