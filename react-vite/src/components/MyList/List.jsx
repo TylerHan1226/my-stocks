@@ -25,6 +25,8 @@ export default function List() {
     const [isScreenerOn, setIsScreenerOn] = useState(false)
     const { setModalContent } = useModal()
 
+    console.log('selectedLists ==>', selectedLists)
+
     const getStockData = (symbol) => {
         const stock = listStockData[symbol]
         const stockCurrentPrice = stock?.currentPrice?.toFixed(2)
@@ -59,7 +61,11 @@ export default function List() {
             if (startDividend) return (Math.pow((endDividend / startDividend), 1 / periods) - 1)?.toFixed(2)
         }
         const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
-        return { stock, stockCurrentPrice, stockPreviousClosing, stockTrPE, stockFwPE, isStockGreen, quoteType, stock52wkHigh, stock52wkLow, stockPriceRating, stockDividendYield, stockYield, stockDividendRate, stockHistoricalDividendRate, stockDividendGrowth, stockEps, listId, stockScreenerPeriod, stockPeriod, stockPeriodText, stockHistoricalPrice, yearlyPriceChange, stockPayoutRatio, inputPeriod, stockYearlyDividendGrowth }
+        
+        const stockPerformance = selectedLists?.filter(ele => ele.stock_symbol == symbol)[0]?.performance_change
+        console.log('stockPerformance ==>', symbol, stockPerformance)
+
+        return { stock, stockCurrentPrice, stockPreviousClosing, stockTrPE, stockFwPE, isStockGreen, quoteType, stock52wkHigh, stock52wkLow, stockPriceRating, stockDividendYield, stockYield, stockDividendRate, stockHistoricalDividendRate, stockDividendGrowth, stockEps, listId, stockScreenerPeriod, stockPeriod, stockPeriodText, stockHistoricalPrice, yearlyPriceChange, stockPayoutRatio, inputPeriod, stockYearlyDividendGrowth, stockPerformance }
     }
 
     const handleShowScreener = () => {
@@ -82,6 +88,7 @@ export default function List() {
     const [showYearlyDivGrowth, setShowYearlyDivGrowth] = useState(true)
     const [showEPS, setShowEPS] = useState(true)
     const [showPR, setShowPR] = useState(true)
+    const [showPerformance, setShowPerformance] = useState(true)
     const [showTotal, setShowTotal] = useState(true)
 
     const handleScreenerSettings = () => {
@@ -118,6 +125,8 @@ export default function List() {
             setShowEPS={setShowEPS}
             showPR={showPR}
             setShowPR={setShowPR}
+            showPerformance={showPerformance}
+            setShowPerformance={setShowPerformance}
         />)
     }
     const handleScreenerPeriod = (symbol, currentPeriod, listId, stock) => {
@@ -126,11 +135,13 @@ export default function List() {
     const handleHistoricalDividend = (symbol, listId, currHistDiv) => {
         setModalContent(<ScreenerHistDivModal symbol={symbol} listId={listId} currHistDiv={currHistDiv} />)
     }
-    const handleShowTotalGrowth = () => {
-        console.log('handleShowTotalGrowth clicked!')
-        setShowTotal(prev => !prev)
-        console.log('showTotal =>', showTotal)
+    const handlePerformance = () => {
+        console.log('handlePerformance clicked!')
     }
+    const handleShowTotalGrowth = () => {
+        setShowTotal(prev => !prev)
+    }
+    
 
     useEffect(() => {
         dispatch(getAllMyListsThunk())
@@ -215,6 +226,7 @@ export default function List() {
                                             {showYearlyDivGrowth && <p className="screener-header-texts">Yearly Dividend Growth</p>}
                                             {showEPS && <p className="screener-header-texts">Earning Per Share</p>}
                                             {showPR && <p className="screener-header-texts">Payout Ratio</p>}
+                                            {showPerformance && <p className="screener-header-texts">Performance in 5 years</p>}
                                         </section>}
                                     {isScreenerOn ?
                                         <section className="screener-container">
@@ -278,6 +290,16 @@ export default function List() {
                                                 {showPR && <p className={`screener-texts`}>
                                                     {stockData?.stockPayoutRatio > 0 ? `${stockData?.stockPayoutRatio}%` : '-'}
                                                 </p>}
+                                                {showPerformance &&
+                                                    <div className="screener-label-historical-dividend">
+                                                        <p className={`screener-texts-historical-dividend`}>
+                                                            {stockData?.stockPerformance ? `${stockData?.stockPerformance}` : '-'}
+                                                        </p>
+                                                        <button className="screener-plus-btn"
+                                                            onClick={() => handlePerformance()}>
+                                                            +
+                                                        </button>
+                                                    </div>}
                                             </div>
                                         </section> :
 

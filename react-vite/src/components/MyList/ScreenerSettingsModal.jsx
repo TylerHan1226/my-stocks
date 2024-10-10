@@ -36,6 +36,8 @@ export default function ScreenerSettingsModal({
     setShowEPS,
     showPR,
     setShowPR,
+    showPerformance,
+    setShowPerformance
 }) {
     // const dispatch = useDispatch()
     // const {closeModal} = useModal()
@@ -119,6 +121,11 @@ export default function ScreenerSettingsModal({
     const handleShowPR = () => {
         setShowPR(prev => !prev)
         setShowPRBtn(prev => !prev)
+    }
+    const [showPerformanceBtn, setShowPerformanceBtn] = useState(showPerformance)
+    const handleShowPerformance = () => {
+        setShowPerformance(prev => !prev)
+        setShowPerformanceBtn(prev => !prev)
     }
 
     return (
@@ -211,6 +218,11 @@ export default function ScreenerSettingsModal({
                         className={`screener-settings-modal-btn ${showPRBtn ? 'label-shown' : 'label-not-shown'}`}
                         onClick={() => handleShowPR()}>
                         Payout Ratio
+                    </button>
+                    <button
+                        className={`screener-settings-modal-btn ${showPerformanceBtn ? 'label-shown' : 'label-not-shown'}`}
+                        onClick={() => handleShowPerformance()}>
+                        Performance
                     </button>
                 </div>
 
