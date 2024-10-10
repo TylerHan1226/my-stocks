@@ -1,6 +1,7 @@
 
 :root {
-    --theme-green: rgb(50, 200, 50);
+    --theme-green: rgb(36, 180, 36);
+    --theme-light-green: rgb(80, 250, 80);
     --theme-green-dim: rgb(20, 80, 20, 0.8);
     --theme-red: rgb(220, 20, 20);
     --dark-green: rgb(20, 80, 20);

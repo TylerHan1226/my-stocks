@@ -131,6 +131,14 @@
     height: 36px;
     font-size: 20px;
 }
+.list-screener-setting-btn {
+    color: var(--theme-green);
+    font-size: 32px;
+    height: 32px;
+}
+.list-screener-setting-btn:hover {
+    color: var(--theme-light-green);
+}
 .wide-btn {
     width: 320px;
 }
@@ -274,6 +282,7 @@
 }
 .screener-edit-btn:hover {
     font-size: 24px;
+    color: var(--theme-light-green);
 }
 .screener-stock-tabs {
     display: flex;

@@ -37,7 +37,9 @@ export default function ScreenerSettingsModal({
     showPR,
     setShowPR,
     showPerformance,
-    setShowPerformance
+    setShowPerformance,
+    showColors,
+    setShowColors,
 }) {
     // const dispatch = useDispatch()
     // const {closeModal} = useModal()
@@ -127,10 +129,22 @@ export default function ScreenerSettingsModal({
         setShowPerformance(prev => !prev)
         setShowPerformanceBtn(prev => !prev)
     }
+    const [showColorBtn, setShowColorBtn] = useState(showColors)
+    const handleShowColors = () => {
+        setShowColors(prev => !prev)
+        setShowColorBtn(prev => !prev)
+    }
 
     return (
         <section className="screener-settings-modal-container">
             <h2 className="modal-title">Settings</h2>
+            <div className="screener-settings-color-btn-container">
+            <button className={`screener-settings-modal-btn ${showColorBtn ? 'label-shown' : 'label-not-shown'}`}
+            onClick={handleShowColors}>
+                Show Colors
+            </button>
+            </div>
+
             <div className="screener-settings-btn-container">
                 <div className="screener-settings-btn-column">
                     <button

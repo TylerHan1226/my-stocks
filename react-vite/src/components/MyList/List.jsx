@@ -14,10 +14,12 @@ import ScreenerSettingsModal from "./ScreenerSettingsModal";
 import ScreenerPerformanceModal from "./ScreenerPerformanceModal";
 import { FiArrowDown, FiArrowUp, FiArrowDownRight, FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 import { MdOutlineModeEdit } from "react-icons/md";
+import { IoMdSettings } from "react-icons/io";
 
 export default function List() {
     const dispatch = useDispatch();
     const nav = useNavigate()
+    const { setModalContent } = useModal()
     const user = useSelector(state => state.session.user)
     const list = useParams()
     const lists = useSelector(state => state.lists?.My_Lists)
@@ -26,7 +28,7 @@ export default function List() {
     const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
     const [isLoading, setIsLoading] = useState(true)
     const [isScreenerOn, setIsScreenerOn] = useState(false)
-    const { setModalContent } = useModal()
+    const [showColors, setShowColors] = useState(true)
 
     const getStockData = (symbol) => {
         const stock = listStockData[symbol]
@@ -43,6 +45,7 @@ export default function List() {
         const low = stock52wkDiff * 0.33
         const mid = stock52wkDiff * 0.66
         const stockPriceRating = parseFloat(stockCurrentPrice) - stock52wkLow < low ? 'Low' : parseFloat(stockCurrentPrice) - stock52wkLow < mid ? 'Mid' : 'High'
+        // console.log(symbol, ['stock52wkDiff => ', stock52wkDiff], ['low => ', low], ['mid => ', mid], ['stockPriceRating =>', stockPriceRating])
 
         const stockDividendYield = (stock?.info?.dividendYield * 100)?.toFixed(2)
         const stockYield = (stock?.info?.yield * 100)?.toFixed(2)
@@ -65,18 +68,18 @@ export default function List() {
         const stockPerformance = selectedLists?.filter(ele => ele.stock_symbol == symbol)[0]?.performance_change
 
         // screener grid color
-        const peColor = !stockTrPE ? '' : stockTrPE < 10 ? 'screener-color-1' : stockTrPE < 20 ? 'screener-color-2': stockTrPE < 30 ? 'screener-color-3' : stockTrPE < 50 ? 'screener-color-4' : 'screener-color-5'
+        const peColor = !stockTrPE || !showColors ? '' : stockTrPE < 10 ? 'screener-color-1' : stockTrPE < 20 ? 'screener-color-2': stockTrPE < 30 ? 'screener-color-3' : stockTrPE < 50 ? 'screener-color-4' : 'screener-color-5'
         let divColor = ''
         if (!isNaN(stockDividendYield)) {
-            divColor = !stockDividendYield ? '' : stockDividendYield > 5 ? 'screener-color-1' : stockDividendYield > 3 ? 'screener-color-2': stockDividendYield > 2 ? 'screener-color-3' : stockDividendYield > 1 ? 'screener-color-4' : 'screener-color-5'
+            divColor = !stockDividendYield || !showColors ? '' : stockDividendYield > 5 ? 'screener-color-1' : stockDividendYield > 3 ? 'screener-color-2': stockDividendYield > 2 ? 'screener-color-3' : stockDividendYield > 1 ? 'screener-color-4' : 'screener-color-5'
         } else if (!isNaN(stockYield)) {
-            divColor = isNaN(stockYield) ? '' : stockYield > 5 ? 'screener-color-1' : stockYield > 3 ? 'screener-color-2': stockYield > 2 ? 'screener-color-3' : stockYield > 1 ? 'screener-color-4' : 'screener-color-5'
+            divColor = isNaN(stockYield) || !showColors ? '' : stockYield > 5 ? 'screener-color-1' : stockYield > 3 ? 'screener-color-2': stockYield > 2 ? 'screener-color-3' : stockYield > 1 ? 'screener-color-4' : 'screener-color-5'
         }
-        const divGrowthDollarColor = !stockDividendGrowth ? '' : stockDividendGrowth > 5 ? 'screener-color-1' : stockDividendGrowth > 3 ? 'screener-color-2' : stockDividendGrowth > 2 ? 'screener-color-3' : stockDividendGrowth > 1 ? 'screener-color-4' : 'screener-color-5'
-        const prColor = isNaN(stockPayoutRatio) ? '' : stockPayoutRatio < 30 ? 'screener-color-1' : stockPayoutRatio < 40 ? 'screener-color-2' : stockPayoutRatio < 50 ? 'screener-color-3' : stockPayoutRatio < 100 ? 'screener-color-4' : 'screener-color-5'
-        const ypcColor = isNaN(yearlyPriceChange) || !yearlyPriceChange ? '' : yearlyPriceChange > 5 ? 'screener-color-1' : yearlyPriceChange > 3 ? 'screener-color-2' : yearlyPriceChange > 2 ? 'screener-color-3' : yearlyPriceChange > 1 ? 'screener-color-4' : 'screener-color-5'
-        const priceIn52wkColor = !stockPriceRating ? '' : stockPriceRating == 'Low' ? 'screener-color-2' : stockPriceRating == 'Mid' ? 'screener-color-3' : stockPriceRating == 'High' ? 'screener-color-4' : ''
-        const performanceColor = !stockPerformance ? '' : stockPerformance == 1 ? 'screener-arrow-color-1' : stockPerformance == 2 ? 'screener-arrow-color-2' : stockPerformance == 4 ? 'screener-arrow-color-4' : stockPerformance == 5 ? 'screener-arrow-color-5' : ''
+        const divGrowthDollarColor = !stockDividendGrowth || !showColors ? '' : stockDividendGrowth > 5 ? 'screener-color-1' : stockDividendGrowth > 3 ? 'screener-color-2' : stockDividendGrowth > 2 ? 'screener-color-3' : stockDividendGrowth > 1 ? 'screener-color-4' : 'screener-color-5'
+        const prColor = isNaN(stockPayoutRatio) || !showColors ? '' : stockPayoutRatio < 30 ? 'screener-color-1' : stockPayoutRatio < 40 ? 'screener-color-2' : stockPayoutRatio < 50 ? 'screener-color-3' : stockPayoutRatio < 100 ? 'screener-color-4' : 'screener-color-5'
+        const ypcColor = isNaN(yearlyPriceChange) || !showColors || !yearlyPriceChange ? '' : yearlyPriceChange > 5 ? 'screener-color-1' : yearlyPriceChange > 3 ? 'screener-color-2' : yearlyPriceChange > 2 ? 'screener-color-3' : yearlyPriceChange > 1 ? 'screener-color-4' : 'screener-color-5'
+        const priceIn52wkColor = !stockPriceRating || !showColors ? '' : stockPriceRating == 'Low' ? 'screener-color-2' : stockPriceRating == 'Mid' ? 'screener-color-3' : stockPriceRating == 'High' ? 'screener-color-4' : ''
+        const performanceColor = !stockPerformance || !showColors ? '' : stockPerformance == 1 ? 'screener-arrow-color-1' : stockPerformance == 2 ? 'screener-arrow-color-2' : stockPerformance == 4 ? 'screener-arrow-color-4' : stockPerformance == 5 ? 'screener-arrow-color-5' : ''
         console.log(symbol, 'performanceColor ==>', performanceColor)
 
         return {
@@ -175,6 +178,8 @@ export default function List() {
             setShowPR={setShowPR}
             showPerformance={showPerformance}
             setShowPerformance={setShowPerformance}
+            showColors={showColors}
+            setShowColors={setShowColors}
         />)
     }
     const handleScreenerPeriod = (symbol, currentPeriod, listId, stock) => {
@@ -221,10 +226,10 @@ export default function List() {
                         {isScreenerOn ? 'Hide Screeners' : 'Show Screeners'}
                     </button>
                     {isScreenerOn &&
-                        <button className="list-screener-btn narrow-btn"
+                        <NavLink className="list-screener-setting-btn"
                             onClick={() => handleScreenerSettings()}>
-                            + / -
-                        </button>}
+                            <IoMdSettings />
+                        </NavLink>}
                 </div>
 
                 <section className="list-content-container">
@@ -422,8 +427,9 @@ export default function List() {
                                         const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
                                         const yearlyPriceGrowth = getYearlyGrowth(stockHistoricalPrice, stockCurrentPrice, inputPeriod)
                                         const stockYrlDivGrowthPer = stockDividendYield != 'NaN' ? stockDividendYield * stockYearlyDividendGrowth : stockYield != 'NaN' ? stockYield * stockYearlyDividendGrowth : '-'
-                                        const yrlDivGrowthColor = !stockYrlDivGrowthPer ? '' : stockYrlDivGrowthPer > 0.4 ? 'screener-color-1' : stockYrlDivGrowthPer > 0.3 ? 'screener-color-2' : stockYrlDivGrowthPer > 0.2 ? 'screener-color-3' : stockYrlDivGrowthPer > 0.1 ? 'screener-color-4' : stockYrlDivGrowthPer < 0.1 ? 'screener-color-5' : ''
-                                        const yrlPriceGrowthColor = !yearlyPriceGrowth ? '' : yearlyPriceGrowth * 100 > 18 ? 'screener-color-1' : yearlyPriceGrowth * 100 > 15 ? 'screener-color-2' : yearlyPriceGrowth * 100 > 12 ? 'screener-color-3' : yearlyPriceGrowth * 100 > 9 ? 'screener-color-4' : yearlyPriceGrowth * 100 < 9 ? 'screener-color-5' : ''
+                                        // colors
+                                        const yrlDivGrowthColor = !stockYrlDivGrowthPer || !showColors ? '' : stockYrlDivGrowthPer > 0.4 ? 'screener-color-1' : stockYrlDivGrowthPer > 0.3 ? 'screener-color-2' : stockYrlDivGrowthPer > 0.2 ? 'screener-color-3' : stockYrlDivGrowthPer > 0.1 ? 'screener-color-4' : stockYrlDivGrowthPer < 0.1 ? 'screener-color-5' : ''
+                                        const yrlPriceGrowthColor = !yearlyPriceGrowth || !showColors ? '' : yearlyPriceGrowth * 100 > 18 ? 'screener-color-1' : yearlyPriceGrowth * 100 > 15 ? 'screener-color-2' : yearlyPriceGrowth * 100 > 12 ? 'screener-color-3' : yearlyPriceGrowth * 100 > 9 ? 'screener-color-4' : yearlyPriceGrowth * 100 < 9 ? 'screener-color-5' : ''
                                         // get sum
                                         let sum = '-'
                                         if (!isNaN(stockDividendYield) && !isNaN(stockYrlDivGrowthPer) && !isNaN(yearlyPriceGrowth)) {
@@ -433,7 +439,7 @@ export default function List() {
                                         } else if (isNaN(stockDividendYield) && !isNaN(stockYield) && isNaN(stockYrlDivGrowthPer) && !isNaN(yearlyPriceGrowth)) {
                                             sum = (parseFloat(stockYield) + yearlyPriceGrowth * 100).toFixed(2)
                                         }
-                                        const sumColor = !sum ? '' : sum > 25 ? 'screener-color-1' : sum > 18 ? 'screener-color-2' : sum > 15 ? 'screener-color-3' : sum > 12 ? 'screener-color-4' : sum < 12 ? 'screener-color-5' : ''
+                                        const sumColor = !sum || !showColors ? '' : sum > 25 ? 'screener-color-1' : sum > 18 ? 'screener-color-2' : sum > 15 ? 'screener-color-3' : sum > 12 ? 'screener-color-4' : sum < 12 ? 'screener-color-5' : ''
 
                                         return (
                                             <div className="screener-total-tabs" key={index}>
