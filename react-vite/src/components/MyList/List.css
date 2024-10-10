@@ -258,15 +258,15 @@
     min-width: 42px;
     height: 24px;
 }
-.screener-plus-btn {
-    border: 1px solid var(--theme-green);
+.screener-edit-btn {
     background-color: black;
     color: var(--theme-green);
-    min-width: 20px;
-    height: 20px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .screener-stock-tabs {
-    /* border: solid 1px orange; */
     display: flex;
     flex-direction: row;
     gap: 12px;

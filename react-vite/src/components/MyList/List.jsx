@@ -13,6 +13,7 @@ import ScreenerHistDivModal from "./ScreenerHistDivModal";
 import ScreenerSettingsModal from "./ScreenerSettingsModal";
 import ScreenerPerformanceModal from "./ScreenerPerformanceModal";
 import { FiArrowDown, FiArrowUp, FiArrowDownRight, FiArrowRight, FiArrowUpRight } from "react-icons/fi";
+import { MdOutlineModeEdit } from "react-icons/md";
 
 export default function List() {
     const dispatch = useDispatch();
@@ -63,7 +64,37 @@ export default function List() {
         const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
         const stockPerformance = selectedLists?.filter(ele => ele.stock_symbol == symbol)[0]?.performance_change
 
-        return { stock, stockCurrentPrice, stockPreviousClosing, stockTrPE, stockFwPE, isStockGreen, quoteType, stock52wkHigh, stock52wkLow, stockPriceRating, stockDividendYield, stockYield, stockDividendRate, stockHistoricalDividendRate, stockDividendGrowth, stockEps, listId, stockScreenerPeriod, stockPeriod, stockPeriodText, stockHistoricalPrice, yearlyPriceChange, stockPayoutRatio, inputPeriod, stockYearlyDividendGrowth, stockPerformance }
+        // screener grid color
+        const peColor = !stockTrPE ? 'screener-color-3' : stockTrPE < 10 ? 'screener-color-1' : stockTrPE < 20 ? 'screener-color-2': stockTrPE < 30 ? 'screener-color-3' : stockTrPE < 50 ? 'screener-color-4' : 'screener-color-5'
+        console.log('peColor ==>', symbol, peColor)
+
+        return { stock,
+            stockCurrentPrice,
+            stockPreviousClosing,
+            stockTrPE,
+            stockFwPE,
+            isStockGreen,
+            quoteType,
+            stock52wkHigh,
+            stock52wkLow,
+            stockPriceRating,
+            stockDividendYield,
+            stockYield,
+            stockDividendRate,
+            stockHistoricalDividendRate,
+            stockDividendGrowth,
+            stockEps,
+            listId,
+            stockScreenerPeriod,
+            stockPeriod,
+            stockPeriodText,
+            stockHistoricalPrice,
+            yearlyPriceChange,
+            stockPayoutRatio,
+            inputPeriod,
+            stockYearlyDividendGrowth,
+            stockPerformance,
+            peColor }
     }
 
     const handleShowScreener = () => {
@@ -234,7 +265,7 @@ export default function List() {
                                                     <p className={`screener-texts-type`}>
                                                         {stockData?.quoteType}
                                                     </p>}
-                                                {showTrPE && <p className={`screener-texts`}>
+                                                {showTrPE && <p className={`screener-texts ${stockData?.peColor}`}>
                                                     {stockData?.stockTrPE ? stockData?.stockTrPE : '-'}
                                                 </p>}
                                                 {showFwPE && <p className={`screener-texts`}>
@@ -250,7 +281,7 @@ export default function List() {
                                                     {stockData?.yearlyPriceChange}
                                                 </p>}
 
-                                                {show52wkHigh && <p className={`screener-texts`}>
+                                                {show52wkHigh && <p className={`screener-texts `}>
                                                     {`$${stockData?.stock52wkHigh}`}
                                                 </p>}
                                                 {show52wkLow && <p className={`screener-texts`}>
@@ -271,10 +302,10 @@ export default function List() {
                                                         <p className={`screener-texts-historical-dividend`}>
                                                             {stockData?.stockHistoricalDividendRate > 0 ? `$${stockData?.stockHistoricalDividendRate}` : '-'}
                                                         </p>
-                                                        <button className="screener-plus-btn"
+                                                        <NavLink className="screener-edit-btn"
                                                             onClick={() => handleHistoricalDividend(eachSymbol, stockData?.listId, stockData?.stockHistoricalDividendRate)}>
-                                                            +
-                                                        </button>
+                                                            <MdOutlineModeEdit />
+                                                        </NavLink>
                                                     </div>}
                                                 {showTotalDivGrowth && <p className={`screener-texts`}>
                                                     {stockData?.stockDividendGrowth ? `$${stockData?.stockDividendGrowth.toFixed(2)}` : '-'}
@@ -293,10 +324,10 @@ export default function List() {
                                                         <p className={`screener-texts-performance`}>
                                                             {!stockData?.stockPerformance ? '-' : stockData?.stockPerformance == 1 ? <FiArrowUp className="screener-performance-arrow" /> : stockData?.stockPerformance == 2 ? <FiArrowUpRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 3 ? <FiArrowRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 4 ? <FiArrowDownRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 5 ? <FiArrowDown className="screener-performance-arrow" /> : '-'}
                                                         </p>
-                                                        <button className="screener-plus-btn"
+                                                        <NavLink className="screener-edit-btn"
                                                             onClick={() => handlePerformance(eachSymbol, stockData?.listId, stockData?.stockPerformance )}>
-                                                            +
-                                                        </button>
+                                                            <MdOutlineModeEdit />
+                                                        </NavLink>
                                                     </div>}
                                             </div>
                                         </section> :

@@ -33,6 +33,22 @@ body {
     margin: 0 0 0 0;
 }
 
+.screener-color-1 {
+    background-color: rgba(36, 90, 220, 0.5);
+}
+.screener-color-2 {
+    background-color: rgba(36, 220, 90, 0.5);
+}
+.screener-color-3 {
+    background-color: rgba(220, 220, 220, 0.1);
+}
+.screener-color-4 {
+    background-color: rgba(255, 255, 0, 0.5);
+}
+.screener-color-5 {
+    background-color: rgba(255, 36, 128, 0.5);
+}
+
 .page-container {
     padding: 68px;
 }
