@@ -317,7 +317,7 @@ export default function List() {
                                                 </p>}
 
                                                 {showDivYield && <p className={`screener-texts ${stockData?.divColor}`}>
-                                                    {!isNaN(stockData?.stockDividendYield) ? `${stockData?.stockDividendYield}%` : stockData?.stockYield != 'NaN' ? `${stockData?.stockYield} %` : '-'}
+                                                    {!isNaN(stockData?.stockDividendYield) ? `${stockData?.stockDividendYield}%` : stockData?.stockYield != 'NaN' ? `${stockData?.stockYield} (yield)` : '-'}
                                                 </p>}
                                                 {showCurrDiv && <p className={`screener-texts`}>
                                                     {stockData?.stockDividendRate > 0 ? `$${stockData?.stockDividendRate}` : '-'}
