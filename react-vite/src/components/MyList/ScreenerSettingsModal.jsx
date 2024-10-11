@@ -1,5 +1,4 @@
-import { useDispatch } from "react-redux"
-import { updateListThunk } from "../../redux/list"
+
 import { useModal } from "../../context/Modal"
 import { useState } from "react"
 
@@ -41,9 +40,8 @@ export default function ScreenerSettingsModal({
     showColors,
     setShowColors,
 }) {
-    // const dispatch = useDispatch()
-    // const {closeModal} = useModal()
-    // console.log('symbol ==>', symbol)
+    const { closeModal } = useModal()
+
     const [showTypeBtn, setShowTypeBtn] = useState(showType)
     const handleShowType = () => {
         setShowType(prev => !prev)
@@ -134,17 +132,20 @@ export default function ScreenerSettingsModal({
         setShowColors(prev => !prev)
         setShowColorBtn(prev => !prev)
     }
+    const handleConfirm = () => {
+        closeModal()
+    }
 
     return (
         <section className="screener-settings-modal-container">
             <h2 className="modal-title">Settings</h2>
             <div className="screener-settings-color-btn-container">
-            <button className={`screener-settings-modal-btn ${showColorBtn ? 'label-shown' : 'label-not-shown'}`}
-            onClick={handleShowColors}>
-                Show Colors
-            </button>
+                <button className={`screener-settings-modal-btn ${showColorBtn ? 'label-shown' : 'label-not-shown'}`}
+                    onClick={handleShowColors}>
+                    Show Colors
+                </button>
             </div>
-
+            <h3 className="screener-settings-header">Screeners</h3>
             <div className="screener-settings-btn-container">
                 <div className="screener-settings-btn-column">
                     <button
@@ -177,6 +178,10 @@ export default function ScreenerSettingsModal({
                         onClick={() => handleShowYPC()}>
                         Yearly Price Change
                     </button>
+
+                </div>
+
+                <div className="screener-settings-btn-column">
                     <button
                         className={`screener-settings-modal-btn ${show52wkHighBtn ? 'label-shown' : 'label-not-shown'}`}
                         onClick={() => handleShow52wkHigh()}
@@ -195,9 +200,6 @@ export default function ScreenerSettingsModal({
                     >
                         Current Price in 52Wk
                     </button>
-                </div>
-
-                <div className="screener-settings-btn-column">
                     <button
                         className={`screener-settings-modal-btn ${showDivYieldBtn ? 'label-shown' : 'label-not-shown'}`}
                         onClick={() => handleShowDivYield()}>
@@ -213,6 +215,9 @@ export default function ScreenerSettingsModal({
                         onClick={() => handleShowHistDiv()}>
                         Historical Dividend
                     </button>
+                </div>
+
+                <div className="screener-settings-btn-column">
                     <button
                         className={`screener-settings-modal-btn ${showTotalDivGrowthBtn ? 'label-shown' : 'label-not-shown'}`}
                         onClick={() => handleShowTotalDivGrowth()}>
@@ -239,8 +244,15 @@ export default function ScreenerSettingsModal({
                         Performance
                     </button>
                 </div>
-
             </div>
+
+            <div className="screener-settings-confirm-btn-container">
+                <button className={`screener-settings-modal-btn label-not-shown`}
+                    onClick={handleConfirm}>
+                    Confirm
+                </button>
+            </div>
+
         </section>
     )
 }

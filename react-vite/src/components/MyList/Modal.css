@@ -172,8 +172,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 680px;
-    width: 600px;
+    height: 600px;
+    width: 800px;
     padding: 24px;
 }
 .screener-settings-btn-container {
@@ -182,7 +182,10 @@
     gap: 20px;
 }
 .screener-settings-color-btn-container {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+}
+.screener-settings-confirm-btn-container {
+    margin-top: 36px;
 }
 .screener-settings-btn-column {
     display: flex;
@@ -211,4 +214,8 @@
 .input-dollar-sign {
     font-size: 28px;
     margin-right: 12px;
+}
+.screener-settings-header {
+    margin-top: 0;
+    font-size: 24px;
 }
