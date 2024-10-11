@@ -1,5 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
@@ -13,7 +13,7 @@ class MyList(db.Model):
     user_id = Column(Integer, ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     list_name = Column(String(50), nullable=False)
     stock_symbol = Column(String(10), nullable=False)
-    historical_dividend = Column(Integer, nullable=True)
+    historical_dividend = Column(Float, nullable=True)
     performance_change = Column(Integer, nullable=True)
     screener_period = Column(String(25), nullable=True)
     created_at = Column(DateTime, default=datetime.now)
