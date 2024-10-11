@@ -1,13 +1,11 @@
 import { useDispatch } from "react-redux"
 import { updateListThunk } from "../../redux/list"
-import { useModal } from "../../context/Modal"
 import { useState } from "react"
 
 
 
 export default function ScreenerHistDivModal({ symbol, listId, currHistDiv }) {
     const dispatch = useDispatch()
-    // const {closeModal} = useModal()
     console.log('symbol ==>', symbol)
     console.log('listId ==>', listId)
     console.log('currHistDiv ==>', currHistDiv)

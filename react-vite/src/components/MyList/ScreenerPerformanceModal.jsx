@@ -2,7 +2,6 @@
 import { useDispatch } from "react-redux"
 import { updateListThunk } from "../../redux/list"
 import { useModal } from "../../context/Modal"
-import { useState } from "react"
 import { FiArrowDown, FiArrowUp, FiArrowDownRight, FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 
 

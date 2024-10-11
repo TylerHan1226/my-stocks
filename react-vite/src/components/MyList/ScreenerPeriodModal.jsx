@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux"
 import { updateListThunk } from "../../redux/list"
 import { useModal } from "../../context/Modal"
-import { useState } from "react"
 
 export default function ScreenerPeriodModal({ symbol, currentPeriod, listId, stock}) {
     const dispatch = useDispatch()
