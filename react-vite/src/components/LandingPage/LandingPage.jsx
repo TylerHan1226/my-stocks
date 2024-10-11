@@ -122,7 +122,7 @@ export default function LandingPageBeta() {
             chartMaker(marketSymbols, marketStocks, marketChartRefs, marketChartInstances)
             setIsLoading(false)
         }
-    }, [marketStocks, user, marketChartRefs, marketChartInstances])
+    }, [marketStocks, user, marketChartRefs, marketChartInstances, isLoading])
     // make my stocks charts
     useEffect(() => {
         if (myTopGainerSymbols.length > 0) {

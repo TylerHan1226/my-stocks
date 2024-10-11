@@ -22,13 +22,14 @@ export default function List() {
     const { setModalContent } = useModal()
     const user = useSelector(state => state.session.user)
     const list = useParams()
-    const lists = useSelector(state => state.lists?.My_Lists)
+    const lists = useSelector(state => state.lists?.My_Lists)?.sort((a, b) => a.id - b.id)
     const selectedLists = lists?.filter(ele => ele.list_name == list?.listName)
     const listStockData = useSelector(state => state.lists?.stocks_data)
     const stockSymbols = lists?.filter(ele => ele.list_name == list?.listName).map(ele => ele.stock_symbol)
     const [isLoading, setIsLoading] = useState(true)
     const [isScreenerOn, setIsScreenerOn] = useState(false)
     const [showColors, setShowColors] = useState(true)
+
 
     const getStockData = (symbol) => {
         const stock = listStockData[symbol]
@@ -80,7 +81,6 @@ export default function List() {
         const ypcColor = isNaN(yearlyPriceChange) || !showColors || !yearlyPriceChange ? '' : yearlyPriceChange > 5 ? 'screener-color-1' : yearlyPriceChange > 3 ? 'screener-color-2' : yearlyPriceChange > 2 ? 'screener-color-3' : yearlyPriceChange > 1 ? 'screener-color-4' : 'screener-color-5'
         const priceIn52wkColor = !stockPriceRating || !showColors ? '' : stockPriceRating == 'Low' ? 'screener-color-2' : stockPriceRating == 'Mid' ? 'screener-color-3' : stockPriceRating == 'High' ? 'screener-color-4' : ''
         const performanceColor = !stockPerformance || !showColors ? '' : stockPerformance == 1 ? 'screener-arrow-color-1' : stockPerformance == 2 ? 'screener-arrow-color-2' : stockPerformance == 4 ? 'screener-arrow-color-4' : stockPerformance == 5 ? 'screener-arrow-color-5' : ''
-        console.log(symbol, 'performanceColor ==>', performanceColor)
 
         return {
             stock,
