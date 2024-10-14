@@ -80,6 +80,7 @@ export default function List() {
         const ypcColor = isNaN(yearlyPriceChange) || !showColors || !yearlyPriceChange ? '' : yearlyPriceChange > 5 ? 'screener-color-1' : yearlyPriceChange > 3 ? 'screener-color-2' : yearlyPriceChange > 2 ? 'screener-color-3' : yearlyPriceChange > 1 ? 'screener-color-4' : 'screener-color-5'
         const priceIn52wkColor = !stockPriceRating || !showColors ? '' : stockPriceRating == 'Low' ? 'screener-color-1' : stockPriceRating == 'Mid' ? 'screener-color-3' : stockPriceRating == 'High' ? 'screener-color-5' : ''
         const performanceColor = !stockPerformance || !showColors ? '' : stockPerformance == 1 ? 'screener-arrow-color-1' : stockPerformance == 2 ? 'screener-arrow-color-2': stockPerformance == 3 ? 'screener-arrow-color-3' : stockPerformance == 4 ? 'screener-arrow-color-4' : stockPerformance == 5 ? 'screener-arrow-color-5' : ''
+        const recColor = !stockRec ? '' : stockRec == 'strong buy' ? 'screener-color-1' : stockRec == 'buy' ? 'screener-color-2' : stockRec == 'hold' ? 'screener-color-3' : stockRec == 'sell' ? 'screener-color-4' : 'screener-color-5'
 
         return {
             stock,
@@ -115,7 +116,8 @@ export default function List() {
             prColor,
             ypcColor,
             priceIn52wkColor,
-            performanceColor
+            performanceColor,
+            recColor
         }
     }
 
@@ -141,7 +143,7 @@ export default function List() {
     const [showPR, setShowPR] = useState(true)
     const [showPerformance, setShowPerformance] = useState(true)
     const [showTotal, setShowTotal] = useState(true)
-    const [showRec, setShowRec] = useState(true)
+    const [showRec, setShowRec] = useState(false)
 
     const handleScreenerSettings = () => {
         setModalContent(<ScreenerSettingsModal
@@ -365,7 +367,7 @@ export default function List() {
                                                             <MdOutlineModeEdit />
                                                         </NavLink>
                                                     </div>}
-                                                {showRec && <p className={`screener-texts `}>
+                                                {showRec && <p className={`screener-texts ${stockData?.recColor}`}>
                                                     {stockData?.stockRec ? `${stockData?.stockRec}` : '-'}
                                                 </p>}
                                             </div>
