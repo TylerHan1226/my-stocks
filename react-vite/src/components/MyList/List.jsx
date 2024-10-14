@@ -276,7 +276,7 @@ export default function List() {
                                             {showFwPE && <p className="screener-header-texts">Forward P/E</p>}
                                             {showCurrentPrice && <p className="screener-header-texts">Current Price</p>}
                                             {showHistoricalPrice && <p className="screener-header-texts">Historical Price</p>}
-                                            {showYPC && <p className="screener-header-texts">Yearly Price Change</p>}
+                                            {showYPC && <p className="screener-header-texts">Price Change</p>}
                                             {show52wkHigh && <p className="screener-header-texts">52wk High</p>}
                                             {show52wkLow && <p className="screener-header-texts">52wk Low</p>}
                                             {showCurrPr52kwk && <p className="screener-header-texts">Current Price in 52wk Rating</p>}

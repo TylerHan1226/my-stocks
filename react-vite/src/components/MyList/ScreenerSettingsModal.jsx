@@ -183,7 +183,7 @@ export default function ScreenerSettingsModal({
                     <button
                         className={`screener-settings-modal-btn ${showYPCBtn ? 'label-shown' : 'label-not-shown'}`}
                         onClick={() => handleShowYPC()}>
-                        Yearly Price Change
+                        Price Change
                     </button>
 
                 </div>
