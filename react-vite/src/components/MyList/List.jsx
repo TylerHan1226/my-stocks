@@ -12,9 +12,9 @@ import ScreenerPeriodModal from "./ScreenerPeriodModal";
 import ScreenerHistDivModal from "./ScreenerHistDivModal";
 import ScreenerSettingsModal from "./ScreenerSettingsModal";
 import ScreenerPerformanceModal from "./ScreenerPerformanceModal";
-import { FiArrowDown, FiArrowUp, FiArrowDownRight, FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
+import { ImArrowUp, ImArrowRight, ImArrowDown, ImArrowUpRight, ImArrowDownRight } from "react-icons/im";
 
 export default function List() {
     const dispatch = useDispatch();
@@ -29,7 +29,6 @@ export default function List() {
     const [isLoading, setIsLoading] = useState(true)
     const [isScreenerOn, setIsScreenerOn] = useState(false)
     const [showColors, setShowColors] = useState(true)
-
 
     const getStockData = (symbol) => {
         const stock = listStockData[symbol]
@@ -79,8 +78,8 @@ export default function List() {
         const divGrowthDollarColor = !stockDividendGrowth || !showColors ? '' : stockDividendGrowth > 5 ? 'screener-color-1' : stockDividendGrowth > 3 ? 'screener-color-2' : stockDividendGrowth > 2 ? 'screener-color-3' : stockDividendGrowth > 1 ? 'screener-color-4' : 'screener-color-5'
         const prColor = isNaN(stockPayoutRatio) || !showColors ? '' : stockPayoutRatio < 30 ? 'screener-color-1' : stockPayoutRatio < 40 ? 'screener-color-2' : stockPayoutRatio < 50 ? 'screener-color-3' : stockPayoutRatio < 100 ? 'screener-color-4' : 'screener-color-5'
         const ypcColor = isNaN(yearlyPriceChange) || !showColors || !yearlyPriceChange ? '' : yearlyPriceChange > 5 ? 'screener-color-1' : yearlyPriceChange > 3 ? 'screener-color-2' : yearlyPriceChange > 2 ? 'screener-color-3' : yearlyPriceChange > 1 ? 'screener-color-4' : 'screener-color-5'
-        const priceIn52wkColor = !stockPriceRating || !showColors ? '' : stockPriceRating == 'Low' ? 'screener-color-2' : stockPriceRating == 'Mid' ? 'screener-color-3' : stockPriceRating == 'High' ? 'screener-color-4' : ''
-        const performanceColor = !stockPerformance || !showColors ? '' : stockPerformance == 1 ? 'screener-arrow-color-1' : stockPerformance == 2 ? 'screener-arrow-color-2' : stockPerformance == 4 ? 'screener-arrow-color-4' : stockPerformance == 5 ? 'screener-arrow-color-5' : ''
+        const priceIn52wkColor = !stockPriceRating || !showColors ? '' : stockPriceRating == 'Low' ? 'screener-color-1' : stockPriceRating == 'Mid' ? 'screener-color-3' : stockPriceRating == 'High' ? 'screener-color-5' : ''
+        const performanceColor = !stockPerformance || !showColors ? '' : stockPerformance == 1 ? 'screener-arrow-color-1' : stockPerformance == 2 ? 'screener-arrow-color-2': stockPerformance == 3 ? 'screener-arrow-color-3' : stockPerformance == 4 ? 'screener-arrow-color-4' : stockPerformance == 5 ? 'screener-arrow-color-5' : ''
 
         return {
             stock,
@@ -195,7 +194,6 @@ export default function List() {
         setShowTotal(prev => !prev)
     }
     
-
     useEffect(() => {
         dispatch(getAllMyListsThunk())
         dispatch(getAllStocksInListThunk(list?.listName))
@@ -203,9 +201,12 @@ export default function List() {
         window.scrollTo(0, 0)
     }, [dispatch])
 
-    if (!user) {
-        return nav('/')
-    }
+    useEffect(() => {
+        if (!user) {
+            nav('/')
+        }
+    }, [user, nav])
+    
     if (isLoading) {
         return (
             <section className="page-container">
@@ -237,7 +238,7 @@ export default function List() {
                         <section className="screener-action-container">
                             {stockSymbols?.map((eachSymbol, index) => {
                                 const stock = listStockData[eachSymbol]
-                                const listId = lists?.filter(ele => ele.stock_symbol == eachSymbol && ele.list_name == list?.listName)[0].id
+                                const listId = lists?.filter(ele => ele.stock_symbol == eachSymbol && ele.list_name == list?.listName)?.[0].id
                                 const stockScreenerPeriod = lists?.filter(ele => ele.id == listId)[0]?.screener_period
                                 let stockPeriod = stockScreenerPeriod ? stockScreenerPeriod : stock?.historical_data_10yr?.length > 0 ? 'historical_data_10yr' : stock?.historical_data_5yr?.length > 0 ? 'historical_data_5yr' : stock?.historical_data_1yr?.length ? 'historical_data_1yr' : stock?.historical_data_6mo?.length ? 'historical_data_6mo' : ''
                                 const stockPeriodText = stockPeriod?.split('_')[2]
@@ -347,7 +348,12 @@ export default function List() {
                                                 {showPerformance &&
                                                     <div className="screener-label-historical-dividend">
                                                         <p className={`screener-texts-performance ${stockData?.performanceColor}`}>
-                                                            {!stockData?.stockPerformance ? '-' : stockData?.stockPerformance == 1 ? <FiArrowUp className={`screener-performance-arrow`} /> : stockData?.stockPerformance == 2 ? <FiArrowUpRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 3 ? <FiArrowRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 4 ? <FiArrowDownRight className="screener-performance-arrow" /> : stockData?.stockPerformance == 5 ? <FiArrowDown className="screener-performance-arrow" /> : '-'}
+                                                            {!stockData?.stockPerformance ? '-' :
+                                                            stockData?.stockPerformance == 1 ? <ImArrowUp className={`screener-performance-arrow`} /> :
+                                                            stockData?.stockPerformance == 2 ? <ImArrowUpRight className="screener-performance-arrow-small" /> :
+                                                            stockData?.stockPerformance == 3 ? <ImArrowRight className="screener-performance-arrow" /> :
+                                                            stockData?.stockPerformance == 4 ? <ImArrowDownRight className="screener-performance-arrow-small" /> :
+                                                            stockData?.stockPerformance == 5 ? <ImArrowDown className="screener-performance-arrow" /> : '-'}
                                                         </p>
                                                         <NavLink className="screener-edit-btn"
                                                             onClick={() => handlePerformance(eachSymbol, stockData?.listId, stockData?.stockPerformance )}>

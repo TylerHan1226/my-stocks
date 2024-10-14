@@ -34,6 +34,12 @@
     display: flex;
     flex-direction: column;
 }
+.news-component-img {
+    height: 120px;
+    width: 280px;
+    object-fit: cover;
+    margin: 0 12px 0 auto;
+}
 .news-publisher {
     font-weight: 500;
 }

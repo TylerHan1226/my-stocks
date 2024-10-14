@@ -34,9 +34,11 @@ export default function AddListModal({stockSymbol}) {
         dispatch(getAllMyListsThunk())
     }, [dispatch])
 
-    if (!user) {
-        return nav('/')
-    }
+    useEffect(() => {
+        if (!user) {
+            nav('/')
+        }
+    }, [user, nav])
 
     return (
         <section className="list-modal-container">

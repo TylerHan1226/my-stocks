@@ -14,7 +14,7 @@ export default function AllLists() {
     const dispatch = useDispatch()
     const nav = useNavigate()
     const user = useSelector(state => state.session.user)
-    const lists = useSelector(state => state.lists?.My_Lists)
+    const lists = useSelector(state => state.lists?.My_Lists)?.sort((a, b) => a.id - b.id)
     const [isLoading, setIsLoading] = useState(true)
 
     const listNames = new Set()
@@ -34,7 +34,7 @@ export default function AllLists() {
         dispatch(getAllMyListsThunk())
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
-    }, [dispatch])
+    }, [dispatch, user])
 
     if (isLoading) {
         return (

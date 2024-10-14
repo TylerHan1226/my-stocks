@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getMyNewsThunk } from "../../redux/news"
 import './News.css'
 import { NavLink } from "react-router-dom"
+import iconTitleImg from './icon-title.jpg'
 
 export default function News({ stockSymbol }) {
 
@@ -34,7 +35,8 @@ export default function News({ stockSymbol }) {
                             <p className="news-publisher">{eachNews.publisher} | {eachNews.date?.split('T')[0]} {eachNews.date?.split('T')[1].slice(0, -4)}</p>
                             <p>{eachNews.title}</p>
                         </div>
-                        <img className="landing-news-img" src={eachNews.image_url} />
+                        {eachNews.image_url ? <img className="news-component-img" src={eachNews.image_url} /> : <img className="news-component-img" src={iconTitleImg} />}
+
                     </NavLink>
                 ))}
             </div>

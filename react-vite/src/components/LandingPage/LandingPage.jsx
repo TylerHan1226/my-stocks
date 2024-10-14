@@ -10,6 +10,7 @@ import { NavLink } from "react-router-dom";
 import { getAllMyListsThunk, getAllMyStocksThunk } from "../../redux/list";
 import { getMultipleStocksThunk } from "../../redux/stock";
 import { getMarketNewsThunk, getMyNewsThunk } from "../../redux/news";
+import iconTitleImg from './icon-title.jpg'
 
 Chart.register(annotationPlugin)
 
@@ -165,7 +166,7 @@ export default function LandingPageBeta() {
                                                 </NavLink>
                                             </div>
                                         </div>
-                                        <img className="landing-news-img" src={ele.image_url} />
+                                        {ele.image_url ? <img className="landing-news-img" src={ele.image_url} /> : <img className="landing-news-img" src={iconTitleImg}/>}
                                     </div>
                                 ))}
                             </section>
@@ -187,12 +188,11 @@ export default function LandingPageBeta() {
                                                     </NavLink>
                                                 </div>
                                             </div>
-                                            <img className="landing-news-img" src={ele.image_url} />
+                                            {ele.image_url ? <img className="landing-news-img" src={ele.image_url} /> : <img className="landing-news-img" src={iconTitleImg}/>}
                                         </div>
                                     )) : <p>loading...</p>}
                                 </section>
                             </div>}
-
                     </section>
 
                     <section className="landing-stock-content">

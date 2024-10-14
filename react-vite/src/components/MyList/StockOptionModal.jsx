@@ -31,15 +31,15 @@ export default function StockOptionModal({ stockSymbol }) {
         closeModal()
     }
 
-
-
     useEffect(() => {
         dispatch(getAllMyListsThunk())
     }, [dispatch])
 
-    if (!user) {
-        return nav('/')
-    }
+    useEffect(() => {
+        if (!user) {
+            nav('/')
+        }
+    }, [user, nav])
 
     return (
         <section className="list-modal-container">
