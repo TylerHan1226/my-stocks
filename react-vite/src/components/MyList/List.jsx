@@ -143,7 +143,7 @@ export default function List() {
     const [showPR, setShowPR] = useState(true)
     const [showPerformance, setShowPerformance] = useState(true)
     const [showTotal, setShowTotal] = useState(true)
-    const [showRec, setShowRec] = useState(false)
+    const [showRec, setShowRec] = useState(true)
 
     const handleScreenerSettings = () => {
         setModalContent(<ScreenerSettingsModal
