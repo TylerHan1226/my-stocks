@@ -66,7 +66,7 @@ export default function List() {
         }
         const stockYearlyDividendGrowth = !isNaN(stockDividendRate) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockDividendRate, inputPeriod) : !isNaN(stockYield) ? getYearlyDividendGrowth(stockHistoricalDividendRate, stockYield, inputPeriod) : null
         const stockPerformance = selectedLists?.filter(ele => ele.stock_symbol == symbol)[0]?.performance_change
-
+        const stockRec = stock?.info?.recommendationKey?.replace('_', ' ');
         // screener grid color
         const peColor = !stockTrPE || !showColors ? '' : stockTrPE < 10 ? 'screener-color-1' : stockTrPE < 20 ? 'screener-color-2': stockTrPE < 30 ? 'screener-color-3' : stockTrPE < 50 ? 'screener-color-4' : 'screener-color-5'
         let divColor = ''
@@ -108,6 +108,7 @@ export default function List() {
             inputPeriod,
             stockYearlyDividendGrowth,
             stockPerformance,
+            stockRec,
             peColor,
             divColor,
             divGrowthDollarColor,
@@ -140,6 +141,7 @@ export default function List() {
     const [showPR, setShowPR] = useState(true)
     const [showPerformance, setShowPerformance] = useState(true)
     const [showTotal, setShowTotal] = useState(true)
+    const [showRec, setShowRec] = useState(true)
 
     const handleScreenerSettings = () => {
         setModalContent(<ScreenerSettingsModal
@@ -179,6 +181,8 @@ export default function List() {
             setShowPerformance={setShowPerformance}
             showColors={showColors}
             setShowColors={setShowColors}
+            showRec={showRec}
+            setShowRec={setShowRec}
         />)
     }
     const handleScreenerPeriod = (symbol, currentPeriod, listId, stock) => {
@@ -206,7 +210,7 @@ export default function List() {
             nav('/')
         }
     }, [user, nav])
-    
+
     if (isLoading) {
         return (
             <section className="page-container">
@@ -282,6 +286,7 @@ export default function List() {
                                             {showEPS && <p className="screener-header-texts">Earning Per Share</p>}
                                             {showPR && <p className="screener-header-texts">Payout Ratio</p>}
                                             {showPerformance && <p className="screener-header-texts-performance">Performance in 5 years</p>}
+                                            {showRec && <p className="screener-header-texts-performance">Recommendation</p>}
                                         </section>}
                                     {isScreenerOn ?
                                         <section className="screener-container">
@@ -346,20 +351,23 @@ export default function List() {
                                                     {stockData?.stockPayoutRatio > 0 ? `${stockData?.stockPayoutRatio}%` : '-'}
                                                 </p>}
                                                 {showPerformance &&
-                                                    <div className="screener-label-historical-dividend">
+                                                    <div className="screener-label-performance">
                                                         <p className={`screener-texts-performance ${stockData?.performanceColor}`}>
                                                             {!stockData?.stockPerformance ? '-' :
-                                                            stockData?.stockPerformance == 1 ? <ImArrowUp className={`screener-performance-arrow`} /> :
-                                                            stockData?.stockPerformance == 2 ? <ImArrowUpRight className="screener-performance-arrow-small" /> :
-                                                            stockData?.stockPerformance == 3 ? <ImArrowRight className="screener-performance-arrow" /> :
-                                                            stockData?.stockPerformance == 4 ? <ImArrowDownRight className="screener-performance-arrow-small" /> :
-                                                            stockData?.stockPerformance == 5 ? <ImArrowDown className="screener-performance-arrow" /> : '-'}
+                                                                stockData?.stockPerformance == 1 ? <ImArrowUp className={`screener-performance-arrow`} /> :
+                                                                    stockData?.stockPerformance == 2 ? <ImArrowUpRight className="screener-performance-arrow-small" /> :
+                                                                        stockData?.stockPerformance == 3 ? <ImArrowRight className="screener-performance-arrow" /> :
+                                                                            stockData?.stockPerformance == 4 ? <ImArrowDownRight className="screener-performance-arrow-small" /> :
+                                                                                stockData?.stockPerformance == 5 ? <ImArrowDown className="screener-performance-arrow" /> : '-'}
                                                         </p>
                                                         <NavLink className="screener-edit-btn"
-                                                            onClick={() => handlePerformance(eachSymbol, stockData?.listId, stockData?.stockPerformance )}>
+                                                            onClick={() => handlePerformance(eachSymbol, stockData?.listId, stockData?.stockPerformance)}>
                                                             <MdOutlineModeEdit />
                                                         </NavLink>
                                                     </div>}
+                                                {showRec && <p className={`screener-texts `}>
+                                                    {stockData?.stockRec ? `${stockData?.stockRec}` : '-'}
+                                                </p>}
                                             </div>
                                         </section> :
 

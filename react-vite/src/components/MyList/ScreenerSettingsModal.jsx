@@ -39,6 +39,8 @@ export default function ScreenerSettingsModal({
     setShowPerformance,
     showColors,
     setShowColors,
+    showRec,
+    setShowRec,
 }) {
     const { closeModal } = useModal()
 
@@ -131,6 +133,11 @@ export default function ScreenerSettingsModal({
     const handleShowColors = () => {
         setShowColors(prev => !prev)
         setShowColorBtn(prev => !prev)
+    }
+    const [showRecBtn, setShowRecBtn] = useState(showRec)
+    const handleShowRec = () => {
+        setShowRec(prev => !prev)
+        setShowRecBtn(prev => !prev)
     }
     const handleConfirm = () => {
         closeModal()
@@ -242,6 +249,11 @@ export default function ScreenerSettingsModal({
                         className={`screener-settings-modal-btn ${showPerformanceBtn ? 'label-shown' : 'label-not-shown'}`}
                         onClick={() => handleShowPerformance()}>
                         Performance
+                    </button>
+                    <button
+                        className={`screener-settings-modal-btn ${showRecBtn ? 'label-shown' : 'label-not-shown'}`}
+                        onClick={() => handleShowRec()}>
+                        Recommendation
                     </button>
                 </div>
             </div>

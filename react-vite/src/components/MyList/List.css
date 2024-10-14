@@ -315,6 +315,14 @@
     min-width: 120px;
     max-width: 120px;
 }
+.screener-label-performance {
+    border-left: 1px solid var(--border-light-grey);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-width: 144px;
+    max-width: 144px;
+}
 .screener-texts {
     border-left: 1px solid var(--border-light-grey);
     min-width: 108px;
