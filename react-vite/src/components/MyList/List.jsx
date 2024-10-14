@@ -14,6 +14,7 @@ import ScreenerSettingsModal from "./ScreenerSettingsModal";
 import ScreenerPerformanceModal from "./ScreenerPerformanceModal";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
+import { HiQuestionMarkCircle } from "react-icons/hi";
 import { ImArrowUp, ImArrowRight, ImArrowDown, ImArrowUpRight, ImArrowDownRight } from "react-icons/im";
 
 export default function List() {
@@ -295,44 +296,44 @@ export default function List() {
                                             <div className="screener-stock-tabs">
 
                                                 {showType &&
-                                                    <p className={`screener-texts-type`}>
+                                                    <p className={`screener-texts-type`} data-quote={"Type"}>
                                                         {stockData?.quoteType}
                                                     </p>}
-                                                {showTrPE && <p className={`screener-texts ${stockData?.peColor}`}>
+                                                {showTrPE && <p className={`screener-texts ${stockData?.peColor}`} data-quote={"Trailing P/E"}>
                                                     {stockData?.stockTrPE ? stockData?.stockTrPE : '-'}
                                                 </p>}
-                                                {showFwPE && <p className={`screener-texts`}>
+                                                {showFwPE && <p className={`screener-texts`} data-quote={"Forward P/E"}>
                                                     {stockData?.stockFwPE ? stockData?.stockFwPE : '-'}
                                                 </p>}
-                                                {showCurrentPrice && <p className={`screener-texts`}>
+                                                {showCurrentPrice && <p className={`screener-texts`} data-quote={"Current Price"}>
                                                     {`$${stockData?.stockCurrentPrice}`}
                                                 </p>}
-                                                {showHistoricalPrice && <p className={`screener-texts`}>
+                                                {showHistoricalPrice && <p className={`screener-texts`} data-quote={"Historical Price"}>
                                                     {`$${stockData?.stockHistoricalPrice}`}
                                                 </p>}
-                                                {showYPC && <p className={`screener-texts ${stockData?.ypcColor}`}>
+                                                {showYPC && <p className={`screener-texts ${stockData?.ypcColor}`}  data-quote={"Price Change"}>
                                                     {stockData?.yearlyPriceChange}
                                                 </p>}
 
-                                                {show52wkHigh && <p className={`screener-texts `}>
+                                                {show52wkHigh && <p className={`screener-texts`} data-quote={"52wk High"}>
                                                     {`$${stockData?.stock52wkHigh}`}
                                                 </p>}
-                                                {show52wkLow && <p className={`screener-texts`}>
+                                                {show52wkLow && <p className={`screener-texts`} data-quote={"52wk Low"}>
                                                     {`$${stockData?.stock52wkLow}`}
                                                 </p>}
-                                                {showCurrPr52kwk && <p className={`screener-texts ${stockData?.priceIn52wkColor}`}>
+                                                {showCurrPr52kwk && <p className={`screener-texts ${stockData?.priceIn52wkColor}`} data-quote={"Price Rating"}>
                                                     {stockData?.stockPriceRating}
                                                 </p>}
 
-                                                {showDivYield && <p className={`screener-texts ${stockData?.divColor}`}>
+                                                {showDivYield && <p className={`screener-texts ${stockData?.divColor}`} data-quote={"Dividend Yield %"}>
                                                     {!isNaN(stockData?.stockDividendYield) ? `${stockData?.stockDividendYield}%` : stockData?.stockYield != 'NaN' ? `${stockData?.stockYield} (yield)` : '-'}
                                                 </p>}
-                                                {showCurrDiv && <p className={`screener-texts`}>
+                                                {showCurrDiv && <p className={`screener-texts`} data-quote={"Dividend Rate $"}>
                                                     {stockData?.stockDividendRate > 0 ? `$${stockData?.stockDividendRate}` : '-'}
                                                 </p>}
                                                 {showHistDiv &&
                                                     <div className="screener-label-historical-dividend">
-                                                        <p className={`screener-texts-historical-dividend`}>
+                                                        <p className={`screener-texts-historical-dividend`} data-quote={"Historical Dividend"}>
                                                             {stockData?.stockHistoricalDividendRate > 0 ? `$${stockData?.stockHistoricalDividendRate}` : '-'}
                                                         </p>
                                                         <NavLink className="screener-edit-btn"
@@ -340,16 +341,16 @@ export default function List() {
                                                             <MdOutlineModeEdit />
                                                         </NavLink>
                                                     </div>}
-                                                {showTotalDivGrowth && <p className={`screener-texts ${stockData?.divGrowthDollarColor}`}>
+                                                {showTotalDivGrowth && <p className={`screener-texts ${stockData?.divGrowthDollarColor}`} data-quote={"Total Dividend Growth"}>
                                                     {stockData?.stockDividendGrowth ? `$${stockData?.stockDividendGrowth.toFixed(2)}` : '-'}
                                                 </p>}
-                                                {showYearlyDivGrowth && <p className={`screener-texts`}>
+                                                {showYearlyDivGrowth && <p className={`screener-texts`} data-quote={"Yearly Dividend Growth"}>
                                                     {!isNaN(stockData?.stockYearlyDividendGrowth) && stockData?.stockYearlyDividendGrowth != 0 ? `${(stockData?.stockYearlyDividendGrowth * 100).toFixed(2)}%` : stockData?.stockYearlyDividendGrowth == 0 ? 0 : '-'}
                                                 </p>}
-                                                {showEPS && <p className={`screener-texts`}>
+                                                {showEPS && <p className={`screener-texts`} data-quote={"Earning Per Share"}>
                                                     {stockData?.stockEps > 0 ? `$${stockData?.stockEps}` : '-'}
                                                 </p>}
-                                                {showPR && <p className={`screener-texts ${stockData?.prColor}`}>
+                                                {showPR && <p className={`screener-texts ${stockData?.prColor}`} data-quote={"Payout Ratio"}>
                                                     {stockData?.stockPayoutRatio > 0 ? `${stockData?.stockPayoutRatio}%` : '-'}
                                                 </p>}
                                                 {showPerformance &&
@@ -367,7 +368,7 @@ export default function List() {
                                                             <MdOutlineModeEdit />
                                                         </NavLink>
                                                     </div>}
-                                                {showRec && <p className={`screener-texts ${stockData?.recColor}`}>
+                                                {showRec && <p className={`screener-texts-rec ${stockData?.recColor}`}>
                                                     {stockData?.stockRec ? `${stockData?.stockRec}` : '-'}
                                                 </p>}
                                             </div>
@@ -459,16 +460,16 @@ export default function List() {
 
                                         return (
                                             <div className="screener-total-tabs" key={index}>
-                                                <p className={`screener-texts-yearly-t-growth ${stockData?.divColor}`}>
+                                                <p className={`screener-texts-yearly-t-growth ${stockData?.divColor}`} data-quote={"Current Dividend"}>
                                                     {stockDividendYield != 'NaN' ? stockDividendYield : stockYield != 'NaN' ? stockYield : '-'}
                                                 </p>
-                                                <p className={`screener-texts-yearly-t-growth ${yrlDivGrowthColor}`}>
+                                                <p className={`screener-texts-yearly-t-growth ${yrlDivGrowthColor}`} data-quote={"Dividend Growth"}>
                                                     {isNaN(stockYrlDivGrowthPer) ? '-' : stockYrlDivGrowthPer < 0.02 ? 0 : stockYrlDivGrowthPer.toFixed(2)}
                                                 </p>
-                                                <p className={`screener-texts-yearly-t-growth ${yrlPriceGrowthColor}`}>
+                                                <p className={`screener-texts-yearly-t-growth ${yrlPriceGrowthColor}`} data-quote={"Price Growth"}>
                                                     {!isNaN(yearlyPriceGrowth) ? `${(yearlyPriceGrowth * 100).toFixed(2)}` : '-'}
                                                 </p>
-                                                <p className={`screener-texts-sum ${sumColor}`}>
+                                                <p className={`screener-texts-sum ${sumColor}`} data-quote={"Sum"}>
                                                     {!isNaN(sum) ? sum : '-'}
                                                 </p>
                                             </div>
