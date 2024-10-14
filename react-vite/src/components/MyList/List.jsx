@@ -344,7 +344,7 @@ export default function List() {
                                                     {stockData?.stockDividendGrowth ? `$${stockData?.stockDividendGrowth.toFixed(2)}` : '-'}
                                                 </p>}
                                                 {showYearlyDivGrowth && <p className={`screener-texts`}>
-                                                    {!isNaN(stockData?.stockYearlyDividendGrowth) && stockData?.stockYearlyDividendGrowth != 0 ? `${stockData?.stockYearlyDividendGrowth * 100}%` : stockData?.stockYearlyDividendGrowth == 0 ? 0 : '-'}
+                                                    {!isNaN(stockData?.stockYearlyDividendGrowth) && stockData?.stockYearlyDividendGrowth != 0 ? `${(stockData?.stockYearlyDividendGrowth * 100).toFixed(2)}%` : stockData?.stockYearlyDividendGrowth == 0 ? 0 : '-'}
                                                 </p>}
                                                 {showEPS && <p className={`screener-texts`}>
                                                     {stockData?.stockEps > 0 ? `$${stockData?.stockEps}` : '-'}
