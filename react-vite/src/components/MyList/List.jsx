@@ -14,7 +14,6 @@ import ScreenerSettingsModal from "./ScreenerSettingsModal";
 import ScreenerPerformanceModal from "./ScreenerPerformanceModal";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
-import { HiQuestionMarkCircle } from "react-icons/hi";
 import { ImArrowUp, ImArrowRight, ImArrowDown, ImArrowUpRight, ImArrowDownRight } from "react-icons/im";
 
 export default function List() {
