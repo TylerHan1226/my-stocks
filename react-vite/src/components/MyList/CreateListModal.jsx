@@ -27,6 +27,8 @@ export default function CreateListModal({ stockSymbol }) {
             validationErrors.newListName = 'Please enter a list name between 1 and 20 characters'
         } else if (listNames.has(newListName)) {
             validationErrors.newListName = 'A list with this name already exists'
+        } else if (newListName.includes(' ')) {
+            validationErrors.newListName = 'List name cannot contain space'
         }
         return validationErrors
     }
